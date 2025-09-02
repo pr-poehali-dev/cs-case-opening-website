@@ -101,3 +101,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  @keyframes roll {
+    0% {
+      transform: translateX(400px);
+    }
+    100% {
+      transform: translateX(-2800px);
+    }
+  }
+
+  .animate-roll {
+    animation: roll 3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  }
+}

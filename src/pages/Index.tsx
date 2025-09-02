@@ -18,6 +18,9 @@ const Index = () => {
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [openedItem, setOpenedItem] = useState<any>(null);
   const [isRolling, setIsRolling] = useState(false);
+  const [showCaseDetails, setShowCaseDetails] = useState(false);
+  const [selectedCaseDetails, setSelectedCaseDetails] = useState<any>(null);
+  const [rollingItems, setRollingItems] = useState<any[]>([]);
 
   const cases = [
     {
@@ -173,6 +176,47 @@ const Index = () => {
     return caseItems[0];
   };
 
+  const handleCaseClick = (caseData: any) => {
+    setSelectedCaseDetails(caseData);
+    setShowCaseDetails(true);
+  };
+
+  const generateRollingItems = (caseItems: any[], wonItem: any) => {
+    const items = [];
+    const totalItems = 50;
+    const wonIndex = Math.floor(totalItems * 0.7); // Выигрышный предмет появится на 70% прокрутки
+    
+    for (let i = 0; i < totalItems; i++) {
+      if (i === wonIndex) {
+        items.push(wonItem);
+      } else {
+        const randomItem = caseItems[Math.floor(Math.random() * caseItems.length)];
+        items.push({ ...randomItem, id: i });
+      }
+    }
+    return items;
+  };
+
+  const getRarityColor = (rarity: string) => {
+    switch (rarity) {
+      case 'ancient': return 'from-red-500 to-orange-500';
+      case 'legendary': return 'from-space-purple to-space-pink';
+      case 'rare': return 'from-space-cyan to-space-purple';
+      case 'uncommon': return 'from-blue-500 to-purple-500';
+      default: return 'from-gray-500 to-gray-600';
+    }
+  };
+
+  const getRarityBg = (rarity: string) => {
+    switch (rarity) {
+      case 'ancient': return 'bg-red-500';
+      case 'legendary': return 'bg-space-purple';
+      case 'rare': return 'bg-space-cyan';
+      case 'uncommon': return 'bg-blue-400';
+      default: return 'bg-gray-400';
+    }
+  };
+
   const handleCaseOpen = (caseId: number) => {
     const caseData = cases.find(c => c.id === caseId);
     if (!caseData) return;
@@ -180,20 +224,25 @@ const Index = () => {
     setSelectedCase(caseId);
     setIsOpening(true);
     setIsRolling(true);
+    setShowCaseDetails(false);
     
-    // Rolling animation
+    const wonItem = getRandomItem(caseData.items);
+    const rollingItemsList = generateRollingItems(caseData.items, wonItem);
+    setRollingItems(rollingItemsList);
+    
+    // Анимация прокрутки 3 секунды
     setTimeout(() => {
       setIsRolling(false);
-      const wonItem = getRandomItem(caseData.items);
       setOpenedItem(wonItem);
       
-      // Show result for 3 seconds
+      // Показать результат на 4 секунды
       setTimeout(() => {
         setIsOpening(false);
         setSelectedCase(null);
         setOpenedItem(null);
-      }, 3000);
-    }, 2000);
+        setRollingItems([]);
+      }, 4000);
+    }, 3000);
   };
 
   return (
@@ -317,7 +366,7 @@ const Index = () => {
                   className={`bg-space-deep/90 backdrop-blur-md border-space-purple/30 hover:border-space-cyan hover:shadow-2xl hover:shadow-space-purple/30 transition-all cursor-pointer group ${
                     selectedCase === caseItem.id && isOpening ? 'animate-stellar-pulse border-space-gold shadow-2xl shadow-space-gold/50' : 'hover:animate-cosmic-glow'
                   }`}
-                  onClick={() => handleCaseOpen(caseItem.id)}
+                  onClick={() => handleCaseClick(caseItem)}
                 >
                   <CardHeader>
                     <div className="aspect-square bg-gradient-to-br from-space-purple/20 to-space-cyan/20 rounded-xl mb-4 overflow-hidden relative">
@@ -543,25 +592,147 @@ const Index = () => {
         </Tabs>
       </div>
 
-      {/* Enhanced Opening Animation */}
+      {/* Case Details Modal */}
+      <Dialog open={showCaseDetails} onOpenChange={setShowCaseDetails}>
+        <DialogContent className="bg-space-deep border-space-purple max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-center bg-gradient-to-r from-space-purple to-space-cyan bg-clip-text text-transparent">
+              {selectedCaseDetails?.name}
+            </DialogTitle>
+          </DialogHeader>
+          {selectedCaseDetails && (
+            <div className="space-y-6">
+              {/* Case Image and Info */}
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex-1">
+                  <div className="aspect-square bg-gradient-to-br from-space-purple/20 to-space-cyan/20 rounded-xl overflow-hidden">
+                    <img 
+                      src={selectedCaseDetails.image} 
+                      alt={selectedCaseDetails.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="flex-1 space-y-4">
+                  <div className="text-center">
+                    <div className="text-5xl font-bold bg-gradient-to-r from-space-gold to-space-cyan bg-clip-text text-transparent mb-2">
+                      {selectedCaseDetails.price.toLocaleString()}₽
+                    </div>
+                    <Badge className={`text-lg px-4 py-2 ${
+                      selectedCaseDetails.rarity === 'ancient' 
+                        ? 'bg-gradient-to-r from-red-600 to-orange-500' 
+                        : selectedCaseDetails.rarity === 'legendary' 
+                        ? 'bg-gradient-to-r from-space-purple to-space-pink' 
+                        : selectedCaseDetails.rarity === 'rare'
+                        ? 'bg-gradient-to-r from-space-cyan to-space-purple'
+                        : selectedCaseDetails.rarity === 'uncommon'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500'
+                        : 'bg-gradient-to-r from-gray-500 to-gray-600'
+                    }`}>
+                      {selectedCaseDetails.rarity === 'ancient' ? 'Древний' :
+                       selectedCaseDetails.rarity === 'legendary' ? 'Легендарный' : 
+                       selectedCaseDetails.rarity === 'rare' ? 'Редкий' :
+                       selectedCaseDetails.rarity === 'uncommon' ? 'Необычный' : 'Обычный'}
+                    </Badge>
+                  </div>
+                  <Button 
+                    className="w-full bg-gradient-to-r from-space-purple to-space-cyan hover:from-space-cyan hover:to-space-purple py-4 text-lg animate-cosmic-glow" 
+                    size="lg"
+                    onClick={() => handleCaseOpen(selectedCaseDetails.id)}
+                  >
+                    <Icon name="Package" className="mr-2" size={20} />
+                    Открыть кейс за {selectedCaseDetails.price.toLocaleString()}₽
+                  </Button>
+                </div>
+              </div>
+              
+              {/* Items List */}
+              <div>
+                <h3 className="text-2xl font-bold text-space-cyan mb-4">Содержимое кейса</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {selectedCaseDetails.items.map((item: any, idx: number) => (
+                    <div key={idx} className={`p-4 rounded-lg border-2 bg-gradient-to-br ${getRarityColor(item.rarity)}/10 border-opacity-50 ${
+                      item.rarity === 'ancient' ? 'border-red-500' :
+                      item.rarity === 'legendary' ? 'border-space-purple' :
+                      item.rarity === 'rare' ? 'border-space-cyan' :
+                      item.rarity === 'uncommon' ? 'border-blue-400' : 'border-gray-400'
+                    }`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className={`w-3 h-3 rounded-full ${getRarityBg(item.rarity)} animate-pulse`}></div>
+                        <div className="text-space-gold font-bold">{item.chance}%</div>
+                      </div>
+                      <h4 className="text-white font-semibold text-sm mb-2">{item.name}</h4>
+                      <div className="flex items-center justify-between">
+                        <Badge className={`${
+                          item.rarity === 'ancient' ? 'bg-red-500' :
+                          item.rarity === 'legendary' ? 'bg-space-purple' :
+                          item.rarity === 'rare' ? 'bg-space-cyan' :
+                          item.rarity === 'uncommon' ? 'bg-blue-400' : 'bg-gray-400'
+                        } text-white text-xs`}>
+                          {item.rarity === 'ancient' ? 'Древний' :
+                           item.rarity === 'legendary' ? 'Легендарный' :
+                           item.rarity === 'rare' ? 'Редкий' : 
+                           item.rarity === 'uncommon' ? 'Необычный' : 'Обычный'}
+                        </Badge>
+                        <div className="text-space-gold font-bold">{item.value.toLocaleString()}₽</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Enhanced Opening Animation with Rolling Items */}
       {isOpening && (
         <div className="fixed inset-0 bg-space-dark/95 backdrop-blur-md flex items-center justify-center z-50">
           <div className="text-center animate-fade-in">
             {isRolling ? (
               <>
-                <div className="relative mb-8">
-                  <div className="text-8xl animate-spin">🎰</div>
-                  <div className="absolute inset-0 animate-ping">
-                    <div className="text-8xl opacity-30">✨</div>
+                <h3 className="text-4xl font-bold bg-gradient-to-r from-space-purple to-space-cyan bg-clip-text text-transparent mb-8 animate-pulse">
+                  Открываем кейс...
+                </h3>
+                
+                {/* Rolling Items Animation */}
+                <div className="relative w-[800px] h-32 bg-space-deep/50 rounded-lg border-2 border-space-purple overflow-hidden mb-8">
+                  {/* Winning Line */}
+                  <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-space-gold z-10 shadow-lg shadow-space-gold/50"></div>
+                  
+                  {/* Items Container */}
+                  <div className="flex items-center h-full">
+                    <div 
+                      className="flex items-center h-full animate-roll"
+                      style={{
+                        transform: 'translateX(-2800px)',
+                        animationDuration: '3s',
+                        animationTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                        animationFillMode: 'forwards'
+                      }}
+                    >
+                      {rollingItems.map((item, idx) => (
+                        <div 
+                          key={idx} 
+                          className={`flex-shrink-0 w-24 h-24 mx-2 rounded-lg border-2 bg-gradient-to-br ${getRarityColor(item.rarity)}/20 ${
+                            item.rarity === 'ancient' ? 'border-red-500' :
+                            item.rarity === 'legendary' ? 'border-space-purple' :
+                            item.rarity === 'rare' ? 'border-space-cyan' :
+                            item.rarity === 'uncommon' ? 'border-blue-400' : 'border-gray-400'
+                          } flex items-center justify-center`}
+                        >
+                          <div className="text-center">
+                            <div className={`w-2 h-2 rounded-full mx-auto mb-1 ${getRarityBg(item.rarity)}`}></div>
+                            <div className="text-xs text-white truncate px-1">{item.name.split(' ')[0]}</div>
+                            <div className="text-xs text-space-gold">{item.value}₽</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <h3 className="text-4xl font-bold bg-gradient-to-r from-space-purple to-space-cyan bg-clip-text text-transparent mb-4 animate-pulse">
-                  Генерация предмета...
-                </h3>
-                <div className="w-96 bg-space-deep rounded-full overflow-hidden border-2 border-space-purple mb-4">
-                  <div className="bg-gradient-to-r from-space-purple via-space-cyan to-space-pink h-4 rounded-full animate-pulse"></div>
-                </div>
-                <p className="text-space-cyan animate-bounce">Исследуем космические артефакты...</p>
+                
+                <p className="text-space-cyan animate-bounce text-xl">Определяем победителя...</p>
               </>
             ) : openedItem && (
               <>
@@ -574,7 +745,7 @@ const Index = () => {
                 <h3 className="text-5xl font-bold bg-gradient-to-r from-space-gold to-space-cyan bg-clip-text text-transparent mb-4">
                   Поздравляем!
                 </h3>
-                <div className={`p-6 rounded-2xl border-4 mb-4 animate-cosmic-glow ${
+                <div className={`p-8 rounded-2xl border-4 mb-4 animate-cosmic-glow max-w-md mx-auto ${
                   openedItem.rarity === 'ancient' 
                     ? 'border-red-500 bg-gradient-to-br from-red-900/50 to-orange-900/50' 
                     : openedItem.rarity === 'legendary'
@@ -583,8 +754,8 @@ const Index = () => {
                     ? 'border-space-cyan bg-gradient-to-br from-space-cyan/50 to-space-purple/50'
                     : 'border-blue-400 bg-gradient-to-br from-blue-900/50 to-purple-900/50'
                 }`}>
-                  <h4 className="text-3xl font-bold text-white mb-2">{openedItem.name}</h4>
-                  <Badge className={`text-lg px-4 py-2 ${
+                  <h4 className="text-3xl font-bold text-white mb-3">{openedItem.name}</h4>
+                  <Badge className={`text-lg px-6 py-2 mb-4 ${
                     openedItem.rarity === 'ancient' 
                       ? 'bg-gradient-to-r from-red-600 to-orange-500' 
                       : openedItem.rarity === 'legendary'
@@ -597,11 +768,14 @@ const Index = () => {
                      openedItem.rarity === 'legendary' ? 'Легендарный' :
                      openedItem.rarity === 'rare' ? 'Редкий' : 'Необычный'}
                   </Badge>
-                  <div className="text-4xl font-bold text-space-gold mt-4">
+                  <div className="text-5xl font-bold text-space-gold">
                     {openedItem.value.toLocaleString()}₽
                   </div>
+                  <div className="text-sm text-space-cyan mt-2">
+                    Шанс выпадения: {openedItem.chance}%
+                  </div>
                 </div>
-                <p className="text-xl text-space-cyan">Предмет добавлен в инвентарь!</p>
+                <p className="text-xl text-space-cyan">Предмет добавлен в инвентарь! ✨</p>
               </>
             )}
           </div>
