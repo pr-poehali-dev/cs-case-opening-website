@@ -71,7 +71,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'space-dark': '#0B0D21',
+				'space-deep': '#1A1B3E',
+				'space-purple': '#6B46C1',
+				'space-cyan': '#06B6D4',
+				'space-pink': '#EC4899',
+				'space-gold': '#F59E0B',
+				'cosmic-glow': '#8B5CF6'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -112,7 +119,9 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'case-glow': 'case-glow 2s ease-in-out infinite',
+				'cosmic-glow': 'cosmic-glow 3s ease-in-out infinite',
+				'stellar-pulse': 'stellar-pulse 2s ease-in-out infinite',
+				'orbit': 'orbit 20s linear infinite',
 				'case-open': 'case-open 0.6s ease-out',
 				'fade-in': 'fade-in 0.8s ease-out'
 			}
