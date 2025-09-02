@@ -21,6 +21,11 @@ const Index = () => {
   const [showCaseDetails, setShowCaseDetails] = useState(false);
   const [selectedCaseDetails, setSelectedCaseDetails] = useState<any>(null);
   const [rollingItems, setRollingItems] = useState<any[]>([]);
+  const [userInventory, setUserInventory] = useState<any[]>([
+    { id: 1, name: 'AK-47 | Nebula Storm', rarity: 'rare', value: 6700, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+    { id: 2, name: 'AWP | Cosmic Dragon', rarity: 'legendary', value: 15600, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
+    { id: 3, name: 'Glock-18 | Stardust', rarity: 'common', value: 2300, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' }
+  ]);
 
   const cases = [
     {
@@ -41,19 +46,19 @@ const Index = () => {
     },
     {
       id: 2,
-      name: 'Cosmic Case',
-      price: 149,
+      name: 'Standard Case',
+      price: 250,
       image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg',
       rarity: 'uncommon',
       items: [
-        { name: 'M4A4 | Desert-Strike', rarity: 'common', chance: 22.0, value: 35, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alDKfVhGpW4MFjnb3FytXw3lbt_UZpaj32JICTJwJsNV-DqALqxb3xxcjrY0oIVzA' },
-        { name: 'AK-47 | Blue Laminate', rarity: 'common', chance: 20.0, value: 42, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV09m7hoOAkuP1P7fYkW5Xu5Qp3-zH89qg2wzh_UNrNjvxcYfEdwU2NFzW8gW2wOe-gpK8vs7KzydrvnZ35H6Pz0KwhE9FaOJo1uveFwuC_CNxJA' },
-        { name: 'AWP | Worm God', rarity: 'uncommon', chance: 18.0, value: 78, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTck3lu4dJzjO3H8Ijk2ALl_ktsajr2JI-UI1I5ZwmG-1e5wOrxxcjrYjAqwDY' },
-        { name: 'M4A1-S | Guardian', rarity: 'uncommon', chance: 15.0, value: 95, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-LmufhjKnFl2xU7cNo2L3ApYj03Qy2rko-YmihJI6SdgI8N1CD_VG9w7q-jcC7tMvIzydlviEjsHjZgVXp1kFj_Fto' },
-        { name: 'AK-47 | Redline', rarity: 'rare', chance: 12.0, value: 185, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV08-jhIWZlP_1IbzVqWdY781lxOyZpI-s3QXg-kBrMG71LdWRdlQ4Z13X8gK4wejxxcjrp8hxGyQ' },
-        { name: 'AWP | Graphite', rarity: 'rare', chance: 8.0, value: 320, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTZk2pH_Pp9g-7J4bP5iUazrl1rN2HwdtWTcgJvZAyC8lK5yLrng5G76pTAzSFiuyV3snvD30vgwFX3Voc' },
-        { name: 'M4A4 | Asiimov', rarity: 'legendary', chance: 3.5, value: 450, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alDLPIhm5D18d0hOHE-7P5gVO8vywwNWqsJtCddwVrMgnR-QK6xejxxcjr4c_4aWA' },
-        { name: 'AK-47 | Fire Serpent', rarity: 'legendary', chance: 1.5, value: 680, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0r2R84mgig7mrElqZG3wI9LBdVI-Y16C-Va4xr_rhJLvtcubm3c17yF0tHfUl0fmhUkaarcI0KHYFQ3QKw' }
+        { name: 'M4A4 | Desert-Strike', rarity: 'common', chance: 25.0, value: 850, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alDKfVhGpW4MFjnb3FytXw3lbt_UZpaj32JICTJwJsNV-DqALqxb3xxcjrY0oIVzA' },
+        { name: 'AK-47 | Blue Laminate', rarity: 'common', chance: 20.0, value: 2500, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV09m7hoOAkuP1P7fYkW5Xu5Qp3-zH89qg2wzh_UNrNjvxcYfEdwU2NFzW8gW2wOe-gpK8vs7KzydrvnZ35H6Pz0KwhE9FaOJo1uveFwuC_CNxJA' },
+        { name: 'AWP | Worm God', rarity: 'uncommon', chance: 18.0, value: 4200, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTck3lu4dJzjO3H8Ijk2ALl_ktsajr2JI-UI1I5ZwmG-1e5wOrxxcjrYjAqwDY' },
+        { name: 'M4A1-S | Guardian', rarity: 'uncommon', chance: 15.0, value: 6500, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-LmufhjKnFl2xU7cNo2L3ApYj03Qy2rko-YmihJI6SdgI8N1CD_VG9w7q-jcC7tMvIzydlviEjsHjZgVXp1kFj_Fto' },
+        { name: 'AK-47 | Redline', rarity: 'rare', chance: 15.0, value: 10200, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV08-jhIWZlP_1IbzVqWdY781lxOyZpI-s3QXg-kBrMG71LdWRdlQ4Z13X8gK4wejxxcjrp8hxGyQ' },
+        { name: 'AWP | Graphite', rarity: 'rare', chance: 5.0, value: 18500, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTZk2pH_Pp9g-7J4bP5iUazrl1rN2HwdtWTcgJvZAyC8lK5yLrng5G76pTAzSFiuyV3snvD30vgwFX3Voc' },
+        { name: 'AK-47 | Vulcan', rarity: 'legendary', chance: 1.8, value: 40000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0rCXoNuniAK3-0Y5ZmygJoTGJwA3Zg6D-gW6xurxxcjrKKtxmw' },
+        { name: 'AK-47 | Fire Serpent', rarity: 'legendary', chance: 0.2, value: 172000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0r2R84mgig7mrElqZG3wI9LBdVI-Y16C-Va4xr_rhJLvtcubm3c17yF0tHfUl0fmhUkaarcI0KHYFQ3QKw' }
       ]
     },
     {
@@ -63,8 +68,8 @@ const Index = () => {
       image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg',
       rarity: 'rare',
       items: [
-        { name: 'M4A4 | Howl', rarity: 'uncommon', chance: 15.0, value: 890, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LzE893w2gXirUdrMT_wctSSJwE8aV_Z_wS4kuvxxcjrvMuayiAysyF2s2HSgVXp1uqCDKdY' },
-        { name: 'AK-47 | Vulcan', rarity: 'uncommon', chance: 15.0, value: 1250, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0r-Uo9-tiQfj_0Y4Nz-hJdSTdQE9Y1qF_AS_yL3vxcjrj8yz5g' },
+        { name: 'AK-47 | Redline FT', rarity: 'common', chance: 22.0, value: 10200, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV08-jhIWZlP_1IbzVqWdY781lxOyZpI-s3QXg-kBrMG71LdWRdlQ4Z13X8gK4wejxxcjrp8hxGyQ' },
+        { name: 'M4A4 | Asiimov FT', rarity: 'uncommon', chance: 18.0, value: 28500, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LzE893w2gXirUdrMT_wctSSJwE8aV_Z_wS4kuvxxcjrvMuayiAysyF2s2HSgVXp1uqCDKdY' },
         { name: 'AK-47 | Vulcan FT', rarity: 'uncommon', chance: 15.0, value: 45000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0rCXoNuniAK3-0Y5ZmygJoTGJwA3Zg6D-gW6xurxxcjrKKtxmw' },
         { name: 'AWP | Lightning Strike FN', rarity: 'rare', chance: 12.0, value: 78000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTck3lu5MB0mOTE8YjyjQ3i-kVqMG3zdYbBdwVtM1DTrAC3w-3xxcjrQyqAHTY' },
         { name: 'M4A1-S | Knight FN', rarity: 'rare', chance: 8.0, value: 125000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2L6So4v33AbkrUpuYT_7JYXHJAU-ZFzTrlO2lebxxcjrt54hOhk' },
@@ -81,14 +86,14 @@ const Index = () => {
       image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
       rarity: 'legendary',
       items: [
-        { name: 'Sport Gloves | Superconductor', rarity: 'rare', chance: 12.0, value: 2800, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PYzYpKoSOlv2Sq1Uj1v-hVhZnQ04TpeahDzZz1u6leh1wPr3ag-GQlaDlO6nTwWha6NZlmO2Q9tmm2gLs-0Q-NmqgJ4CWdAJrYAuFqwS7lLi608a8oZSczidh7CdztHfbzxOxhUxFb-FogLCXUQDZTJM' },
-        { name: 'Driver Gloves | King Snake', rarity: 'rare', chance: 10.0, value: 3400, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'Specialist Gloves | Crimson Kimono', rarity: 'legendary', chance: 8.0, value: 4200, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'Moto Gloves | Polygon', rarity: 'legendary', chance: 6.0, value: 3800, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
-        { name: 'Hydra Gloves | Case Hardened', rarity: 'legendary', chance: 5.0, value: 4500, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'Sport Gloves | Pandora\'s Box', rarity: 'ancient', chance: 3.0, value: 6800, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'Driver Gloves | Crimson Weave', rarity: 'ancient', chance: 2.0, value: 8200, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
-        { name: 'Specialist Gloves | Emerald Web', rarity: 'ancient', chance: 1.0, value: 12000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' }
+        { name: 'Sport Gloves | Superconductor', rarity: 'rare', chance: 12.0, value: 280000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PYzYpKoSOlv2Sq1Uj1v-hVhZnQ04TpeahDzZz1u6leh1wPr3ag-GQlaDlO6nTwWha6NZlmO2Q9tmm2gLs-0Q-NmqgJ4CWdAJrYAuFqwS7lLi608a8oZSczidh7CdztHfbzxOxhUxFb-FogLCXUQDZTJM' },
+        { name: 'Driver Gloves | King Snake', rarity: 'rare', chance: 10.0, value: 340000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+        { name: 'Specialist Gloves | Crimson Kimono', rarity: 'legendary', chance: 8.0, value: 420000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
+        { name: 'Moto Gloves | Polygon', rarity: 'legendary', chance: 6.0, value: 380000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'Hydra Gloves | Case Hardened', rarity: 'legendary', chance: 5.0, value: 450000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+        { name: 'Sport Gloves | Pandora\'s Box', rarity: 'ancient', chance: 3.0, value: 680000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
+        { name: 'Driver Gloves | Crimson Weave', rarity: 'ancient', chance: 2.0, value: 820000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'Specialist Gloves | Emerald Web', rarity: 'ancient', chance: 1.0, value: 1200000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' }
       ]
     },
     {
@@ -98,14 +103,14 @@ const Index = () => {
       image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg',
       rarity: 'legendary',
       items: [
-        { name: 'StatTrak™ AK-47 | Redline', rarity: 'rare', chance: 10.0, value: 3200, image: '/img/a5022949-4d81-4146-a69d-cab2f94537be.jpg' },
-        { name: 'StatTrak™ M4A4 | Asiimov', rarity: 'rare', chance: 9.0, value: 3800, image: '/img/a5022949-4d81-4146-a69d-cab2f94537be.jpg' },
-        { name: 'StatTrak™ AWP | Lightning Strike', rarity: 'legendary', chance: 7.0, value: 4500, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'StatTrak™ AK-47 | Fire Serpent', rarity: 'legendary', chance: 5.0, value: 6200, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'StatTrak™ M4A1-S | Knight', rarity: 'legendary', chance: 4.0, value: 5800, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
-        { name: 'StatTrak™ AWP | Dragon Lore', rarity: 'ancient', chance: 3.0, value: 9500, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'StatTrak™ AK-47 | Case Hardened', rarity: 'ancient', chance: 2.0, value: 8700, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'StatTrak™ M4A4 | Howl', rarity: 'ancient', chance: 1.0, value: 15000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' }
+        { name: 'StatTrak™ AK-47 | Redline', rarity: 'rare', chance: 10.0, value: 320000, image: '/img/a5022949-4d81-4146-a69d-cab2f94537be.jpg' },
+        { name: 'StatTrak™ M4A4 | Asiimov', rarity: 'rare', chance: 9.0, value: 380000, image: '/img/a5022949-4d81-4146-a69d-cab2f94537be.jpg' },
+        { name: 'StatTrak™ AWP | Lightning Strike', rarity: 'legendary', chance: 7.0, value: 450000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+        { name: 'StatTrak™ AK-47 | Fire Serpent', rarity: 'legendary', chance: 5.0, value: 620000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
+        { name: 'StatTrak™ M4A1-S | Knight', rarity: 'legendary', chance: 4.0, value: 580000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'StatTrak™ AWP | Dragon Lore', rarity: 'ancient', chance: 3.0, value: 950000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+        { name: 'StatTrak™ AK-47 | Case Hardened', rarity: 'ancient', chance: 2.0, value: 870000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
+        { name: 'StatTrak™ M4A4 | Howl', rarity: 'ancient', chance: 1.0, value: 1500000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' }
       ]
     },
     {
@@ -115,14 +120,14 @@ const Index = () => {
       image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg',
       rarity: 'ancient',
       items: [
-        { name: 'Souvenir AWP | Dragon Lore', rarity: 'legendary', chance: 8.0, value: 12000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'Souvenir AK-47 | Gold Arabesque', rarity: 'legendary', chance: 7.0, value: 9500, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'Souvenir M4A1-S | Knight', rarity: 'legendary', chance: 6.0, value: 8200, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
-        { name: 'Factory New Float Items', rarity: 'ancient', chance: 5.0, value: 15000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'Pattern #1 Case Hardened', rarity: 'ancient', chance: 4.0, value: 18000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'Titan Holo Katowice 2014', rarity: 'ancient', chance: 3.0, value: 25000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
-        { name: 'IBP Holo Katowice 2014', rarity: 'ancient', chance: 2.0, value: 35000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'Souvenir M4A4 | Howl', rarity: 'ancient', chance: 1.0, value: 50000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' }
+        { name: 'Souvenir AWP | Dragon Lore', rarity: 'legendary', chance: 8.0, value: 1200000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+        { name: 'Souvenir AK-47 | Gold Arabesque', rarity: 'legendary', chance: 7.0, value: 950000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
+        { name: 'Souvenir M4A1-S | Knight', rarity: 'legendary', chance: 6.0, value: 820000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'Factory New Float Items', rarity: 'ancient', chance: 5.0, value: 1500000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+        { name: 'Pattern #1 Case Hardened', rarity: 'ancient', chance: 4.0, value: 1800000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
+        { name: 'Titan Holo Katowice 2014', rarity: 'ancient', chance: 3.0, value: 2500000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'IBP Holo Katowice 2014', rarity: 'ancient', chance: 2.0, value: 3500000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+        { name: 'Souvenir M4A4 | Howl', rarity: 'ancient', chance: 1.0, value: 5000000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' }
       ]
     },
     {
@@ -132,24 +137,20 @@ const Index = () => {
       image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
       rarity: 'ancient',
       items: [
-        { name: 'Bayonet | Doppler', rarity: 'rare', chance: 12.0, value: 18000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotLu8JAlfwOP3ZTxS6eO7kr-HnvD8J_WAkDME65whjrjFrN3z3QW1-0Q5NT-lLYKSJg5qMgmB8gS9kOa4hZW_u5TXiSw0Zr1dJQ' },
-        { name: 'M9 Bayonet | Fade', rarity: 'rare', chance: 10.0, value: 22000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKvBmm5u4MBjmO2RoNPz2wK2-0FuY2HyJtDGI1I_Y16G_1C2xO3shpa4u8mYznU3vnZ35n_VnBG01B5LaOFo1uveFwvp_vLKuQ' },
-        { name: 'Karambit | Tiger Tooth', rarity: 'legendary', chance: 8.0, value: 28000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKvBmm5u4MBjmOzSyoHwjAHs-Us4NTukcNDBcAE8Ml_V-wS5kr28hJW16p_Nwng36Sh3-n_VnBG208Vot8mDBg' },
-        { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 7.0, value: 32000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrt8kM-Nz_xcoWUcAdrMFiDr1K6yLru08a4vpiannph7HQlsH2MgVXp1vdRXtBr' },
-        { name: 'Karambit | Fade', rarity: 'legendary', chance: 6.0, value: 35000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrt8kBvYmj3LIOXcVU4NwzQ_FG2xOfr08O-7ZydmndnpGB8sSnG9kY' },
-        { name: 'M9 Bayonet | Crimson Web', rarity: 'ancient', chance: 5.0, value: 45000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrg_UI-a2vzLYeTJg9tN1CD_FLrxe7r08e6upudnXBm7nF0tHjZgVXp1l3Uxuxt' },
-        { name: 'Karambit | Case Hardened', rarity: 'ancient', chance: 4.0, value: 52000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRri-UFsYTz0cdeWegNoZ1nS_FK5ye67hMO8u5zOynZhsiFz5nzZyh3o0xBKb-c' },
-        { name: 'StatTrak™ Karambit | Crimson Web', rarity: 'ancient', chance: 2.0, value: 75000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrg_UI-a2D1I4KUIlI5NFCErle8yOfmhpPp753ByXY37HEi4mGdwUKkzv8' },
-        { name: 'Karambit | Blue Gem #1', rarity: 'ancient', chance: 1.0, value: 150000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRri-UFsYTz0cdeWegNoZ1nS_FK5ye67hMO8u5zOynZhsiFz5nzZyh3o0xBKb-c' }
+        { name: 'Bayonet | Doppler', rarity: 'rare', chance: 12.0, value: 1800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotLu8JAlfwOP3ZTxS6eO7kr-HnvD8J_WAkDME65whjrjFrN3z3QW1-0Q5NT-lLYKSJg5qMgmB8gS9kOa4hZW_u5TXiSw0Zr1dJQ' },
+        { name: 'M9 Bayonet | Fade', rarity: 'rare', chance: 10.0, value: 2200000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKvBmm5u4MBjmO2RoNPz2wK2-0FuY2HyJtDGI1I_Y16G_1C2xO3shpa4u8mYznU3vnZ35n_VnBG01B5LaOFo1uveFwvp_vLKuQ' },
+        { name: 'Karambit | Tiger Tooth', rarity: 'legendary', chance: 8.0, value: 2800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKvBmm5u4MBjmOzSyoHwjAHs-Us4NTukcNDBcAE8Ml_V-wS5kr28hJW16p_Nwng36Sh3-n_VnBG208Vot8mDBg' },
+        { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 7.0, value: 3200000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrt8kM-Nz_xcoWUcAdrMFiDr1K6yLru08a4vpiannph7HQlsH2MgVXp1vdRXtBr' },
+        { name: 'Karambit | Fade', rarity: 'legendary', chance: 6.0, value: 3500000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrt8kBvYmj3LIOXcVU4NwzQ_FG2xOfr08O-7ZydmndnpGB8sSnG9kY' },
+        { name: 'M9 Bayonet | Crimson Web', rarity: 'ancient', chance: 5.0, value: 4500000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrg_UI-a2vzLYeTJg9tN1CD_FLrxe7r08e6upudnXBm7nF0tHjZgVXp1l3Uxuxt' },
+        { name: 'Karambit | Case Hardened', rarity: 'ancient', chance: 4.0, value: 5200000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRri-UFsYTz0cdeWegNoZ1nS_FK5ye67hMO8u5zOynZhsiFz5nzZyh3o0xBKb-c' },
+        { name: 'StatTrak™ Karambit | Crimson Web', rarity: 'ancient', chance: 2.0, value: 7500000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrg_UI-a2D1I4KUIlI5NFCErle8yOfmhpPp753ByXY37HEi4mGdwUKkzv8' },
+        { name: 'Karambit | Blue Gem #1', rarity: 'ancient', chance: 1.0, value: 15000000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRri-UFsYTz0cdeWegNoZ1nS_FK5ye67hMO8u5zOynZhsiFz5nzZyh3o0xBKb-c' }
       ]
     }
   ];
 
-  const inventory = [
-    { name: 'AK-47 | Nebula Storm', rarity: 'rare', value: 67, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-    { name: 'AWP | Cosmic Dragon', rarity: 'legendary', value: 156, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-    { name: 'Glock-18 | Stardust', rarity: 'common', value: 23, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' }
-  ];
+
 
   const marketItems = [
     { id: 1, name: 'Quantum Karambit', seller: 'CosmicTrader', price: 2450, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg', rarity: 'legendary' },
@@ -182,6 +183,16 @@ const Index = () => {
     setShowCaseDetails(true);
   };
 
+  const handleSellItem = (itemId: number) => {
+    const item = userInventory.find(item => item.id === itemId);
+    if (item) {
+      // Удаляем предмет из инвентаря
+      setUserInventory(prev => prev.filter(invItem => invItem.id !== itemId));
+      // Здесь можно добавить логику добавления денег на баланс
+      console.log(`Продан предмет ${item.name} за ${item.value}₽`);
+    }
+  };
+
   const generateRollingItems = (caseItems: any[], wonItem: any) => {
     const items = [];
     const totalItems = 50;
@@ -189,10 +200,12 @@ const Index = () => {
     
     for (let i = 0; i < totalItems; i++) {
       if (i === wonIndex) {
-        items.push(wonItem);
+        // Используем точную копию выигрышного предмета
+        items.push({ ...wonItem, rollId: i });
       } else {
-        const randomItem = caseItems[Math.floor(Math.random() * caseItems.length)];
-        items.push({ ...randomItem, id: i });
+        // Выбираем случайный предмет из кейса с правильными вероятностями
+        const randomItem = getRandomItem(caseItems);
+        items.push({ ...randomItem, rollId: i });
       }
     }
     return items;
@@ -235,6 +248,13 @@ const Index = () => {
     setTimeout(() => {
       setIsRolling(false);
       setOpenedItem(wonItem);
+      
+      // Добавить выигранный предмет в инвентарь
+      const newInventoryItem = {
+        ...wonItem,
+        id: Date.now() // Уникальный ID
+      };
+      setUserInventory(prev => [newInventoryItem, ...prev]);
       
       // Показать результат на 4 секунды
       setTimeout(() => {
@@ -436,8 +456,8 @@ const Index = () => {
           {/* Inventory Tab */}
           <TabsContent value="inventory" className="mt-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {inventory.map((item, idx) => (
-                <Card key={idx} className="bg-space-deep/90 backdrop-blur-md border-space-purple/30 hover:shadow-lg hover:shadow-space-cyan/20 transition-all group">
+              {userInventory.map((item, idx) => (
+                <Card key={item.id} className="bg-space-deep/90 backdrop-blur-md border-space-purple/30 hover:shadow-lg hover:shadow-space-cyan/20 transition-all group">
                   <CardContent className="p-4">
                     <div className="aspect-square bg-gradient-to-br from-space-purple/20 to-space-cyan/20 rounded-lg mb-3 overflow-hidden relative">
                       <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
@@ -457,8 +477,12 @@ const Index = () => {
                        item.rarity === 'rare' ? 'Редкий' : 'Обычный'}
                     </Badge>
                     <div className="text-space-gold font-bold mt-3 text-lg">{item.value}₽</div>
-                    <Button size="sm" className="w-full mt-2 bg-gradient-to-r from-space-purple to-space-cyan text-xs">
-                      Продать
+                    <Button 
+                      size="sm" 
+                      className="w-full mt-2 bg-gradient-to-r from-space-purple to-space-cyan text-xs"
+                      onClick={() => handleSellItem(item.id)}
+                    >
+                      Продать за {item.value}₽
                     </Button>
                   </CardContent>
                 </Card>
