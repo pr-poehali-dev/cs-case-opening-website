@@ -373,21 +373,41 @@ const Index = () => {
         const finalItemLeftEdge = itemLeftEdge + (endTransform - startTransform);
         const finalItemRightEdge = itemRightEdge + (endTransform - startTransform);
         
-        // Проверяем, будет ли центральная линия пересекать этот скин
-        // (левый край скина пройдет через центральную линию справа налево)
-        if (itemLeftEdge >= centerLinePosition && finalItemLeftEdge <= centerLinePosition) {
-          // Расстояние которое нужно пройти левому краю скина чтобы достичь центральной линии
-          const distanceToCenter = itemLeftEdge - centerLinePosition;
-          // Время когда левый край скина достигнет центральной линии (тик начинается)
-          const timeToCenter = (distanceToCenter / totalDistance) * animationDuration;
+        // Проверяем, будет ли центральная линия пересекать этот скин в любой момент анимации
+        // Скин пересекается с линией если:
+        // - в начале левый край справа от линии И в конце правый край слева от линии
+        // ИЛИ
+        // - в начале правый край справа от линии И в конце левый край слева от линии  
+        const willCrossLine = (
+          // Скин движется справа налево и пересекает линию
+          (itemLeftEdge >= centerLinePosition && finalItemRightEdge <= centerLinePosition) ||
+          // Скин начинается слева от линии и заканчивается справа (маловероятно при нашей анимации)
+          (itemRightEdge <= centerLinePosition && finalItemLeftEdge >= centerLinePosition) ||
+          // Скин изначально пересекает линию
+          (itemLeftEdge <= centerLinePosition && itemRightEdge >= centerLinePosition) ||
+          // Скин пересекает линию в финальной позиции
+          (finalItemLeftEdge <= centerLinePosition && finalItemRightEdge >= centerLinePosition)
+        );
+        
+        if (willCrossLine) {
+          let tickTime;
           
-          // Добавляем небольшую задержку для корректности
-          const tickTime = Math.max(300, Math.min(timeToCenter, animationDuration - 300));
+          if (itemLeftEdge >= centerLinePosition) {
+            // Скин приходит справа - тик когда левый край касается линии
+            const distanceToCenter = itemLeftEdge - centerLinePosition;
+            tickTime = (distanceToCenter / totalDistance) * animationDuration;
+          } else {
+            // Скин уже слева от линии или пересекает - тик в начале анимации
+            tickTime = 500; // Небольшая задержка для корректности
+          }
           
-          console.log(`Скин ${index + 1}: левый край в позиции ${itemLeftEdge}px, тик через ${tickTime.toFixed(0)}мс`);
+          // Ограничиваем время тика разумными пределами
+          tickTime = Math.max(300, Math.min(tickTime, animationDuration - 300));
+          
+          console.log(`Скин ${index + 1}: позиция ${itemLeftEdge}px→${finalItemLeftEdge}px, тик через ${tickTime.toFixed(0)}мс`);
           
           setTimeout(() => {
-            console.log(`🔊 ТИК начинается для скина ${index + 1} (${item.name})`);
+            console.log(`🔊 ТИК для скина ${index + 1} (${item.name})`);
             playCS2Sound('roll_tick', 0.15);
           }, tickTime);
         }
