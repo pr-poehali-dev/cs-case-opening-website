@@ -30,9 +30,9 @@ const Index = () => {
       image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
       rarity: 'common',
       items: [
-        { name: 'Glock-18 | Sand Dune', rarity: 'common', chance: 25.5, value: 15, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'P250 | Sand Dune', rarity: 'common', chance: 25.5, value: 12, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'MP9 | Sand Dashed', rarity: 'common', chance: 20.0, value: 18, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'Glock-18 | Sand Dune', rarity: 'common', chance: 25.5, value: 15, image: '/img/032fede5-47a8-441b-8f0e-0202aa45e971.jpg' },
+        { name: 'P250 | Sand Dune', rarity: 'common', chance: 25.5, value: 12, image: '/img/3ba943db-0d65-4f2a-b815-1686114dcde1.jpg' },
+        { name: 'MP9 | Sand Dashed', rarity: 'common', chance: 20.0, value: 18, image: '/img/096c120c-f11d-407a-9b7d-dc2292e0d65d.jpg' },
         { name: 'UMP-45 | Mudder', rarity: 'uncommon', chance: 15.5, value: 45, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
         { name: 'Galil AR | Sandstorm', rarity: 'uncommon', chance: 10.0, value: 67, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
         { name: 'AK-47 | Safari Mesh', rarity: 'rare', chance: 3.0, value: 150, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
@@ -46,14 +46,14 @@ const Index = () => {
       image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg',
       rarity: 'uncommon',
       items: [
-        { name: 'M4A4 | Desert-Strike', rarity: 'common', chance: 22.0, value: 35, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'AK-47 | Blue Laminate', rarity: 'common', chance: 20.0, value: 42, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'M4A4 | Desert-Strike', rarity: 'common', chance: 22.0, value: 35, image: '/img/6cb24eb4-9a3b-401b-b5d4-63b63e442560.jpg' },
+        { name: 'AK-47 | Blue Laminate', rarity: 'common', chance: 20.0, value: 42, image: '/img/ef99ed8d-e617-4ea4-9c5d-0424c807f0b5.jpg' },
         { name: 'AWP | Worm God', rarity: 'uncommon', chance: 18.0, value: 78, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
         { name: 'M4A1-S | Guardian', rarity: 'uncommon', chance: 15.0, value: 95, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'AK-47 | Redline', rarity: 'rare', chance: 12.0, value: 185, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'AK-47 | Redline', rarity: 'rare', chance: 12.0, value: 185, image: '/img/76b79b4a-f22c-4e05-9792-60ec7c29dfef.jpg' },
         { name: 'AWP | Graphite', rarity: 'rare', chance: 8.0, value: 320, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'M4A4 | Asiimov', rarity: 'legendary', chance: 3.5, value: 450, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'AK-47 | Fire Serpent', rarity: 'legendary', chance: 1.5, value: 680, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' }
+        { name: 'M4A4 | Asiimov', rarity: 'legendary', chance: 3.5, value: 450, image: '/img/5d717030-e555-4455-aae5-2f98728c879c.jpg' },
+        { name: 'AK-47 | Fire Serpent', rarity: 'legendary', chance: 1.5, value: 680, image: '/img/5fcdc01a-079a-4ff9-94fa-521cdd744641.jpg' }
       ]
     },
     {
@@ -65,7 +65,7 @@ const Index = () => {
       items: [
         { name: 'M4A4 | Howl', rarity: 'uncommon', chance: 15.0, value: 890, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
         { name: 'AK-47 | Vulcan', rarity: 'uncommon', chance: 15.0, value: 1250, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'AWP | Dragon Lore', rarity: 'rare', chance: 12.0, value: 2400, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'AWP | Dragon Lore', rarity: 'rare', chance: 12.0, value: 2400, image: '/img/e1b72b0c-48b0-4e33-82b7-1bfc299f1f5c.jpg' },
         { name: 'M4A1-S | Knight', rarity: 'rare', chance: 10.0, value: 1800, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
         { name: 'AK-47 | Case Hardened', rarity: 'rare', chance: 8.0, value: 1600, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
         { name: 'AWP | Medusa', rarity: 'legendary', chance: 5.0, value: 3200, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
@@ -80,7 +80,7 @@ const Index = () => {
       image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
       rarity: 'legendary',
       items: [
-        { name: 'Sport Gloves | Superconductor', rarity: 'rare', chance: 12.0, value: 2800, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'Sport Gloves | Superconductor', rarity: 'rare', chance: 12.0, value: 2800, image: '/img/bf425e05-ce1d-4ccc-b574-bc9d3dfd2c02.jpg' },
         { name: 'Driver Gloves | King Snake', rarity: 'rare', chance: 10.0, value: 3400, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
         { name: 'Specialist Gloves | Crimson Kimono', rarity: 'legendary', chance: 8.0, value: 4200, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
         { name: 'Moto Gloves | Polygon', rarity: 'legendary', chance: 6.0, value: 3800, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
@@ -97,8 +97,8 @@ const Index = () => {
       image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg',
       rarity: 'legendary',
       items: [
-        { name: 'StatTrak™ AK-47 | Redline', rarity: 'rare', chance: 10.0, value: 3200, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'StatTrak™ M4A4 | Asiimov', rarity: 'rare', chance: 9.0, value: 3800, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
+        { name: 'StatTrak™ AK-47 | Redline', rarity: 'rare', chance: 10.0, value: 3200, image: '/img/a5022949-4d81-4146-a69d-cab2f94537be.jpg' },
+        { name: 'StatTrak™ M4A4 | Asiimov', rarity: 'rare', chance: 9.0, value: 3800, image: '/img/a5022949-4d81-4146-a69d-cab2f94537be.jpg' },
         { name: 'StatTrak™ AWP | Lightning Strike', rarity: 'legendary', chance: 7.0, value: 4500, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
         { name: 'StatTrak™ AK-47 | Fire Serpent', rarity: 'legendary', chance: 5.0, value: 6200, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
         { name: 'StatTrak™ M4A1-S | Knight', rarity: 'legendary', chance: 4.0, value: 5800, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
@@ -133,9 +133,9 @@ const Index = () => {
       items: [
         { name: 'Bayonet | Doppler', rarity: 'rare', chance: 12.0, value: 18000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
         { name: 'M9 Bayonet | Fade', rarity: 'rare', chance: 10.0, value: 22000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'Karambit | Tiger Tooth', rarity: 'legendary', chance: 8.0, value: 28000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 7.0, value: 32000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
-        { name: 'Karambit | Fade', rarity: 'legendary', chance: 6.0, value: 35000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
+        { name: 'Karambit | Tiger Tooth', rarity: 'legendary', chance: 8.0, value: 28000, image: '/img/5788a457-7ced-43ba-8912-f3ad15ae785c.jpg' },
+        { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 7.0, value: 32000, image: '/img/5788a457-7ced-43ba-8912-f3ad15ae785c.jpg' },
+        { name: 'Karambit | Fade', rarity: 'legendary', chance: 6.0, value: 35000, image: '/img/5788a457-7ced-43ba-8912-f3ad15ae785c.jpg' },
         { name: 'M9 Bayonet | Crimson Web', rarity: 'ancient', chance: 5.0, value: 45000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
         { name: 'Karambit | Case Hardened', rarity: 'ancient', chance: 4.0, value: 52000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
         { name: 'StatTrak™ Karambit | Crimson Web', rarity: 'ancient', chance: 2.0, value: 75000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
