@@ -60,9 +60,25 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cs-dark text-white font-sans">
+    <div className="min-h-screen bg-cs-dark text-white relative overflow-hidden" style={{fontFamily: 'Rajdhani, sans-serif'}}>
+      {/* Background with CS Maps */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-cs-dark via-cs-gray/90 to-cs-dark">
+          <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-20">
+            <img src="/img/e1002b5a-c356-42e4-9aa0-89175c730e71.jpg" alt="Dust2" className="w-full h-full object-cover blur-sm" />
+          </div>
+          <div className="absolute top-0 right-0 w-1/3 h-1/3 opacity-15">
+            <img src="/img/f75ee642-d94b-4c31-ac97-80b9990005ce.jpg" alt="Mirage" className="w-full h-full object-cover blur-sm" />
+          </div>
+          <div className="absolute bottom-0 left-1/3 w-1/3 h-1/3 opacity-10">
+            <img src="/img/2265c309-4902-44af-a016-3b526b0a8f2c.jpg" alt="Inferno" className="w-full h-full object-cover blur-sm" />
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-cs-dark via-transparent to-cs-dark/70"></div>
+      </div>
+      
       {/* Header */}
-      <header className="bg-cs-gray border-b border-cs-orange/20 sticky top-0 z-50">
+      <header className="bg-cs-gray/95 backdrop-blur-md border-b border-cs-orange/20 sticky top-0 z-50 relative">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -90,14 +106,16 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-to-r from-cs-dark via-cs-gray to-cs-dark">
+      <section className="relative py-20 px-4 z-10">
         <div className="container mx-auto text-center">
-          <h2 className="text-5xl font-bold mb-6 animate-fade-in">
-            Открывай кейсы <span className="text-cs-orange">CS2</span>
-          </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-fade-in">
-            Получай редкие скины, ножи и перчатки из популярной игры Counter-Strike 2
-          </p>
+          <div className="bg-gradient-to-r from-transparent via-cs-dark/80 to-transparent p-8 rounded-2xl backdrop-blur-sm">
+            <h2 className="text-6xl font-bold mb-6 animate-fade-in bg-gradient-to-r from-cs-orange via-white to-cs-blue bg-clip-text text-transparent" style={{fontFamily: 'Orbitron, monospace'}}>
+              Открывай кейсы CS2
+            </h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-fade-in drop-shadow-lg">
+              Получай редкие скины, ножи и перчатки из популярной игры Counter-Strike 2
+            </p>
+          </div>
           <div className="flex justify-center space-x-4 animate-fade-in">
             <Button size="lg" className="bg-cs-orange hover:bg-cs-orange/80">
               <Icon name="Package" className="mr-2" />
@@ -112,7 +130,7 @@ const Index = () => {
       </section>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12 relative z-10">
         <Tabs defaultValue="cases" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-cs-gray">
             <TabsTrigger value="cases">Кейсы</TabsTrigger>
@@ -127,7 +145,7 @@ const Index = () => {
               {cases.map((caseItem) => (
                 <Card 
                   key={caseItem.id} 
-                  className={`bg-cs-gray border-cs-orange/20 hover:border-cs-orange transition-all cursor-pointer group ${
+                  className={`bg-cs-gray/90 backdrop-blur-md border-cs-orange/20 hover:border-cs-orange hover:shadow-2xl hover:shadow-cs-orange/20 transition-all cursor-pointer group ${
                     selectedCase === caseItem.id && isOpening ? 'animate-case-open animate-case-glow' : ''
                   }`}
                   onClick={() => handleCaseOpen(caseItem.id)}
@@ -170,7 +188,7 @@ const Index = () => {
           <TabsContent value="inventory" className="mt-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {inventory.map((item, idx) => (
-                <Card key={idx} className="bg-cs-gray border-cs-blue/20">
+                <Card key={idx} className="bg-cs-gray/90 backdrop-blur-md border-cs-blue/20 hover:shadow-lg hover:shadow-cs-blue/20 transition-all">
                   <CardContent className="p-4">
                     <div className="aspect-square bg-gradient-to-br from-cs-blue/20 to-cs-orange/20 rounded mb-3 flex items-center justify-center">
                       <img src="/img/fbc9ea5a-c8bf-43e1-b6ea-2c401b33ac48.jpg" alt={item.name} className="w-16 h-16 object-contain" />
@@ -215,7 +233,7 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="bg-cs-gray border-cs-blue/20">
+              <Card className="bg-cs-gray/90 backdrop-blur-md border-cs-blue/20 hover:shadow-lg hover:shadow-cs-blue/10">
                 <CardHeader>
                   <CardTitle className="text-cs-blue">Статистика дропа</CardTitle>
                 </CardHeader>
@@ -251,7 +269,7 @@ const Index = () => {
           {/* Profile Tab */}
           <TabsContent value="profile" className="mt-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="bg-cs-gray border-cs-orange/20">
+              <Card className="bg-cs-gray/90 backdrop-blur-md border-cs-orange/20 hover:shadow-lg hover:shadow-cs-orange/10">
                 <CardHeader>
                   <CardTitle className="text-cs-orange">Мой профиль</CardTitle>
                 </CardHeader>
@@ -281,7 +299,7 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="bg-cs-gray border-cs-blue/20">
+              <Card className="bg-cs-gray/90 backdrop-blur-md border-cs-blue/20 hover:shadow-lg hover:shadow-cs-blue/10">
                 <CardHeader>
                   <CardTitle className="text-cs-blue">Последние дропы</CardTitle>
                 </CardHeader>
@@ -321,7 +339,7 @@ const Index = () => {
       )}
 
       {/* Footer */}
-      <footer className="bg-cs-gray border-t border-cs-orange/20 py-8 mt-16">
+      <footer className="bg-cs-gray/95 backdrop-blur-md border-t border-cs-orange/20 py-8 mt-16 relative z-10">
         <div className="container mx-auto px-4 text-center">
           <div className="flex justify-center space-x-8 mb-4">
             <a href="#" className="text-gray-400 hover:text-cs-orange transition-colors">О проекте</a>
