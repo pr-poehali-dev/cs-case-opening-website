@@ -11,17 +11,57 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 
-// Аудио-утилиты для CS2 звуков
-const playCS2Sound = (type: 'case_open' | 'roll_tick' | 'item_drop', volume = 0.3) => {
-  const sounds = {
-    case_open: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMFl+m4oHl8zAJBJhEGUKfjwV5GKgZRps7FaSwCQyYSBVKo5cZdSSkGTqPKxmgrA0MnEgVRpuPGXkYqBlGmz8ZpLAJDJhIFUajmxl1JKQZOo8rGaCsDQyYSBVGm48ZeRioGUabPxmksAkMmEgVRqObGXUkpBk6jysZoKwNDJhIFUabjxl5GKgZRps/GaSw=',
-    roll_tick: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMF',
-    item_drop: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMFl+m4oHl8zAJBJhEGUKfjwV5GKgZRps7FaSwCQyYSBVKo5cZdSSkGTqPKxmgrA0MnEgVRpuPGXkYqBlGmz8ZpLAJDJhIFUajmxl1JKQZOo8rGaCsDQyYSBVGm48ZeRioGUabPxmksAkMmEgVRqObGXUkpBk6jysZoKwNDJhIFUabjxl5GKgZRps/GaSzAJBJhEGUKfjwV5GKgZRps7FaSwCQyYSBVKo5cZdSSkGTqPKxmgrA0MmEgVRpuPGXkYqBlGmz8ZpLAJDJhIFUajmxl1JKQZOo8rGaCsDQyYSBVGm48ZeRioGUabPxmksAkMmEgVRqObGXUkpBk6jysZoKwNDJhIFUabjxl5GKgZRps/GaSw='
-  };
+// Аудио-утилиты для реалистичных звуков CS2
+const playCS2Sound = (type: 'case_open' | 'roll_tick' | 'item_drop' | 'case_unlock', volume = 0.3) => {
+  let frequency, duration, waveType: OscillatorType;
   
-  const audio = new Audio(sounds[type]);
-  audio.volume = volume;
-  audio.play().catch(e => console.log(`CS2 ${type} audio failed:`, e));
+  switch (type) {
+    case 'case_open':
+      // Глубокий механический звук открытия
+      frequency = 150;
+      duration = 800;
+      waveType = 'sawtooth';
+      break;
+    case 'case_unlock':
+      // Металлический щелчок разблокировки
+      frequency = 800;
+      duration = 200;
+      waveType = 'square';
+      break;
+    case 'roll_tick':
+      // Короткий щелчок прокрутки
+      frequency = 400;
+      duration = 50;
+      waveType = 'triangle';
+      break;
+    case 'item_drop':
+      // Магический звук выпадения
+      frequency = 660;
+      duration = 1200;
+      waveType = 'sine';
+      break;
+  }
+  
+  try {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.type = waveType;
+    oscillator.frequency.value = frequency;
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + duration / 1000);
+  } catch (e) {
+    console.log(`CS2 ${type} audio failed:`, e);
+  }
 };
 
 const Index = () => {
@@ -259,7 +299,8 @@ const Index = () => {
     setUserBalance(prev => prev - caseData.price);
     
     // Проигрываем звук открытия кейса в стиле CS2
-    playCS2Sound('case_open', 0.4);
+    playCS2Sound('case_unlock', 0.3);
+    setTimeout(() => playCS2Sound('case_open', 0.4), 300);
     
     setSelectedCase(caseId);
     setIsOpening(true);
@@ -270,28 +311,24 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Звуки прокрутки скинов в стиле CS2
+    // Звуки прокрутки привязанные к центральному индикатору
     const playRollingSounds = () => {
-      let soundIndex = 0;
-      const maxSounds = 45; // Количество щелчков
-      let currentDelay = 100; // Начальная задержка
+      const itemWidth = 128 + 16; // 32*4 (w-32) + 16px (mx-2*2) = 144px на скин
+      const containerWidth = 800;
+      const centerPosition = containerWidth / 2;
       
-      const playNextSound = () => {
-        if (soundIndex >= maxSounds) return;
+      // Рассчитываем когда каждый скин пройдет через центр
+      rollingItemsList.forEach((item, index) => {
+        const itemPosition = index * itemWidth;
+        const timeToCenter = (itemPosition / containerWidth) * 11760; // Пропорционально времени анимации
         
-        playCS2Sound('roll_tick', 0.15);
-        soundIndex++;
-        
-        // Постепенно замедляем звуки к концу
-        if (soundIndex > 30) {
-          currentDelay += 20; // Увеличиваем задержку
+        if (timeToCenter > 0 && timeToCenter < 11000) { // Только в пределах анимации
+          setTimeout(() => {
+            playCS2Sound('roll_tick', 0.12);
+          }, timeToCenter + 1000); // +1с задержка начала
         }
-        
-        setTimeout(playNextSound, currentDelay);
-      };
-      
-      setTimeout(playNextSound, 500); // Начинаем через 0.5с
-    };
+      });
+    };"}
     
     playRollingSounds();
     
@@ -309,8 +346,19 @@ const Index = () => {
       };
       setUserInventory(prev => [newInventoryItem, ...prev]);
       
-      // Проигрываем звук выпадения предмета в стиле CS2
-      playCS2Sound('item_drop', 0.6);
+      // Проигрываем звук выпадения предмета в зависимости от редкости
+      const dropVolume = actualWonItem.rarity === 'ancient' ? 0.8 : 
+                        actualWonItem.rarity === 'legendary' ? 0.7 :
+                        actualWonItem.rarity === 'rare' ? 0.6 : 0.5;
+      playCS2Sound('item_drop', dropVolume);
+      
+      // Дополнительный звук для редких предметов
+      if (actualWonItem.rarity === 'ancient') {
+        setTimeout(() => playCS2Sound('case_unlock', 0.4), 300);
+        setTimeout(() => playCS2Sound('item_drop', 0.3), 600);
+      } else if (actualWonItem.rarity === 'legendary') {
+        setTimeout(() => playCS2Sound('case_unlock', 0.3), 400);
+      }
       
       // Окно результата остается открытым до выбора действия
     }, 11760); // 7s * 1.4 * 1.2 = 11.76s
