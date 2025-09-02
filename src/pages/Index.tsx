@@ -58,7 +58,7 @@ const Index = () => {
         { name: 'AK-47 | Redline', rarity: 'rare', chance: 15.0, value: 10200, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV08-jhIWZlP_1IbzVqWdY781lxOyZpI-s3QXg-kBrMG71LdWRdlQ4Z13X8gK4wejxxcjrp8hxGyQ' },
         { name: 'AWP | Graphite', rarity: 'rare', chance: 5.0, value: 18500, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTZk2pH_Pp9g-7J4bP5iUazrl1rN2HwdtWTcgJvZAyC8lK5yLrng5G76pTAzSFiuyV3snvD30vgwFX3Voc' },
         { name: 'AK-47 | Vulcan', rarity: 'legendary', chance: 1.8, value: 40000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0rCXoNuniAK3-0Y5ZmygJoTGJwA3Zg6D-gW6xurxxcjrKKtxmw' },
-        { name: 'AK-47 | Fire Serpent', rarity: 'legendary', chance: 0.2, value: 172000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0r2R84mgig7mrElqZG3wI9LBdVI-Y16C-Va4xr_rhJLvtcubm3c17yF0tHfUl0fmhUkaarcI0KHYFQ3QKw' }
+        { name: 'AK-47 | Fire Serpent', rarity: 'legendary', chance: 0.2, value: 172000, image: '/img/a72ff8d4-ef6e-4a7d-9df8-17a65ce9895c.jpg' }
       ]
     },
     {
@@ -138,10 +138,10 @@ const Index = () => {
       rarity: 'ancient',
       items: [
         { name: 'AK-47 | Fire Serpent FT', rarity: 'common', chance: 50.0, value: 172000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV19-yhpKOhcj5Nr_Yg2Y' },
-        { name: 'AWP | Dragon Lore FT', rarity: 'uncommon', chance: 25.0, value: 980000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJD_9W7m5a0mvLwOq7c2D4J7cEp3uySrdqj3VCx-Es9ZG31ctTBIQE7Zw7S_FC6xb_qjJfutZ7JwHdmu3Ml7XiJyhe1iBBKaeFu06KzVhyAH_seYPJQhw' },
+        { name: 'AWP | Dragon Lore FT', rarity: 'uncommon', chance: 25.0, value: 980000, image: '/img/479b7c6e-5a3e-42c4-8e53-76375486b2be.jpg' },
         { name: 'M4A4 | Howl FT', rarity: 'uncommon', chance: 15.0, value: 385000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhjxszFJTwT09S5g4y1mvLwOq7c2GgHsJNzj7nDpN6siQ23qxJrMDrxctXEcQ8-YQrWqFW4wOvnjcfouJ3BwHI2viYr7CvVyB3miQYMMLLpOOd9BA' },
         { name: 'Bayonet | Doppler', rarity: 'rare', chance: 6.0, value: 1800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotLu8JAlfwOP3ZTxS6eO7kr-HnvD8J_WAkDME65whjrjFrN3z3QW1-0Q5NT-lLYKSJg5qMgmB8gS9kOa4hZW_u5TXiSw0Zr1dJQ' },
-        { name: 'Karambit | Tiger Tooth', rarity: 'rare', chance: 3.0, value: 2800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKvBmm5u4MBjmOzSyoHwjAHs-Us4NTukcNDBcAE8Ml_V-wS5kr28hJW16p_Nwng36Sh3-n_VnBG208Vot8mDBg' },
+        { name: 'Karambit | Tiger Tooth', rarity: 'rare', chance: 3.0, value: 2800000, image: '/img/58e5868b-2766-4f70-a117-0517eecd1909.jpg' },
         { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 0.8, value: 3200000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrt8kM-Nz_xcoWUcAdrMFiDr1K6yLru08a4vpiannph7HQlsH2MgVXp1vdRXtBr' },
         { name: 'StatTrak™ Karambit | Crimson Web', rarity: 'legendary', chance: 0.15, value: 7500000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrg_UI-a2D1I4KUIlI5NFCErle8yOfmhpPp753ByXY37HEi4mGdwUKkzv8' },
         { name: 'Karambit | Blue Gem #1', rarity: 'ancient', chance: 0.05, value: 15000000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRri-UFsYTz0cdeWegNoZ1nS_FK5ye67hMO8u5zOynZhsiFz5nzZyh3o0xBKb-c' }
@@ -195,16 +195,16 @@ const Index = () => {
   const generateRollingItems = (caseItems: any[], wonItem: any) => {
     const items = [];
     const totalItems = 50;
-    const wonIndex = Math.floor(totalItems * 0.7); // Выигрышный предмет появится на 70% прокрутки
+    const wonIndex = 35; // Выигрышный предмет будет на 35-й позиции
     
     for (let i = 0; i < totalItems; i++) {
       if (i === wonIndex) {
         // Используем точную копию выигрышного предмета
-        items.push({ ...wonItem, rollId: i });
+        items.push({ ...wonItem, rollId: i, isWinner: true });
       } else {
         // Выбираем случайный предмет из кейса с правильными вероятностями
         const randomItem = getRandomItem(caseItems);
-        items.push({ ...randomItem, rollId: i });
+        items.push({ ...randomItem, rollId: i, isWinner: false });
       }
     }
     return items;
@@ -735,15 +735,7 @@ const Index = () => {
                   
                   {/* Items Container */}
                   <div className="flex items-center h-full">
-                    <div 
-                      className="flex items-center h-full animate-roll"
-                      style={{
-                        transform: 'translateX(-2800px)',
-                        animationDuration: '7s',
-                        animationTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-                        animationFillMode: 'forwards'
-                      }}
-                    >
+                    <div className="flex items-center h-full animate-roll">
                       {rollingItems.map((item, idx) => (
                         <div 
                           key={idx} 
@@ -758,6 +750,10 @@ const Index = () => {
                             src={item.image} 
                             alt={item.name} 
                             className="w-full h-full object-cover" 
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg';
+                            }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                           <div className="absolute bottom-0 left-0 right-0 text-center p-1">
@@ -799,6 +795,10 @@ const Index = () => {
                         src={openedItem.image} 
                         alt={openedItem.name} 
                         className="w-full h-48 object-cover rounded-xl"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg';
+                        }}
                       />
                     </div>
                   )}
