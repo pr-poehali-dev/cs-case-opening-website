@@ -344,7 +344,7 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Тики точно привязанные к каждому скину при прохождении через центральную линию
+    // Тики при пересечении центральной линии с левым краем каждого скина
     const playRollingSounds = () => {
       // Параметры из CSS анимации
       const startTransform = 560; // translateX(560px) - начальная позиция
@@ -366,25 +366,28 @@ const Index = () => {
       rollingItemsList.forEach((item, index) => {
         // Начальная позиция левого края скина относительно контейнера
         const itemLeftEdge = startTransform + (index * itemTotalWidth);
-        // Центр скина
-        const itemCenter = itemLeftEdge + (itemWidth / 2);
+        // Правый край скина
+        const itemRightEdge = itemLeftEdge + itemWidth;
         
-        // Проверяем, пройдет ли центр скина через центральную линию
-        const finalItemCenter = itemCenter + endTransform - startTransform;
+        // Конечная позиция левого и правого края после анимации
+        const finalItemLeftEdge = itemLeftEdge + (endTransform - startTransform);
+        const finalItemRightEdge = itemRightEdge + (endTransform - startTransform);
         
-        if (itemCenter >= centerLinePosition && finalItemCenter <= centerLinePosition) {
-          // Расстояние которое нужно пройти скину чтобы его центр достиг центральной линии
-          const distanceToCenter = itemCenter - centerLinePosition;
-          // Время когда центр скина достигнет центральной линии
+        // Проверяем, будет ли центральная линия пересекать этот скин
+        // (левый край скина пройдет через центральную линию справа налево)
+        if (itemLeftEdge >= centerLinePosition && finalItemLeftEdge <= centerLinePosition) {
+          // Расстояние которое нужно пройти левому краю скина чтобы достичь центральной линии
+          const distanceToCenter = itemLeftEdge - centerLinePosition;
+          // Время когда левый край скина достигнет центральной линии (тик начинается)
           const timeToCenter = (distanceToCenter / totalDistance) * animationDuration;
           
           // Добавляем небольшую задержку для корректности
-          const tickTime = Math.max(500, Math.min(timeToCenter + 200, animationDuration - 500));
+          const tickTime = Math.max(300, Math.min(timeToCenter, animationDuration - 300));
           
-          console.log(`Скин ${index + 1}: центр в позиции ${itemCenter}px, тик через ${tickTime}мс`);
+          console.log(`Скин ${index + 1}: левый край в позиции ${itemLeftEdge}px, тик через ${tickTime.toFixed(0)}мс`);
           
           setTimeout(() => {
-            console.log(`🔊 ТИК для скина ${index + 1} (${item.name})`);
+            console.log(`🔊 ТИК начинается для скина ${index + 1} (${item.name})`);
             playCS2Sound('roll_tick', 0.15);
           }, tickTime);
         }
