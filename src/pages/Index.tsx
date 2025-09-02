@@ -35,7 +35,7 @@ const Index = () => {
       image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
       rarity: 'common',
       items: [
-        { name: 'P250 | Sand Dune', rarity: 'common', chance: 35.0, value: 50, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopujweZPKwyvbfS0J69G0zY-InPbzJqjVhm5u4MBjmOXF_Jn4xlee-ks6amDyctTGcVM6MlHSrwS5kOjug5K4vMmdwXpquyE8pSGKjBOj5R0' },
+        { name: 'P250 | Sand Dune', rarity: 'common', chance: 35.0, value: 50, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopujwezhjxszYI2gS09-5lpKKqPrxN7LEmyUI6sAh2L-Sogvi8AXl_0Q-ajr6JdDEe1A4ZVyF8lO4l7u-gZ_o753IznA3s3JztyiLmRCziAYMMLNXVoW5wQ' },
         { name: 'Glock-18 | Sand Dune', rarity: 'common', chance: 30.0, value: 450, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposbaqKAxf0Ob3djFN79fnzL-YgPrLPr7Vn35cppEo3LyRrN3wiAXi-kFsZ233JYPBdlM2Z1zU-QK9yLu9g5O5vcubn3cysnIltG-dyRLjgBtIa_sv26LVFPOoXg' },
         { name: 'MP9 | Sand Dashed', rarity: 'common', chance: 20.0, value: 280, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou6r8FABz7P7YKAJF4N27mL-HnvD8J_WDxT8AuMEg3b2VrNvxigXj-kVsYDz6I4WQIwE8MAnT_AW9w-3xxcjr7i_Bt2k' },
         { name: 'UMP-45 | Mudder', rarity: 'uncommon', chance: 10.0, value: 820, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo7e1f1Jf0Ob3YjoXuY-0mL-Zkvb4DL7VqWNU6dNoxO2Z8Ij0m1Hj_UU-YWqgctScJgRsZ1DR81LsxObxxcjrh7iB6ww' },
@@ -137,14 +137,14 @@ const Index = () => {
       image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
       rarity: 'ancient',
       items: [
-        { name: 'AK-47 | Fire Serpent FT', rarity: 'common', chance: 50.0, value: 172000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'AWP | Dragon Lore FT', rarity: 'uncommon', chance: 25.0, value: 980000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'M4A4 | Howl FT', rarity: 'uncommon', chance: 15.0, value: 385000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
-        { name: 'Bayonet | Doppler', rarity: 'rare', chance: 6.0, value: 1800000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'Karambit | Tiger Tooth', rarity: 'rare', chance: 3.0, value: 2800000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
-        { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 0.8, value: 3200000, image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg' },
-        { name: 'StatTrak™ Karambit | Crimson Web', rarity: 'legendary', chance: 0.15, value: 7500000, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
-        { name: 'Karambit | Blue Gem #1', rarity: 'ancient', chance: 0.05, value: 15000000, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' }
+        { name: 'AK-47 | Fire Serpent FT', rarity: 'common', chance: 50.0, value: 172000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV19-yhpKOhcj5Nr_Yg2Y' },
+        { name: 'AWP | Dragon Lore FT', rarity: 'uncommon', chance: 25.0, value: 980000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJD_9W7m5a0mvLwOq7c2D4J7cEp3uySrdqj3VCx-Es9ZG31ctTBIQE7Zw7S_FC6xb_qjJfutZ7JwHdmu3Ml7XiJyhe1iBBKaeFu06KzVhyAH_seYPJQhw' },
+        { name: 'M4A4 | Howl FT', rarity: 'uncommon', chance: 15.0, value: 385000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhjxszFJTwT09S5g4y1mvLwOq7c2GgHsJNzj7nDpN6siQ23qxJrMDrxctXEcQ8-YQrWqFW4wOvnjcfouJ3BwHI2viYr7CvVyB3miQYMMLLpOOd9BA' },
+        { name: 'Bayonet | Doppler', rarity: 'rare', chance: 6.0, value: 1800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotLu8JAlfwOP3ZTxS6eO7kr-HnvD8J_WAkDME65whjrjFrN3z3QW1-0Q5NT-lLYKSJg5qMgmB8gS9kOa4hZW_u5TXiSw0Zr1dJQ' },
+        { name: 'Karambit | Tiger Tooth', rarity: 'rare', chance: 3.0, value: 2800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKvBmm5u4MBjmOzSyoHwjAHs-Us4NTukcNDBcAE8Ml_V-wS5kr28hJW16p_Nwng36Sh3-n_VnBG208Vot8mDBg' },
+        { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 0.8, value: 3200000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrt8kM-Nz_xcoWUcAdrMFiDr1K6yLru08a4vpiannph7HQlsH2MgVXp1vdRXtBr' },
+        { name: 'StatTrak™ Karambit | Crimson Web', rarity: 'legendary', chance: 0.15, value: 7500000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrg_UI-a2D1I4KUIlI5NFCErle8yOfmhpPp753ByXY37HEi4mGdwUKkzv8' },
+        { name: 'Karambit | Blue Gem #1', rarity: 'ancient', chance: 0.05, value: 15000000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRri-UFsYTz0cdeWegNoZ1nS_FK5ye67hMO8u5zOynZhsiFz5nzZyh3o0xBKb-c' }
       ]
     }
   ];
@@ -793,6 +793,15 @@ const Index = () => {
                     ? 'border-space-cyan bg-gradient-to-br from-space-cyan/50 to-space-purple/50'
                     : 'border-blue-400 bg-gradient-to-br from-blue-900/50 to-purple-900/50'
                 }`}>
+                  {openedItem.image && (
+                    <div className="mb-4 overflow-hidden rounded-xl">
+                      <img 
+                        src={openedItem.image} 
+                        alt={openedItem.name} 
+                        className="w-full h-48 object-cover rounded-xl"
+                      />
+                    </div>
+                  )}
                   <h4 className="text-3xl font-bold text-white mb-3">{openedItem.name}</h4>
                   <Badge className={`text-lg px-6 py-2 mb-4 ${
                     openedItem.rarity === 'ancient' 
