@@ -251,7 +251,6 @@ const Index = () => {
       setOpenedItem(actualWonItem);
       
       // Добавить выигранный предмет в инвентарь
-      const actualWonItem = rollingItemsList.find(item => item.isWinner) || wonItem;
       const newInventoryItem = {
         ...actualWonItem,
         id: Date.now() // Уникальный ID
