@@ -11,6 +11,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 
+// Аудио-утилиты для CS2 звуков
+const playCS2Sound = (type: 'case_open' | 'roll_tick' | 'item_drop', volume = 0.3) => {
+  const sounds = {
+    case_open: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMFl+m4oHl8zAJBJhEGUKfjwV5GKgZRps7FaSwCQyYSBVKo5cZdSSkGTqPKxmgrA0MnEgVRpuPGXkYqBlGmz8ZpLAJDJhIFUajmxl1JKQZOo8rGaCsDQyYSBVGm48ZeRioGUabPxmksAkMmEgVRqObGXUkpBk6jysZoKwNDJhIFUabjxl5GKgZRps/GaSw=',
+    roll_tick: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMF',
+    item_drop: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMFl+m4oHl8zAJBJhEGUKfjwV5GKgZRps7FaSwCQyYSBVKo5cZdSSkGTqPKxmgrA0MnEgVRpuPGXkYqBlGmz8ZpLAJDJhIFUajmxl1JKQZOo8rGaCsDQyYSBVGm48ZeRioGUabPxmksAkMmEgVRqObGXUkpBk6jysZoKwNDJhIFUabjxl5GKgZRps/GaSzAJBJhEGUKfjwV5GKgZRps7FaSwCQyYSBVKo5cZdSSkGTqPKxmgrA0MmEgVRpuPGXkYqBlGmz8ZpLAJDJhIFUajmxl1JKQZOo8rGaCsDQyYSBVGm48ZeRioGUabPxmksAkMmEgVRqObGXUkpBk6jysZoKwNDJhIFUabjxl5GKgZRps/GaSw='
+  };
+  
+  const audio = new Audio(sounds[type]);
+  audio.volume = volume;
+  audio.play().catch(e => console.log(`CS2 ${type} audio failed:`, e));
+};
+
 const Index = () => {
   const [selectedCase, setSelectedCase] = useState<number | null>(null);
   const [isOpening, setIsOpening] = useState(false);
@@ -245,10 +258,8 @@ const Index = () => {
     // Списываем стоимость кейса
     setUserBalance(prev => prev - caseData.price);
     
-    // Проигрываем звук открытия кейса
-    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMFl+m4oHl8');
-    audio.volume = 0.3;
-    audio.play().catch(e => console.log('Audio play failed:', e));
+    // Проигрываем звук открытия кейса в стиле CS2
+    playCS2Sound('case_open', 0.4);
     
     setSelectedCase(caseId);
     setIsOpening(true);
@@ -259,23 +270,27 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Звуки прокрутки скинов
+    // Звуки прокрутки скинов в стиле CS2
     const playRollingSounds = () => {
       let soundIndex = 0;
-      const maxSounds = 40; // Ограничиваем количество звуков
-      const soundInterval = setInterval(() => {
-        if (soundIndex >= maxSounds) {
-          clearInterval(soundInterval);
-          return;
-        }
-        const rollAudio = new Audio('data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQ4AAAA=');
-        rollAudio.volume = 0.1;
-        rollAudio.play().catch(() => {});
-        soundIndex++;
-      }, 250); // Звук каждые 250ms
+      const maxSounds = 45; // Количество щелчков
+      let currentDelay = 100; // Начальная задержка
       
-      // Останавливаем звуки перед концом анимации
-      setTimeout(() => clearInterval(soundInterval), 10000);
+      const playNextSound = () => {
+        if (soundIndex >= maxSounds) return;
+        
+        playCS2Sound('roll_tick', 0.15);
+        soundIndex++;
+        
+        // Постепенно замедляем звуки к концу
+        if (soundIndex > 30) {
+          currentDelay += 20; // Увеличиваем задержку
+        }
+        
+        setTimeout(playNextSound, currentDelay);
+      };
+      
+      setTimeout(playNextSound, 500); // Начинаем через 0.5с
     };
     
     playRollingSounds();
@@ -294,10 +309,8 @@ const Index = () => {
       };
       setUserInventory(prev => [newInventoryItem, ...prev]);
       
-      // Проигрываем звук выпадения предмета
-      const winAudio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMFl+m4oHl8');
-      winAudio.volume = 0.5;
-      winAudio.play().catch(e => console.log('Win audio play failed:', e));
+      // Проигрываем звук выпадения предмета в стиле CS2
+      playCS2Sound('item_drop', 0.6);
       
       // Окно результата остается открытым до выбора действия
     }, 11760); // 7s * 1.4 * 1.2 = 11.76s
