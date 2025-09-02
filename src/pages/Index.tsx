@@ -378,34 +378,40 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Звуки тиков привязанные к прохождению скинов через центральный индикатор  
+    // Звуки тиков точно синхронизированные с прохождением скинов через центр
     const playRollingSounds = () => {
       const itemWidth = 144; // w-32 (128px) + mx-2 (16px) = 144px на скин
-      const totalAnimationTime = 11760; // Общее время анимации
-      const startOffset = 1000; // Задержка начала звуков
+      const animationDuration = 11760; // Общее время анимации в мс
       
-      // Рассчитываем позиции скинов и время прохождения через центр
+      // Параметры анимации из CSS
+      const startTransform = 560; // translateX начальная позиция (px)
+      const endTransform = -4312; // translateX конечная позиция (px)
+      const totalDistance = startTransform - endTransform; // Общее расстояние движения
+      const centerPosition = 0; // Центральный индикатор находится на translateX(0)
+      
+      // Рассчитываем для каждого скина время прохождения через центр
       rollingItemsList.forEach((item, index) => {
-        // Начальная позиция скина (справа от контейнера)
-        const startPosition = 800; // Ширина контейнера
-        // Конечная позиция скина (далеко слева)
-        const endPosition = -(rollingItemsList.length * itemWidth);
-        // Позиция центрального индикатора
-        const centerPosition = 400; // Половина ширины контейнера
+        // Начальная позиция конкретного скина относительно первого элемента
+        const itemInitialOffset = index * itemWidth;
+        // Абсолютная начальная позиция скина в анимации
+        const itemStartPosition = startTransform - itemInitialOffset;
         
-        // Позиция конкретного скина
-        const itemStartPos = startPosition + (index * itemWidth);
-        
-        // Время когда скин достигнет центра
-        const distanceToCenter = itemStartPos - centerPosition;
-        const totalDistance = startPosition - endPosition;
-        const timeToCenter = (distanceToCenter / totalDistance) * totalAnimationTime;
-        
-        // Играем тик только если скин проходит через центр в разумное время
-        if (timeToCenter > startOffset && timeToCenter < totalAnimationTime - 500) {
-          setTimeout(() => {
-            playCS2Sound('roll_tick', 0.15);
-          }, timeToCenter);
+        // Если скин проходит через центральную позицию (0)
+        if (itemStartPosition > centerPosition && (itemStartPosition - totalDistance) < centerPosition) {
+          // Расстояние от начала анимации до момента пересечения с центром
+          const distanceToCenter = itemStartPosition - centerPosition;
+          // Время когда скин достигнет центра (пропорциональное)
+          const timeToCenter = (distanceToCenter / totalDistance) * animationDuration;
+          
+          // Добавляем небольшую задержку чтобы дождаться начала анимации
+          const actualTime = timeToCenter + 200;
+          
+          // Устанавливаем тик если время в разумных пределах
+          if (actualTime > 500 && actualTime < animationDuration - 500) {
+            setTimeout(() => {
+              playCS2Sound('roll_tick', 0.15);
+            }, actualTime);
+          }
         }
       });
     };
