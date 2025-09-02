@@ -21,6 +21,7 @@ const Index = () => {
   const [showCaseDetails, setShowCaseDetails] = useState(false);
   const [selectedCaseDetails, setSelectedCaseDetails] = useState<any>(null);
   const [rollingItems, setRollingItems] = useState<any[]>([]);
+  const [userBalance, setUserBalance] = useState(500000); // Начальный баланс 500,000₽
   const [userInventory, setUserInventory] = useState<any[]>([
     { id: 1, name: 'AK-47 | Nebula Storm', rarity: 'rare', value: 6700, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
     { id: 2, name: 'AWP | Cosmic Dragon', rarity: 'legendary', value: 15600, image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg' },
@@ -187,7 +188,8 @@ const Index = () => {
     if (item) {
       // Удаляем предмет из инвентаря
       setUserInventory(prev => prev.filter(invItem => invItem.id !== itemId));
-      // Здесь можно добавить логику добавления денег на баланс
+      // Добавляем деньги на баланс (100% стоимости)
+      setUserBalance(prev => prev + item.value);
       console.log(`Продан предмет ${item.name} за ${item.value}₽`);
     }
   };
@@ -234,6 +236,15 @@ const Index = () => {
     const caseData = cases.find(c => c.id === caseId);
     if (!caseData) return;
     
+    // Проверяем баланс
+    if (userBalance < caseData.price) {
+      alert('Недостаточно средств! Пополните баланс.');
+      return;
+    }
+    
+    // Списываем стоимость кейса
+    setUserBalance(prev => prev - caseData.price);
+    
     setSelectedCase(caseId);
     setIsOpening(true);
     setIsRolling(true);
@@ -257,13 +268,7 @@ const Index = () => {
       };
       setUserInventory(prev => [newInventoryItem, ...prev]);
       
-      // Показать результат на 4 секунды
-      setTimeout(() => {
-        setIsOpening(false);
-        setSelectedCase(null);
-        setOpenedItem(null);
-        setRollingItems([]);
-      }, 4000);
+      // Окно результата остается открытым до выбора действия
     }, 11760); // 7s * 1.4 * 1.2 = 11.76s
   };
 
@@ -304,14 +309,31 @@ const Index = () => {
       <header className="bg-space-deep/95 backdrop-blur-md border-b border-space-purple/30 sticky top-0 z-50 relative">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Icon name="Rocket" className="text-space-purple animate-cosmic-glow" size={36} />
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-space-cyan rounded-full animate-ping"></div>
+            <div className="flex items-center space-x-4">
+              {(selectedCase || showCaseDetails) && (
+                <Button
+                  onClick={() => {
+                    setSelectedCase(null);
+                    setShowCaseDetails(false);
+                    setIsOpening(false);
+                    setOpenedItem(null);
+                    setRollingItems([]);
+                  }}
+                  variant="outline"
+                  className="border-space-purple text-space-purple hover:bg-space-purple hover:text-white"
+                >
+                  ← Назад
+                </Button>
+              )}
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <Icon name="Rocket" className="text-space-purple animate-cosmic-glow" size={36} />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-space-cyan rounded-full animate-ping"></div>
+                </div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-space-purple via-space-cyan to-space-pink bg-clip-text text-transparent" style={{fontFamily: 'Orbitron, monospace'}}>
+                  COSMIC CS2
+                </h1>
               </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-space-purple via-space-cyan to-space-pink bg-clip-text text-transparent" style={{fontFamily: 'Orbitron, monospace'}}>
-                COSMIC CS2
-              </h1>
             </div>
             <nav className="hidden md:flex space-x-6">
               <a href="#" className="hover:text-space-purple transition-colors">Главная</a>
@@ -321,9 +343,9 @@ const Index = () => {
               <a href="#" className="hover:text-cosmic-glow transition-colors">Профиль</a>
             </nav>
             <div className="flex items-center space-x-4">
-              <Badge className="bg-gradient-to-r from-space-purple to-space-cyan border-none text-white px-3 py-1">
-                <Icon name="Coins" size={16} className="mr-2" />
-                2,890₽
+              <Badge className="bg-gradient-to-r from-space-purple to-space-cyan border-none text-white px-4 py-2 text-lg">
+                <Icon name="Coins" size={18} className="mr-2" />
+                {userBalance.toLocaleString()}₽
               </Badge>
               <Dialog open={showPayment} onOpenChange={setShowPayment}>
                 <DialogTrigger asChild>
@@ -831,9 +853,12 @@ const Index = () => {
                 <div className="flex gap-4 justify-center">
                   <Button
                     onClick={() => {
-                      // Продать предмет
-                      const sellPrice = Math.floor(openedItem.value * 0.8); // 80% от стоимости
-                      console.log(`Продано: ${openedItem.name} за ${sellPrice}₽`);
+                      // Продать предмет за 100% стоимости
+                      const sellPrice = openedItem.value;
+                      setUserBalance(prev => prev + sellPrice);
+                      
+                      // Удаляем предмет из инвентаря (так как он уже был добавлен)
+                      setUserInventory(prev => prev.slice(1));
                       
                       // Закрыть модальное окно
                       setIsOpening(false);
@@ -843,7 +868,7 @@ const Index = () => {
                     }}
                     className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105"
                   >
-                    💰 Продать за {Math.floor(openedItem.value * 0.8).toLocaleString()}₽
+                    💰 Продать за {openedItem.value.toLocaleString()}₽
                   </Button>
                   
                   <Button
