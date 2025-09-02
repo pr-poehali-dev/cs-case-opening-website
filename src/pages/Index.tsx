@@ -259,6 +259,27 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
+    // Звуки прокрутки скинов
+    const playRollingSounds = () => {
+      let soundIndex = 0;
+      const maxSounds = 40; // Ограничиваем количество звуков
+      const soundInterval = setInterval(() => {
+        if (soundIndex >= maxSounds) {
+          clearInterval(soundInterval);
+          return;
+        }
+        const rollAudio = new Audio('data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQ4AAAA=');
+        rollAudio.volume = 0.1;
+        rollAudio.play().catch(() => {});
+        soundIndex++;
+      }, 250); // Звук каждые 250ms
+      
+      // Останавливаем звуки перед концом анимации
+      setTimeout(() => clearInterval(soundInterval), 10000);
+    };
+    
+    playRollingSounds();
+    
     // Анимация прокрутки увеличена на 40% и замедлена на 20%: 7s * 1.4 * 1.2 = 11.76s
     setTimeout(() => {
       setIsRolling(false);
@@ -763,7 +784,7 @@ const Index = () => {
                 </h3>
                 
                 {/* Rolling Items Animation */}
-                <div className="relative w-[800px] h-32 bg-space-deep/50 rounded-lg border-2 border-space-purple overflow-hidden mb-8">
+                <div className="relative w-[800px] h-40 bg-space-deep/50 rounded-lg border-2 border-space-purple overflow-hidden mb-8">
                   {/* Winning Line */}
                   <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-space-gold z-10 shadow-lg shadow-space-gold/50"></div>
                   
@@ -773,7 +794,7 @@ const Index = () => {
                       {rollingItems.map((item, idx) => (
                         <div 
                           key={idx} 
-                          className={`flex-shrink-0 w-24 h-24 mx-2 rounded-lg border-2 bg-gradient-to-br ${getRarityColor(item.rarity)}/20 ${
+                          className={`flex-shrink-0 w-32 h-32 mx-2 rounded-lg border-2 bg-gradient-to-br ${getRarityColor(item.rarity)}/20 ${
                             item.rarity === 'ancient' ? 'border-red-500' :
                             item.rarity === 'legendary' ? 'border-space-purple' :
                             item.rarity === 'rare' ? 'border-space-cyan' :
@@ -861,6 +882,19 @@ const Index = () => {
                 
                 {/* Кнопки действий */}
                 <div className="flex gap-4 justify-center">
+                  <Button
+                    onClick={() => {
+                      setIsOpening(false);
+                      setSelectedCase(null);
+                      setOpenedItem(null);
+                      setRollingItems([]);
+                    }}
+                    variant="outline"
+                    className="border-space-purple text-space-purple hover:bg-space-purple hover:text-white py-3 px-6 rounded-xl"
+                  >
+                    ⬅️ Назад
+                  </Button>
+                  
                   <Button
                     onClick={() => {
                       // Продать предмет за 100% стоимости
