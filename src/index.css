@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -52,8 +54,8 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 14 100% 9%;
+    --foreground: 197 100% 80%;
 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
