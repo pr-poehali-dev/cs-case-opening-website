@@ -245,6 +245,11 @@ const Index = () => {
     // Списываем стоимость кейса
     setUserBalance(prev => prev - caseData.price);
     
+    // Проигрываем звук открытия кейса
+    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMFl+m4oHl8');
+    audio.volume = 0.3;
+    audio.play().catch(e => console.log('Audio play failed:', e));
+    
     setSelectedCase(caseId);
     setIsOpening(true);
     setIsRolling(true);
@@ -267,6 +272,11 @@ const Index = () => {
         id: Date.now() // Уникальный ID
       };
       setUserInventory(prev => [newInventoryItem, ...prev]);
+      
+      // Проигрываем звук выпадения предмета
+      const winAudio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBUSW3O/FciMFl+m4oHl8');
+      winAudio.volume = 0.5;
+      winAudio.play().catch(e => console.log('Win audio play failed:', e));
       
       // Окно результата остается открытым до выбора действия
     }, 11760); // 7s * 1.4 * 1.2 = 11.76s
