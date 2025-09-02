@@ -328,7 +328,7 @@ const Index = () => {
           }, timeToCenter + 1000); // +1с задержка начала
         }
       });
-    };"}
+    };
     
     playRollingSounds();
     
