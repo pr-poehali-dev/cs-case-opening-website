@@ -115,7 +115,6 @@ export default {
 				'case-glow': 'case-glow 2s ease-in-out infinite',
 				'case-open': 'case-open 0.6s ease-out',
 				'fade-in': 'fade-in 0.8s ease-out'
-				'fade-in': 'fade-in 0.8s ease-out'
 			}
 		}
 	},
