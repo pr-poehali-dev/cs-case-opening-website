@@ -35,8 +35,8 @@ const Index = () => {
       image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
       rarity: 'common',
       items: [
-        { name: 'P250 | Sand Dune', rarity: 'common', chance: 35.0, value: 50, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopujwezhjxszYI2gS09-5lpKKqPrxN7LEmyUI6sAh2L-Sogvi8AXl_0Q-ajr6JdDEe1A4ZVyF8lO4l7u-gZ_o753IznA3s3JztyiLmRCziAYMMLNXVoW5wQ' },
-        { name: 'Glock-18 | Sand Dune', rarity: 'common', chance: 30.0, value: 450, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposbaqKAxf0Ob3djFN79fnzL-YgPrLPr7Vn35cppEo3LyRrN3wiAXi-kFsZ233JYPBdlM2Z1zU-QK9yLu9g5O5vcubn3cysnIltG-dyRLjgBtIa_sv26LVFPOoXg' },
+        { name: 'P250 | Sand Dune', rarity: 'common', chance: 35.0, value: 50, image: '/img/236b445b-e695-4fe7-b87e-901eb42931cc.jpg' },
+        { name: 'Glock-18 | Sand Dune', rarity: 'common', chance: 30.0, value: 450, image: '/img/2331b718-3961-4507-a01a-516fd5f4dd17.jpg' },
         { name: 'MP9 | Sand Dashed', rarity: 'common', chance: 20.0, value: 280, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou6r8FABz7P7YKAJF4N27mL-HnvD8J_WDxT8AuMEg3b2VrNvxigXj-kVsYDz6I4WQIwE8MAnT_AW9w-3xxcjr7i_Bt2k' },
         { name: 'UMP-45 | Mudder', rarity: 'uncommon', chance: 10.0, value: 820, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo7e1f1Jf0Ob3YjoXuY-0mL-Zkvb4DL7VqWNU6dNoxO2Z8Ij0m1Hj_UU-YWqgctScJgRsZ1DR81LsxObxxcjrh7iB6ww' },
         { name: 'Galil AR | Sandstorm', rarity: 'uncommon', chance: 4.0, value: 1560, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alDLFIhGJU4MBpmOTI8LP6jgTl-hI5YWv6JoKWcQ9sY1zR8gTtlbrxxcjrUGFNOp8' },
@@ -51,13 +51,13 @@ const Index = () => {
       image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg',
       rarity: 'uncommon',
       items: [
-        { name: 'M4A4 | Desert-Strike', rarity: 'common', chance: 25.0, value: 850, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alDKfVhGpW4MFjnb3FytXw3lbt_UZpaj32JICTJwJsNV-DqALqxb3xxcjrY0oIVzA' },
-        { name: 'AK-47 | Blue Laminate', rarity: 'common', chance: 20.0, value: 2500, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV09m7hoOAkuP1P7fYkW5Xu5Qp3-zH89qg2wzh_UNrNjvxcYfEdwU2NFzW8gW2wOe-gpK8vs7KzydrvnZ35H6Pz0KwhE9FaOJo1uveFwuC_CNxJA' },
-        { name: 'AWP | Worm God', rarity: 'uncommon', chance: 18.0, value: 4200, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTck3lu4dJzjO3H8Ijk2ALl_ktsajr2JI-UI1I5ZwmG-1e5wOrxxcjrYjAqwDY' },
+        { name: 'M4A4 | Desert-Strike', rarity: 'common', chance: 25.0, value: 850, image: '/img/a36abddd-10b2-4164-807c-a388a3db3e42.jpg' },
+        { name: 'AK-47 | Blue Laminate', rarity: 'common', chance: 20.0, value: 2500, image: '/img/6d75fe2e-90c6-40ae-b546-bbbd9517fdad.jpg' },
+        { name: 'AWP | Worm God', rarity: 'uncommon', chance: 18.0, value: 4200, image: '/img/aca5cd59-01d6-45c4-9a28-858907242d7c.jpg' },
         { name: 'M4A1-S | Guardian', rarity: 'uncommon', chance: 15.0, value: 6500, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-LmufhjKnFl2xU7cNo2L3ApYj03Qy2rko-YmihJI6SdgI8N1CD_VG9w7q-jcC7tMvIzydlviEjsHjZgVXp1kFj_Fto' },
-        { name: 'AK-47 | Redline', rarity: 'rare', chance: 15.0, value: 10200, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV08-jhIWZlP_1IbzVqWdY781lxOyZpI-s3QXg-kBrMG71LdWRdlQ4Z13X8gK4wejxxcjrp8hxGyQ' },
+        { name: 'AK-47 | Redline', rarity: 'rare', chance: 15.0, value: 10200, image: '/img/d9b4799f-9ddb-4e07-8128-aa9174b80231.jpg' },
         { name: 'AWP | Graphite', rarity: 'rare', chance: 5.0, value: 18500, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTZk2pH_Pp9g-7J4bP5iUazrl1rN2HwdtWTcgJvZAyC8lK5yLrng5G76pTAzSFiuyV3snvD30vgwFX3Voc' },
-        { name: 'AK-47 | Vulcan', rarity: 'legendary', chance: 1.8, value: 40000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0rCXoNuniAK3-0Y5ZmygJoTGJwA3Zg6D-gW6xurxxcjrKKtxmw' },
+        { name: 'AK-47 | Vulcan', rarity: 'legendary', chance: 1.8, value: 40000, image: '/img/0f8e56ef-15e3-4d26-83ce-251dd48aa2ab.jpg' },
         { name: 'AK-47 | Fire Serpent', rarity: 'legendary', chance: 0.2, value: 172000, image: '/img/a72ff8d4-ef6e-4a7d-9df8-17a65ce9895c.jpg' }
       ]
     },
@@ -139,7 +139,7 @@ const Index = () => {
       items: [
         { name: 'AK-47 | Fire Serpent FT', rarity: 'common', chance: 50.0, value: 172000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV19-yhpKOhcj5Nr_Yg2Y' },
         { name: 'AWP | Dragon Lore FT', rarity: 'uncommon', chance: 25.0, value: 980000, image: '/img/479b7c6e-5a3e-42c4-8e53-76375486b2be.jpg' },
-        { name: 'M4A4 | Howl FT', rarity: 'uncommon', chance: 15.0, value: 385000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhjxszFJTwT09S5g4y1mvLwOq7c2GgHsJNzj7nDpN6siQ23qxJrMDrxctXEcQ8-YQrWqFW4wOvnjcfouJ3BwHI2viYr7CvVyB3miQYMMLLpOOd9BA' },
+        { name: 'M4A4 | Howl FT', rarity: 'uncommon', chance: 15.0, value: 385000, image: '/img/be4a3169-f29b-42a8-af57-0bfc843f18e4.jpg' },
         { name: 'Bayonet | Doppler', rarity: 'rare', chance: 6.0, value: 1800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotLu8JAlfwOP3ZTxS6eO7kr-HnvD8J_WAkDME65whjrjFrN3z3QW1-0Q5NT-lLYKSJg5qMgmB8gS9kOa4hZW_u5TXiSw0Zr1dJQ' },
         { name: 'Karambit | Tiger Tooth', rarity: 'rare', chance: 3.0, value: 2800000, image: '/img/58e5868b-2766-4f70-a117-0517eecd1909.jpg' },
         { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 0.8, value: 3200000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjwPKnUjFRd4cJ5ntbN9J7yjRrt8kM-Nz_xcoWUcAdrMFiDr1K6yLru08a4vpiannph7HQlsH2MgVXp1vdRXtBr' },
@@ -243,14 +243,17 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Анимация прокрутки 7 секунд
+    // Анимация прокрутки увеличена на 40% и замедлена на 20%: 7s * 1.4 * 1.2 = 11.76s
     setTimeout(() => {
       setIsRolling(false);
-      setOpenedItem(wonItem);
+      // Берем точно тот предмет, который на 35-й позиции в прокрутке
+      const actualWonItem = rollingItemsList.find(item => item.isWinner) || wonItem;
+      setOpenedItem(actualWonItem);
       
       // Добавить выигранный предмет в инвентарь
+      const actualWonItem = rollingItemsList.find(item => item.isWinner) || wonItem;
       const newInventoryItem = {
-        ...wonItem,
+        ...actualWonItem,
         id: Date.now() // Уникальный ID
       };
       setUserInventory(prev => [newInventoryItem, ...prev]);
@@ -262,7 +265,7 @@ const Index = () => {
         setOpenedItem(null);
         setRollingItems([]);
       }, 4000);
-    }, 7000);
+    }, 11760); // 7s * 1.4 * 1.2 = 11.76s
   };
 
   return (
@@ -823,7 +826,47 @@ const Index = () => {
                     Шанс выпадения: {openedItem.chance}%
                   </div>
                 </div>
-                <p className="text-xl text-space-cyan">Предмет добавлен в инвентарь! ✨</p>
+                <p className="text-xl text-space-cyan mb-6">Предмет добавлен в инвентарь! ✨</p>
+                
+                {/* Кнопки действий */}
+                <div className="flex gap-4 justify-center">
+                  <Button
+                    onClick={() => {
+                      // Продать предмет
+                      const sellPrice = Math.floor(openedItem.value * 0.8); // 80% от стоимости
+                      console.log(`Продано: ${openedItem.name} за ${sellPrice}₽`);
+                      
+                      // Закрыть модальное окно
+                      setIsOpening(false);
+                      setSelectedCase(null);
+                      setOpenedItem(null);
+                      setRollingItems([]);
+                    }}
+                    className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105"
+                  >
+                    💰 Продать за {Math.floor(openedItem.value * 0.8).toLocaleString()}₽
+                  </Button>
+                  
+                  <Button
+                    onClick={() => {
+                      const currentCaseData = cases.find(c => c.id === selectedCase);
+                      if (currentCaseData) {
+                        // Закрыть текущий результат
+                        setIsOpening(false);
+                        setOpenedItem(null);
+                        setRollingItems([]);
+                        
+                        // Запустить новое вскрытие
+                        setTimeout(() => {
+                          handleCaseOpen(selectedCase);
+                        }, 500);
+                      }
+                    }}
+                    className="bg-gradient-to-r from-space-purple to-space-pink hover:from-space-purple/80 hover:to-space-pink/80 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105"
+                  >
+                    🎲 Крутить ещё
+                  </Button>
+                </div>
               </>
             )}
           </div>

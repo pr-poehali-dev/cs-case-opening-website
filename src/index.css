@@ -105,14 +105,14 @@
 @layer utilities {
   @keyframes roll {
     0% {
-      transform: translateX(400px);
+      transform: translateX(560px); /* 400px * 1.4 = 560px */
     }
     100% {
-      transform: translateX(-3080px);
+      transform: translateX(-4312px); /* -3080px * 1.4 = -4312px */
     }
   }
 
   .animate-roll {
-    animation: roll 7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    animation: roll 11.76s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
   }
 }
