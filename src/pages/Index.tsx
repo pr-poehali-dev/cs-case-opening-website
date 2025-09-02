@@ -344,45 +344,51 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Упрощенная но надежная система тиков
+    // Тики точно привязанные к каждому скину при прохождении через центральную линию
     const playRollingSounds = () => {
-      const totalItems = rollingItemsList.length;
-      const animationDuration = 11760;
+      // Параметры из CSS анимации
+      const startTransform = 560; // translateX(560px) - начальная позиция
+      const endTransform = -4312; // translateX(-4312px) - конечная позиция  
+      const totalDistance = Math.abs(endTransform - startTransform); // 4872px общее расстояние
+      const animationDuration = 11760; // 11.76s в миллисекундах
       
-      // Простая система: равномерные тики в течение анимации
-      const tickInterval = 180; // Интервал между тиками в мс
-      const startDelay = 800; // Задержка начала
-      const endTime = animationDuration - 1000; // Время окончания тиков
+      // Размеры элементов
+      const itemWidth = 128; // w-32
+      const itemMargin = 16; // mx-2 (8px с каждой стороны)
+      const itemTotalWidth = itemWidth + itemMargin; // 144px общая ширина одного скина
       
-      let currentTime = startDelay;
-      let tickCount = 0;
-      const maxTicks = Math.floor((endTime - startDelay) / tickInterval);
+      // Центральная линия находится на left-1/2 от контейнера 800px = 400px
+      const centerLinePosition = 400;
       
-      console.log('Запускаю тики, максимум:', maxTicks);
+      console.log('Настройка тиков для', rollingItemsList.length, 'скинов');
+      console.log('Анимация от', startTransform, 'до', endTransform, 'за', animationDuration, 'мс');
       
-      const playNextTick = () => {
-        if (tickCount >= maxTicks || currentTime >= endTime) {
-          console.log('Тики завершены, всего сыграно:', tickCount);
-          return;
-        }
+      rollingItemsList.forEach((item, index) => {
+        // Начальная позиция левого края скина относительно контейнера
+        const itemLeftEdge = startTransform + (index * itemTotalWidth);
+        // Центр скина
+        const itemCenter = itemLeftEdge + (itemWidth / 2);
         
-        setTimeout(() => {
-          console.log('Тик #', tickCount + 1, 'время:', currentTime);
-          playCS2Sound('roll_tick', 0.12);
-          tickCount++;
-          currentTime += tickInterval;
+        // Проверяем, пройдет ли центр скина через центральную линию
+        const finalItemCenter = itemCenter + endTransform - startTransform;
+        
+        if (itemCenter >= centerLinePosition && finalItemCenter <= centerLinePosition) {
+          // Расстояние которое нужно пройти скину чтобы его центр достиг центральной линии
+          const distanceToCenter = itemCenter - centerLinePosition;
+          // Время когда центр скина достигнет центральной линии
+          const timeToCenter = (distanceToCenter / totalDistance) * animationDuration;
           
-          // Постепенно увеличиваем интервал для реалистичности
-          if (tickCount > maxTicks * 0.7) {
-            currentTime += 20; // Замедляем к концу
-          }
+          // Добавляем небольшую задержку для корректности
+          const tickTime = Math.max(500, Math.min(timeToCenter + 200, animationDuration - 500));
           
-          playNextTick();
-        }, tickInterval);
-      };
-      
-      // Запускаем цепочку тиков
-      playNextTick();
+          console.log(`Скин ${index + 1}: центр в позиции ${itemCenter}px, тик через ${tickTime}мс`);
+          
+          setTimeout(() => {
+            console.log(`🔊 ТИК для скина ${index + 1} (${item.name})`);
+            playCS2Sound('roll_tick', 0.15);
+          }, tickTime);
+        }
+      });
     };
     
     playRollingSounds();
