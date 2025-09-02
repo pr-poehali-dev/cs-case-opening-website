@@ -11,54 +11,37 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 
-// Точные звуки Counter-Strike 2 для открытия кейсов
+// Упрощенные но надежные звуки CS2
 const playCS2Sound = (type: 'case_open' | 'roll_tick' | 'item_drop' | 'case_unlock', volume = 0.3) => {
   try {
+    // Создаем новый AudioContext для каждого звука чтобы избежать конфликтов
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     
+    // Возобновляем AudioContext если он приостановлен
+    if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+    
     if (type === 'case_open') {
-      // Звук открытия кейса CS2 - механический звук с металлическим отзвуком
-      const osc1 = audioContext.createOscillator();
-      const osc2 = audioContext.createOscillator();
-      const osc3 = audioContext.createOscillator();
+      // Глубокий звук открытия кейса
+      const osc = audioContext.createOscillator();
       const gain = audioContext.createGain();
-      const filter = audioContext.createBiquadFilter();
       
-      osc1.connect(filter);
-      osc2.connect(filter);
-      osc3.connect(filter);
-      filter.connect(gain);
+      osc.connect(gain);
       gain.connect(audioContext.destination);
       
-      // Основной тон
-      osc1.type = 'sawtooth';
-      osc1.frequency.value = 180;
-      
-      // Металлический отзвук
-      osc2.type = 'square';
-      osc2.frequency.value = 360;
-      
-      // Глубокий бас
-      osc3.type = 'sine';
-      osc3.frequency.value = 60;
-      
-      filter.type = 'lowpass';
-      filter.frequency.value = 800;
-      filter.Q.value = 2;
+      osc.type = 'sawtooth';
+      osc.frequency.value = 120;
       
       gain.gain.setValueAtTime(0, audioContext.currentTime);
-      gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.8);
+      gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 1.5);
       
-      osc1.start(audioContext.currentTime);
-      osc2.start(audioContext.currentTime + 0.1);
-      osc3.start(audioContext.currentTime);
-      osc1.stop(audioContext.currentTime + 1.8);
-      osc2.stop(audioContext.currentTime + 1.8);
-      osc3.stop(audioContext.currentTime + 1.8);
+      osc.start(audioContext.currentTime);
+      osc.stop(audioContext.currentTime + 1.5);
       
     } else if (type === 'case_unlock') {
-      // Звук разблокировки кейса - короткий клик
+      // Щелчок разблокировки
       const osc = audioContext.createOscillator();
       const gain = audioContext.createGain();
       
@@ -66,17 +49,16 @@ const playCS2Sound = (type: 'case_open' | 'roll_tick' | 'item_drop' | 'case_unlo
       gain.connect(audioContext.destination);
       
       osc.type = 'square';
-      osc.frequency.setValueAtTime(2000, audioContext.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.1);
+      osc.frequency.value = 1500;
       
       gain.gain.setValueAtTime(volume, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
       
       osc.start(audioContext.currentTime);
       osc.stop(audioContext.currentTime + 0.1);
       
     } else if (type === 'roll_tick') {
-      // Звук тика прокрутки CS2 - четкий клик
+      // Простой но четкий тик
       const osc = audioContext.createOscillator();
       const gain = audioContext.createGain();
       
@@ -84,47 +66,31 @@ const playCS2Sound = (type: 'case_open' | 'roll_tick' | 'item_drop' | 'case_unlo
       gain.connect(audioContext.destination);
       
       osc.type = 'square';
-      osc.frequency.value = 1000;
+      osc.frequency.value = 800;
       
       gain.gain.setValueAtTime(volume, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.03);
       
       osc.start(audioContext.currentTime);
-      osc.stop(audioContext.currentTime + 0.05);
+      osc.stop(audioContext.currentTime + 0.03);
       
     } else if (type === 'item_drop') {
-      // Звук выпадения предмета CS2 - магический звон
-      const osc1 = audioContext.createOscillator();
-      const osc2 = audioContext.createOscillator();
-      const osc3 = audioContext.createOscillator();
+      // Звук выпадения
+      const osc = audioContext.createOscillator();
       const gain = audioContext.createGain();
-      const reverb = audioContext.createDelay();
       
-      osc1.connect(gain);
-      osc2.connect(gain);
-      osc3.connect(reverb);
-      reverb.connect(gain);
+      osc.connect(gain);
       gain.connect(audioContext.destination);
       
-      osc1.type = 'sine';
-      osc1.frequency.value = 523; // C5
-      osc2.type = 'sine';
-      osc2.frequency.value = 659; // E5
-      osc3.type = 'sine';
-      osc3.frequency.value = 784; // G5
-      
-      reverb.delayTime.value = 0.3;
+      osc.type = 'sine';
+      osc.frequency.value = 660;
       
       gain.gain.setValueAtTime(0, audioContext.currentTime);
       gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2.0);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 1.5);
       
-      osc1.start(audioContext.currentTime);
-      osc2.start(audioContext.currentTime + 0.05);
-      osc3.start(audioContext.currentTime + 0.1);
-      osc1.stop(audioContext.currentTime + 2.0);
-      osc2.stop(audioContext.currentTime + 2.0);
-      osc3.stop(audioContext.currentTime + 2.0);
+      osc.start(audioContext.currentTime);
+      osc.stop(audioContext.currentTime + 1.5);
     }
   } catch (e) {
     console.log(`CS2 ${type} audio failed:`, e);
@@ -378,42 +344,45 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Звуки тиков точно синхронизированные с прохождением скинов через центр
+    // Упрощенная но надежная система тиков
     const playRollingSounds = () => {
-      const itemWidth = 144; // w-32 (128px) + mx-2 (16px) = 144px на скин
-      const animationDuration = 11760; // Общее время анимации в мс
+      const totalItems = rollingItemsList.length;
+      const animationDuration = 11760;
       
-      // Параметры анимации из CSS
-      const startTransform = 560; // translateX начальная позиция (px)
-      const endTransform = -4312; // translateX конечная позиция (px)
-      const totalDistance = startTransform - endTransform; // Общее расстояние движения
-      const centerPosition = 0; // Центральный индикатор находится на translateX(0)
+      // Простая система: равномерные тики в течение анимации
+      const tickInterval = 180; // Интервал между тиками в мс
+      const startDelay = 800; // Задержка начала
+      const endTime = animationDuration - 1000; // Время окончания тиков
       
-      // Рассчитываем для каждого скина время прохождения через центр
-      rollingItemsList.forEach((item, index) => {
-        // Начальная позиция конкретного скина относительно первого элемента
-        const itemInitialOffset = index * itemWidth;
-        // Абсолютная начальная позиция скина в анимации
-        const itemStartPosition = startTransform - itemInitialOffset;
-        
-        // Если скин проходит через центральную позицию (0)
-        if (itemStartPosition > centerPosition && (itemStartPosition - totalDistance) < centerPosition) {
-          // Расстояние от начала анимации до момента пересечения с центром
-          const distanceToCenter = itemStartPosition - centerPosition;
-          // Время когда скин достигнет центра (пропорциональное)
-          const timeToCenter = (distanceToCenter / totalDistance) * animationDuration;
-          
-          // Добавляем небольшую задержку чтобы дождаться начала анимации
-          const actualTime = timeToCenter + 200;
-          
-          // Устанавливаем тик если время в разумных пределах
-          if (actualTime > 500 && actualTime < animationDuration - 500) {
-            setTimeout(() => {
-              playCS2Sound('roll_tick', 0.15);
-            }, actualTime);
-          }
+      let currentTime = startDelay;
+      let tickCount = 0;
+      const maxTicks = Math.floor((endTime - startDelay) / tickInterval);
+      
+      console.log('Запускаю тики, максимум:', maxTicks);
+      
+      const playNextTick = () => {
+        if (tickCount >= maxTicks || currentTime >= endTime) {
+          console.log('Тики завершены, всего сыграно:', tickCount);
+          return;
         }
-      });
+        
+        setTimeout(() => {
+          console.log('Тик #', tickCount + 1, 'время:', currentTime);
+          playCS2Sound('roll_tick', 0.12);
+          tickCount++;
+          currentTime += tickInterval;
+          
+          // Постепенно увеличиваем интервал для реалистичности
+          if (tickCount > maxTicks * 0.7) {
+            currentTime += 20; // Замедляем к концу
+          }
+          
+          playNextTick();
+        }, tickInterval);
+      };
+      
+      // Запускаем цепочку тиков
+      playNextTick();
     };
     
     playRollingSounds();
