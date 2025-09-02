@@ -11,107 +11,120 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 
-// Реальные звуки CS2 открытия кейсов
+// Точные звуки Counter-Strike 2 для открытия кейсов
 const playCS2Sound = (type: 'case_open' | 'roll_tick' | 'item_drop' | 'case_unlock', volume = 0.3) => {
-  const sounds = {
-    // Звук открытия кейса CS2 - глубокий механический звук
-    case_open: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgLsAAADuAgAEABAAZGF0YQAAAAA=',
-    
-    // Звук разблокировки - металлический клик
-    case_unlock: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgLsAAADuAgAEABAAZGF0YQAAAAA=',
-    
-    // Звук прокрутки скинов - короткий тик
-    roll_tick: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgLsAAADuAgAEABAAZGF0YQAAAAA=',
-    
-    // Звук выпадения предмета - магический звон
-    item_drop: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAgLsAAADuAgAEABAAZGF0YQAAAAA='
-  };
-  
-  // Создаем более реалистичные звуки с помощью Web Audio API
   try {
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     
     if (type === 'case_open') {
-      // Глубокий звук открытия кейса
-      const oscillator1 = audioContext.createOscillator();
-      const oscillator2 = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      // Звук открытия кейса CS2 - механический звук с металлическим отзвуком
+      const osc1 = audioContext.createOscillator();
+      const osc2 = audioContext.createOscillator();
+      const osc3 = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      const filter = audioContext.createBiquadFilter();
       
-      oscillator1.connect(gainNode);
-      oscillator2.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      osc1.connect(filter);
+      osc2.connect(filter);
+      osc3.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioContext.destination);
       
-      oscillator1.type = 'sawtooth';
-      oscillator1.frequency.value = 120;
-      oscillator2.type = 'sine';
-      oscillator2.frequency.value = 80;
+      // Основной тон
+      osc1.type = 'sawtooth';
+      osc1.frequency.value = 180;
       
-      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-      gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.1);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.2);
+      // Металлический отзвук
+      osc2.type = 'square';
+      osc2.frequency.value = 360;
       
-      oscillator1.start(audioContext.currentTime);
-      oscillator2.start(audioContext.currentTime);
-      oscillator1.stop(audioContext.currentTime + 1.2);
-      oscillator2.stop(audioContext.currentTime + 1.2);
+      // Глубокий бас
+      osc3.type = 'sine';
+      osc3.frequency.value = 60;
+      
+      filter.type = 'lowpass';
+      filter.frequency.value = 800;
+      filter.Q.value = 2;
+      
+      gain.gain.setValueAtTime(0, audioContext.currentTime);
+      gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.8);
+      
+      osc1.start(audioContext.currentTime);
+      osc2.start(audioContext.currentTime + 0.1);
+      osc3.start(audioContext.currentTime);
+      osc1.stop(audioContext.currentTime + 1.8);
+      osc2.stop(audioContext.currentTime + 1.8);
+      osc3.stop(audioContext.currentTime + 1.8);
       
     } else if (type === 'case_unlock') {
-      // Металлический щелчок
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      // Звук разблокировки кейса - короткий клик
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
       
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
       
-      oscillator.type = 'square';
-      oscillator.frequency.value = 1200;
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(2000, audioContext.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.1);
       
-      gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+      gain.gain.setValueAtTime(volume, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
       
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.15);
+      osc.start(audioContext.currentTime);
+      osc.stop(audioContext.currentTime + 0.1);
       
     } else if (type === 'roll_tick') {
-      // Короткий тик прокрутки
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      // Звук тика прокрутки CS2 - четкий клик
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
       
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
       
-      oscillator.type = 'triangle';
-      oscillator.frequency.value = 600;
+      osc.type = 'square';
+      osc.frequency.value = 1000;
       
-      gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
+      gain.gain.setValueAtTime(volume, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
       
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.08);
+      osc.start(audioContext.currentTime);
+      osc.stop(audioContext.currentTime + 0.05);
       
     } else if (type === 'item_drop') {
-      // Звук выпадения предмета
-      const oscillator1 = audioContext.createOscillator();
-      const oscillator2 = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      // Звук выпадения предмета CS2 - магический звон
+      const osc1 = audioContext.createOscillator();
+      const osc2 = audioContext.createOscillator();
+      const osc3 = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      const reverb = audioContext.createDelay();
       
-      oscillator1.connect(gainNode);
-      oscillator2.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      osc1.connect(gain);
+      osc2.connect(gain);
+      osc3.connect(reverb);
+      reverb.connect(gain);
+      gain.connect(audioContext.destination);
       
-      oscillator1.type = 'sine';
-      oscillator1.frequency.value = 880;
-      oscillator2.type = 'triangle';
-      oscillator2.frequency.value = 440;
+      osc1.type = 'sine';
+      osc1.frequency.value = 523; // C5
+      osc2.type = 'sine';
+      osc2.frequency.value = 659; // E5
+      osc3.type = 'sine';
+      osc3.frequency.value = 784; // G5
       
-      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-      gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+      reverb.delayTime.value = 0.3;
       
-      oscillator1.start(audioContext.currentTime);
-      oscillator2.start(audioContext.currentTime + 0.1);
-      oscillator1.stop(audioContext.currentTime + 1.5);
-      oscillator2.stop(audioContext.currentTime + 1.5);
+      gain.gain.setValueAtTime(0, audioContext.currentTime);
+      gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2.0);
+      
+      osc1.start(audioContext.currentTime);
+      osc2.start(audioContext.currentTime + 0.05);
+      osc3.start(audioContext.currentTime + 0.1);
+      osc1.stop(audioContext.currentTime + 2.0);
+      osc2.stop(audioContext.currentTime + 2.0);
+      osc3.stop(audioContext.currentTime + 2.0);
     }
   } catch (e) {
     console.log(`CS2 ${type} audio failed:`, e);
@@ -365,21 +378,34 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Звуки прокрутки привязанные к центральному индикатору
+    // Звуки тиков привязанные к прохождению скинов через центральный индикатор  
     const playRollingSounds = () => {
-      const itemWidth = 128 + 16; // 32*4 (w-32) + 16px (mx-2*2) = 144px на скин
-      const containerWidth = 800;
-      const centerPosition = containerWidth / 2;
+      const itemWidth = 144; // w-32 (128px) + mx-2 (16px) = 144px на скин
+      const totalAnimationTime = 11760; // Общее время анимации
+      const startOffset = 1000; // Задержка начала звуков
       
-      // Рассчитываем когда каждый скин пройдет через центр
+      // Рассчитываем позиции скинов и время прохождения через центр
       rollingItemsList.forEach((item, index) => {
-        const itemPosition = index * itemWidth;
-        const timeToCenter = (itemPosition / containerWidth) * 11760; // Пропорционально времени анимации
+        // Начальная позиция скина (справа от контейнера)
+        const startPosition = 800; // Ширина контейнера
+        // Конечная позиция скина (далеко слева)
+        const endPosition = -(rollingItemsList.length * itemWidth);
+        // Позиция центрального индикатора
+        const centerPosition = 400; // Половина ширины контейнера
         
-        if (timeToCenter > 0 && timeToCenter < 11000) { // Только в пределах анимации
+        // Позиция конкретного скина
+        const itemStartPos = startPosition + (index * itemWidth);
+        
+        // Время когда скин достигнет центра
+        const distanceToCenter = itemStartPos - centerPosition;
+        const totalDistance = startPosition - endPosition;
+        const timeToCenter = (distanceToCenter / totalDistance) * totalAnimationTime;
+        
+        // Играем тик только если скин проходит через центр в разумное время
+        if (timeToCenter > startOffset && timeToCenter < totalAnimationTime - 500) {
           setTimeout(() => {
-            playCS2Sound('roll_tick', 0.12);
-          }, timeToCenter + 1000); // +1с задержка начала
+            playCS2Sound('roll_tick', 0.15);
+          }, timeToCenter);
         }
       });
     };
