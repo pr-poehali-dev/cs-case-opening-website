@@ -16,31 +16,128 @@ const Index = () => {
   const [isOpening, setIsOpening] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
+  const [openedItem, setOpenedItem] = useState<any>(null);
+  const [isRolling, setIsRolling] = useState(false);
 
   const cases = [
     {
       id: 1,
-      name: 'Galactic Case',
-      price: 299,
+      name: 'Starter Case',
+      price: 99,
       image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
-      rarity: 'legendary',
-      items: ['AK-47 | Nebula Storm', 'AWP | Cosmic Dragon', 'M4A4 | Galaxy']
+      rarity: 'common',
+      items: [
+        { name: 'Glock-18 | Sand Dune', rarity: 'common', chance: 25.5, value: 15 },
+        { name: 'P250 | Sand Dune', rarity: 'common', chance: 25.5, value: 12 },
+        { name: 'MP9 | Sand Dashed', rarity: 'common', chance: 20.0, value: 18 },
+        { name: 'UMP-45 | Mudder', rarity: 'uncommon', chance: 15.5, value: 45 },
+        { name: 'Galil AR | Sandstorm', rarity: 'uncommon', chance: 10.0, value: 67 },
+        { name: 'AK-47 | Safari Mesh', rarity: 'rare', chance: 3.0, value: 150 },
+        { name: 'AWP | Safari Mesh', rarity: 'rare', chance: 0.5, value: 280 }
+      ]
     },
     {
       id: 2,
-      name: 'Stellar Case',
-      price: 499,
+      name: 'Cosmic Case',
+      price: 149,
       image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg',
-      rarity: 'mythical',
-      items: ['Stellar Gloves', 'Cosmic Karambit', 'Void Butterfly']
+      rarity: 'uncommon',
+      items: [
+        { name: 'M4A4 | Desert-Strike', rarity: 'common', chance: 22.0, value: 35 },
+        { name: 'AK-47 | Blue Laminate', rarity: 'common', chance: 20.0, value: 42 },
+        { name: 'AWP | Worm God', rarity: 'uncommon', chance: 18.0, value: 78 },
+        { name: 'M4A1-S | Guardian', rarity: 'uncommon', chance: 15.0, value: 95 },
+        { name: 'AK-47 | Redline', rarity: 'rare', chance: 12.0, value: 185 },
+        { name: 'AWP | Graphite', rarity: 'rare', chance: 8.0, value: 320 },
+        { name: 'M4A4 | Asiimov', rarity: 'legendary', chance: 3.5, value: 450 },
+        { name: 'AK-47 | Fire Serpent', rarity: 'legendary', chance: 1.5, value: 680 }
+      ]
     },
     {
       id: 3,
-      name: 'Universe Case',
-      price: 899,
+      name: 'Premium Case',
+      price: 1499,
       image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg',
+      rarity: 'rare',
+      items: [
+        { name: 'M4A4 | Howl', rarity: 'uncommon', chance: 15.0, value: 890 },
+        { name: 'AK-47 | Vulcan', rarity: 'uncommon', chance: 15.0, value: 1250 },
+        { name: 'AWP | Dragon Lore', rarity: 'rare', chance: 12.0, value: 2400 },
+        { name: 'M4A1-S | Knight', rarity: 'rare', chance: 10.0, value: 1800 },
+        { name: 'AK-47 | Case Hardened', rarity: 'rare', chance: 8.0, value: 1600 },
+        { name: 'AWP | Medusa', rarity: 'legendary', chance: 5.0, value: 3200 },
+        { name: 'M4A4 | Poseidon', rarity: 'legendary', chance: 3.0, value: 2800 },
+        { name: 'AK-47 | Gold Arabesque', rarity: 'ancient', chance: 2.0, value: 4500 }
+      ]
+    },
+    {
+      id: 4,
+      name: 'Elite Case',
+      price: 2999,
+      image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
       rarity: 'legendary',
-      items: ['Quantum Karambit', 'Solar M9', 'Supernova Talon']
+      items: [
+        { name: 'Sport Gloves | Superconductor', rarity: 'rare', chance: 12.0, value: 2800 },
+        { name: 'Driver Gloves | King Snake', rarity: 'rare', chance: 10.0, value: 3400 },
+        { name: 'Specialist Gloves | Crimson Kimono', rarity: 'legendary', chance: 8.0, value: 4200 },
+        { name: 'Moto Gloves | Polygon', rarity: 'legendary', chance: 6.0, value: 3800 },
+        { name: 'Hydra Gloves | Case Hardened', rarity: 'legendary', chance: 5.0, value: 4500 },
+        { name: 'Sport Gloves | Pandora\'s Box', rarity: 'ancient', chance: 3.0, value: 6800 },
+        { name: 'Driver Gloves | Crimson Weave', rarity: 'ancient', chance: 2.0, value: 8200 },
+        { name: 'Specialist Gloves | Emerald Web', rarity: 'ancient', chance: 1.0, value: 12000 }
+      ]
+    },
+    {
+      id: 5,
+      name: 'Master Case',
+      price: 4999,
+      image: '/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg',
+      rarity: 'legendary',
+      items: [
+        { name: 'StatTrak™ AK-47 | Redline', rarity: 'rare', chance: 10.0, value: 3200 },
+        { name: 'StatTrak™ M4A4 | Asiimov', rarity: 'rare', chance: 9.0, value: 3800 },
+        { name: 'StatTrak™ AWP | Lightning Strike', rarity: 'legendary', chance: 7.0, value: 4500 },
+        { name: 'StatTrak™ AK-47 | Fire Serpent', rarity: 'legendary', chance: 5.0, value: 6200 },
+        { name: 'StatTrak™ M4A1-S | Knight', rarity: 'legendary', chance: 4.0, value: 5800 },
+        { name: 'StatTrak™ AWP | Dragon Lore', rarity: 'ancient', chance: 3.0, value: 9500 },
+        { name: 'StatTrak™ AK-47 | Case Hardened', rarity: 'ancient', chance: 2.0, value: 8700 },
+        { name: 'StatTrak™ M4A4 | Howl', rarity: 'ancient', chance: 1.0, value: 15000 }
+      ]
+    },
+    {
+      id: 6,
+      name: 'Legendary Case',
+      price: 9999,
+      image: '/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg',
+      rarity: 'ancient',
+      items: [
+        { name: 'Souvenir AWP | Dragon Lore', rarity: 'legendary', chance: 8.0, value: 12000 },
+        { name: 'Souvenir AK-47 | Gold Arabesque', rarity: 'legendary', chance: 7.0, value: 9500 },
+        { name: 'Souvenir M4A1-S | Knight', rarity: 'legendary', chance: 6.0, value: 8200 },
+        { name: 'Factory New Float Items', rarity: 'ancient', chance: 5.0, value: 15000 },
+        { name: 'Pattern #1 Case Hardened', rarity: 'ancient', chance: 4.0, value: 18000 },
+        { name: 'Titan Holo Katowice 2014', rarity: 'ancient', chance: 3.0, value: 25000 },
+        { name: 'IBP Holo Katowice 2014', rarity: 'ancient', chance: 2.0, value: 35000 },
+        { name: 'Souvenir M4A4 | Howl', rarity: 'ancient', chance: 1.0, value: 50000 }
+      ]
+    },
+    {
+      id: 7,
+      name: 'Knife Case',
+      price: 24999,
+      image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg',
+      rarity: 'ancient',
+      items: [
+        { name: 'Bayonet | Doppler', rarity: 'rare', chance: 12.0, value: 18000 },
+        { name: 'M9 Bayonet | Fade', rarity: 'rare', chance: 10.0, value: 22000 },
+        { name: 'Karambit | Tiger Tooth', rarity: 'legendary', chance: 8.0, value: 28000 },
+        { name: 'Butterfly Knife | Marble Fade', rarity: 'legendary', chance: 7.0, value: 32000 },
+        { name: 'Karambit | Fade', rarity: 'legendary', chance: 6.0, value: 35000 },
+        { name: 'M9 Bayonet | Crimson Web', rarity: 'ancient', chance: 5.0, value: 45000 },
+        { name: 'Karambit | Case Hardened', rarity: 'ancient', chance: 4.0, value: 52000 },
+        { name: 'StatTrak™ Karambit | Crimson Web', rarity: 'ancient', chance: 2.0, value: 75000 },
+        { name: 'Karambit | Blue Gem #1', rarity: 'ancient', chance: 1.0, value: 150000 }
+      ]
     }
   ];
 
@@ -63,13 +160,40 @@ const Index = () => {
     { name: 'GalaxyHunter', cases: 1745, avatar: '🌌' }
   ];
 
+  const getRandomItem = (caseItems: any[]) => {
+    const random = Math.random() * 100;
+    let cumulative = 0;
+    
+    for (const item of caseItems) {
+      cumulative += item.chance;
+      if (random <= cumulative) {
+        return item;
+      }
+    }
+    return caseItems[0];
+  };
+
   const handleCaseOpen = (caseId: number) => {
+    const caseData = cases.find(c => c.id === caseId);
+    if (!caseData) return;
+    
     setSelectedCase(caseId);
     setIsOpening(true);
+    setIsRolling(true);
+    
+    // Rolling animation
     setTimeout(() => {
-      setIsOpening(false);
-      setSelectedCase(null);
-    }, 3000);
+      setIsRolling(false);
+      const wonItem = getRandomItem(caseData.items);
+      setOpenedItem(wonItem);
+      
+      // Show result for 3 seconds
+      setTimeout(() => {
+        setIsOpening(false);
+        setSelectedCase(null);
+        setOpenedItem(null);
+      }, 3000);
+    }, 2000);
   };
 
   return (
@@ -186,12 +310,12 @@ const Index = () => {
 
           {/* Cases Tab */}
           <TabsContent value="cases" className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {cases.map((caseItem) => (
                 <Card 
                   key={caseItem.id} 
-                  className={`bg-space-deep/90 backdrop-blur-md border-space-purple/30 hover:border-space-cyan hover:shadow-2xl hover:shadow-space-purple/30 transition-all cursor-pointer group animate-cosmic-glow ${
-                    selectedCase === caseItem.id && isOpening ? 'animate-stellar-pulse' : ''
+                  className={`bg-space-deep/90 backdrop-blur-md border-space-purple/30 hover:border-space-cyan hover:shadow-2xl hover:shadow-space-purple/30 transition-all cursor-pointer group ${
+                    selectedCase === caseItem.id && isOpening ? 'animate-stellar-pulse border-space-gold shadow-2xl shadow-space-gold/50' : 'hover:animate-cosmic-glow'
                   }`}
                   onClick={() => handleCaseOpen(caseItem.id)}
                 >
@@ -203,30 +327,55 @@ const Index = () => {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-space-dark/50 to-transparent"></div>
+                      {caseItem.id === 7 && (
+                        <div className="absolute top-2 right-2 animate-ping">
+                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        </div>
+                      )}
                     </div>
-                    <CardTitle className="text-white text-xl">{caseItem.name}</CardTitle>
+                    <CardTitle className="text-white text-lg">{caseItem.name}</CardTitle>
                     <Badge className={`w-fit ${
-                      caseItem.rarity === 'legendary' 
+                      caseItem.rarity === 'ancient' 
+                        ? 'bg-gradient-to-r from-red-600 to-orange-500' 
+                        : caseItem.rarity === 'legendary' 
                         ? 'bg-gradient-to-r from-space-purple to-space-pink' 
-                        : 'bg-gradient-to-r from-space-cyan to-space-purple'
+                        : caseItem.rarity === 'rare'
+                        ? 'bg-gradient-to-r from-space-cyan to-space-purple'
+                        : caseItem.rarity === 'uncommon'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500'
+                        : 'bg-gradient-to-r from-gray-500 to-gray-600'
                     }`}>
-                      {caseItem.rarity === 'legendary' ? 'Легендарный' : 'Мифический'}
+                      {caseItem.rarity === 'ancient' ? 'Древний' :
+                       caseItem.rarity === 'legendary' ? 'Легендарный' : 
+                       caseItem.rarity === 'rare' ? 'Редкий' :
+                       caseItem.rarity === 'uncommon' ? 'Необычный' : 'Обычный'}
                     </Badge>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-3xl font-bold bg-gradient-to-r from-space-gold to-space-cyan bg-clip-text text-transparent">
-                        {caseItem.price}₽
+                      <span className="text-2xl font-bold bg-gradient-to-r from-space-gold to-space-cyan bg-clip-text text-transparent">
+                        {caseItem.price.toLocaleString()}₽
                       </span>
                       <Icon name="Package" className="text-space-purple animate-stellar-pulse" />
                     </div>
                     <div className="space-y-2 text-sm text-gray-400">
-                      {caseItem.items.map((item, idx) => (
-                        <div key={idx} className="flex items-center">
-                          <div className="w-2 h-2 bg-space-cyan rounded-full mr-3 animate-pulse"></div>
-                          {item}
+                      {caseItem.items.slice(0, 4).map((item, idx) => (
+                        <div key={idx} className="flex items-center justify-between">
+                          <div className="flex items-center flex-1 min-w-0">
+                            <div className={`w-2 h-2 rounded-full mr-2 animate-pulse ${
+                              item.rarity === 'ancient' ? 'bg-red-500' :
+                              item.rarity === 'legendary' ? 'bg-space-purple' :
+                              item.rarity === 'rare' ? 'bg-space-cyan' :
+                              item.rarity === 'uncommon' ? 'bg-blue-400' : 'bg-gray-400'
+                            }`}></div>
+                            <span className="truncate text-xs">{item.name}</span>
+                          </div>
+                          <div className="text-xs text-space-gold ml-2">{item.chance}%</div>
                         </div>
                       ))}
+                      {caseItem.items.length > 4 && (
+                        <div className="text-xs text-center text-space-cyan">+{caseItem.items.length - 4} предметов</div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -394,18 +543,67 @@ const Index = () => {
         </Tabs>
       </div>
 
-      {/* Opening Animation */}
+      {/* Enhanced Opening Animation */}
       {isOpening && (
-        <div className="fixed inset-0 bg-space-dark/90 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-space-dark/95 backdrop-blur-md flex items-center justify-center z-50">
           <div className="text-center animate-fade-in">
-            <div className="text-8xl mb-6 animate-stellar-pulse">🚀</div>
-            <h3 className="text-4xl font-bold bg-gradient-to-r from-space-purple to-space-cyan bg-clip-text text-transparent mb-4">
-              Запуск космического кейса...
-            </h3>
-            <div className="w-80 bg-space-deep rounded-full overflow-hidden border border-space-purple">
-              <div className="bg-gradient-to-r from-space-purple to-space-cyan h-3 rounded-full animate-pulse"></div>
-            </div>
-            <p className="text-space-cyan mt-4">Исследуем далекие галактики...</p>
+            {isRolling ? (
+              <>
+                <div className="relative mb-8">
+                  <div className="text-8xl animate-spin">🎰</div>
+                  <div className="absolute inset-0 animate-ping">
+                    <div className="text-8xl opacity-30">✨</div>
+                  </div>
+                </div>
+                <h3 className="text-4xl font-bold bg-gradient-to-r from-space-purple to-space-cyan bg-clip-text text-transparent mb-4 animate-pulse">
+                  Генерация предмета...
+                </h3>
+                <div className="w-96 bg-space-deep rounded-full overflow-hidden border-2 border-space-purple mb-4">
+                  <div className="bg-gradient-to-r from-space-purple via-space-cyan to-space-pink h-4 rounded-full animate-pulse"></div>
+                </div>
+                <p className="text-space-cyan animate-bounce">Исследуем космические артефакты...</p>
+              </>
+            ) : openedItem && (
+              <>
+                <div className="relative mb-6 animate-stellar-pulse">
+                  <div className="text-8xl">🎉</div>
+                  <div className="absolute inset-0 animate-ping delay-300">
+                    <div className="text-8xl opacity-50">💫</div>
+                  </div>
+                </div>
+                <h3 className="text-5xl font-bold bg-gradient-to-r from-space-gold to-space-cyan bg-clip-text text-transparent mb-4">
+                  Поздравляем!
+                </h3>
+                <div className={`p-6 rounded-2xl border-4 mb-4 animate-cosmic-glow ${
+                  openedItem.rarity === 'ancient' 
+                    ? 'border-red-500 bg-gradient-to-br from-red-900/50 to-orange-900/50' 
+                    : openedItem.rarity === 'legendary'
+                    ? 'border-space-purple bg-gradient-to-br from-space-purple/50 to-space-pink/50'
+                    : openedItem.rarity === 'rare'
+                    ? 'border-space-cyan bg-gradient-to-br from-space-cyan/50 to-space-purple/50'
+                    : 'border-blue-400 bg-gradient-to-br from-blue-900/50 to-purple-900/50'
+                }`}>
+                  <h4 className="text-3xl font-bold text-white mb-2">{openedItem.name}</h4>
+                  <Badge className={`text-lg px-4 py-2 ${
+                    openedItem.rarity === 'ancient' 
+                      ? 'bg-gradient-to-r from-red-600 to-orange-500' 
+                      : openedItem.rarity === 'legendary'
+                      ? 'bg-gradient-to-r from-space-purple to-space-pink'
+                      : openedItem.rarity === 'rare'
+                      ? 'bg-gradient-to-r from-space-cyan to-space-purple'
+                      : 'bg-gradient-to-r from-blue-500 to-purple-500'
+                  }`}>
+                    {openedItem.rarity === 'ancient' ? 'Древний' :
+                     openedItem.rarity === 'legendary' ? 'Легендарный' :
+                     openedItem.rarity === 'rare' ? 'Редкий' : 'Необычный'}
+                  </Badge>
+                  <div className="text-4xl font-bold text-space-gold mt-4">
+                    {openedItem.value.toLocaleString()}₽
+                  </div>
+                </div>
+                <p className="text-xl text-space-cyan">Предмет добавлен в инвентарь!</p>
+              </>
+            )}
           </div>
         </div>
       )}
