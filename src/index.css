@@ -113,6 +113,6 @@
   }
 
   .animate-roll {
-    animation: roll 3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    animation: roll 7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
   }
 }
