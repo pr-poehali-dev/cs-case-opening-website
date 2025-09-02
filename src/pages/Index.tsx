@@ -344,73 +344,73 @@ const Index = () => {
     const rollingItemsList = generateRollingItems(caseData.items, wonItem);
     setRollingItems(rollingItemsList);
     
-    // Тики при пересечении центральной линии с левым краем каждого скина
+    // Простая и надежная система тиков - тик на каждом скине при прохождении центральной линии
     const playRollingSounds = () => {
-      // Параметры из CSS анимации
-      const startTransform = 560; // translateX(560px) - начальная позиция
-      const endTransform = -4312; // translateX(-4312px) - конечная позиция  
-      const totalDistance = Math.abs(endTransform - startTransform); // 4872px общее расстояние
-      const animationDuration = 11760; // 11.76s в миллисекундах
+      // CSS параметры анимации
+      const startX = 560;        // translateX(560px) в начале
+      const endX = -4312;        // translateX(-4312px) в конце  
+      const duration = 11760;    // 11.76s анимации
+      const totalDistance = startX - endX; // 4872px - общий путь движения
       
-      // Размеры элементов
-      const itemWidth = 128; // w-32
-      const itemMargin = 16; // mx-2 (8px с каждой стороны)
-      const itemTotalWidth = itemWidth + itemMargin; // 144px общая ширина одного скина
+      // Размеры скинов
+      const skinWidth = 128;     // w-32
+      const skinMargin = 16;     // mx-2 (8px с каждой стороны)
+      const skinStep = skinWidth + skinMargin; // 144px между скинами
       
-      // Центральная линия находится на left-1/2 от контейнера 800px = 400px
-      const centerLinePosition = 400;
+      // Центральная золотая линия на 400px (половина от 800px контейнера)
+      const centerLine = 400;
       
-      console.log('Настройка тиков для', rollingItemsList.length, 'скинов');
-      console.log('Анимация от', startTransform, 'до', endTransform, 'за', animationDuration, 'мс');
+      console.log(`🎵 Настройка тиков для ${rollingItemsList.length} скинов`);
+      console.log(`📏 Анимация: ${startX}px → ${endX}px за ${duration}мс`);
+      console.log(`🎯 Центральная линия на позиции: ${centerLine}px`);
       
-      rollingItemsList.forEach((item, index) => {
-        // Начальная позиция левого края скина относительно контейнера
-        const itemLeftEdge = startTransform + (index * itemTotalWidth);
-        // Правый край скина
-        const itemRightEdge = itemLeftEdge + itemWidth;
+      let validTicks = 0;
+      
+      // Проходим по каждому скину и рассчитываем время тика
+      rollingItemsList.forEach((skin, index) => {
+        // Начальная позиция левого края скина
+        const initialLeft = startX + (index * skinStep);
         
-        // Конечная позиция левого и правого края после анимации
-        const finalItemLeftEdge = itemLeftEdge + (endTransform - startTransform);
-        const finalItemRightEdge = itemRightEdge + (endTransform - startTransform);
+        // Проверяем: пересечет ли этот скин центральную линию?
+        // Скин пересекает линию если его левый край изначально правее линии
+        // и в конце анимации его правый край левее линии
+        const initialRight = initialLeft + skinWidth;
+        const finalLeft = initialLeft + (endX - startX);
+        const finalRight = finalLeft + skinWidth;
         
-        // Проверяем, будет ли центральная линия пересекать этот скин в любой момент анимации
-        // Скин пересекается с линией если:
-        // - в начале левый край справа от линии И в конце правый край слева от линии
-        // ИЛИ
-        // - в начале правый край справа от линии И в конце левый край слева от линии  
-        const willCrossLine = (
-          // Скин движется справа налево и пересекает линию
-          (itemLeftEdge >= centerLinePosition && finalItemRightEdge <= centerLinePosition) ||
-          // Скин начинается слева от линии и заканчивается справа (маловероятно при нашей анимации)
-          (itemRightEdge <= centerLinePosition && finalItemLeftEdge >= centerLinePosition) ||
-          // Скин изначально пересекает линию
-          (itemLeftEdge <= centerLinePosition && itemRightEdge >= centerLinePosition) ||
-          // Скин пересекает линию в финальной позиции
-          (finalItemLeftEdge <= centerLinePosition && finalItemRightEdge >= centerLinePosition)
-        );
+        // Условие пересечения: скин начинается правее линии и заканчивается левее
+        const willCross = initialLeft > centerLine && finalRight < centerLine;
         
-        if (willCrossLine) {
-          let tickTime;
+        if (willCross) {
+          validTicks++;
           
-          if (itemLeftEdge >= centerLinePosition) {
-            // Скин приходит справа - тик когда левый край касается линии
-            const distanceToCenter = itemLeftEdge - centerLinePosition;
-            tickTime = (distanceToCenter / totalDistance) * animationDuration;
-          } else {
-            // Скин уже слева от линии или пересекает - тик в начале анимации
-            tickTime = 500; // Небольшая задержка для корректности
-          }
+          // Рассчитываем точное время когда левый край скина коснется центральной линии
+          const distanceToLine = initialLeft - centerLine;
+          const timeToTick = (distanceToLine / totalDistance) * duration;
           
-          // Ограничиваем время тика разумными пределами
-          tickTime = Math.max(300, Math.min(tickTime, animationDuration - 300));
+          // Добавляем небольшую задержку и ограничиваем диапазон
+          const tickTime = Math.max(200, Math.min(timeToTick, duration - 200));
           
-          console.log(`Скин ${index + 1}: позиция ${itemLeftEdge}px→${finalItemLeftEdge}px, тик через ${tickTime.toFixed(0)}мс`);
+          console.log(`🔊 Скин #${index + 1} (${skin.name}): левый край ${initialLeft}px, тик через ${Math.round(tickTime)}мс`);
           
+          // Устанавливаем таймер для тика
           setTimeout(() => {
-            console.log(`🔊 ТИК для скина ${index + 1} (${item.name})`);
-            playCS2Sound('roll_tick', 0.15);
+            console.log(`✅ ТИКАЕМ на скине #${index + 1}: ${skin.name}`);
+            playCS2Sound('roll_tick', 0.2);
           }, tickTime);
+        } else {
+          console.log(`❌ Скин #${index + 1} не пересекает линию: ${initialLeft}px → ${finalLeft}px`);
         }
+      });
+      
+      console.log(`📊 Итого запланировано тиков: ${validTicks} из ${rollingItemsList.length} скинов`);
+      
+      // Дополнительная проверка - убеждаемся что функция playCS2Sound работает
+      console.log(`🔧 Тестовый тик через 100мс...`);
+      setTimeout(() => {
+        console.log(`🎵 ТЕСТ: тестовый тик`);
+        playCS2Sound('roll_tick', 0.1);
+      }, 100);
       });
     };
     
