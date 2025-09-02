@@ -411,7 +411,6 @@ const Index = () => {
         console.log(`🎵 ТЕСТ: тестовый тик`);
         playCS2Sound('roll_tick', 0.1);
       }, 100);
-      });
     };
     
     playRollingSounds();
