@@ -86,9 +86,21 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			keyframes: {
-				'case-glow': {
-					'0%, 100%': { boxShadow: '0 0 20px rgba(255, 107, 53, 0.3)' },
-					'50%': { boxShadow: '0 0 40px rgba(255, 107, 53, 0.6)' }
+				'cosmic-glow': {
+					'0%, 100%': { boxShadow: '0 0 30px rgba(139, 92, 246, 0.4)' },
+					'50%': { boxShadow: '0 0 60px rgba(139, 92, 246, 0.8)' }
+				},
+				'stellar-pulse': {
+					'0%, 100%': { transform: 'scale(1)', opacity: '0.7' },
+					'50%': { transform: 'scale(1.05)', opacity: '1' }
+				},
+				'orbit': {
+					'0%': { transform: 'rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg)' }
+				},
+				'roll': {
+					'0%': { transform: 'translateX(50%)' },
+					'100%': { transform: 'translateX(-70%)' }
 				},
 				'case-open': {
 					'0%': { transform: 'scale(1) rotate(0deg)' },
