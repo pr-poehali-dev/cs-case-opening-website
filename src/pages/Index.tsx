@@ -58,21 +58,40 @@ const playCS2Sound = (type: 'case_open' | 'roll_tick' | 'item_drop' | 'case_unlo
       osc.stop(audioContext.currentTime + 0.1);
       
     } else if (type === 'roll_tick') {
-      // Простой но четкий тик
-      const osc = audioContext.createOscillator();
+      // Улучшенный тик похожий на CS:GO - механический клик
+      const osc1 = audioContext.createOscillator();
+      const osc2 = audioContext.createOscillator();
       const gain = audioContext.createGain();
+      const filter = audioContext.createBiquadFilter();
       
-      osc.connect(gain);
-      gain.connect(audioContext.destination);
+      // Создаем композитный звук из двух осцилляторов
+      osc1.connect(gain);
+      osc2.connect(gain);
+      gain.connect(filter);
+      filter.connect(audioContext.destination);
       
-      osc.type = 'square';
-      osc.frequency.value = 800;
+      // Основной клик - высокая частота
+      osc1.type = 'sawtooth';
+      osc1.frequency.value = 1400;
       
-      gain.gain.setValueAtTime(volume, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.03);
+      // Дополнительная гармоника - средняя частота
+      osc2.type = 'square';
+      osc2.frequency.value = 700;
       
-      osc.start(audioContext.currentTime);
-      osc.stop(audioContext.currentTime + 0.03);
+      // Фильтр для металлического звучания
+      filter.type = 'bandpass';
+      filter.frequency.value = 1000;
+      filter.Q.value = 4;
+      
+      // Короткий резкий звук как в CS:GO
+      gain.gain.setValueAtTime(0, audioContext.currentTime);
+      gain.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.003);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05);
+      
+      osc1.start(audioContext.currentTime);
+      osc1.stop(audioContext.currentTime + 0.05);
+      osc2.start(audioContext.currentTime);
+      osc2.stop(audioContext.currentTime + 0.05);
       
     } else if (type === 'item_drop') {
       // Звук выпадения
