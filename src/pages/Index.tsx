@@ -9,6 +9,7 @@ import CaseRollingAnimation from '@/components/cs2/CaseRollingAnimation';
 import UserInventory from '@/components/cs2/UserInventory';
 import CaseSelector from '@/components/cs2/CaseSelector';
 import SkinUpgrade from '@/components/cs2/SkinUpgrade';
+import SkinWithdrawal from '@/components/cs2/SkinWithdrawal';
 
 interface CaseItem {
   id?: number;
@@ -250,6 +251,13 @@ const Index = () => {
     setUserInventory(prev => [upgradedItem, ...prev]);
   };
 
+  // Функция обработки вывода скинов
+  const handleWithdraw = (item: InventoryItem) => {
+    // Удаляем скин из инвентаря (он был успешно выведен)
+    setUserInventory(prev => prev.filter(invItem => invItem.id !== item.id));
+    playCS2Sound('case_unlock', 0.6);
+  };
+
   return (
     <div className="min-h-screen bg-space-dark text-white relative overflow-hidden" style={{fontFamily: 'Rajdhani, sans-serif'}}>
       {/* Cosmic Background */}
@@ -307,9 +315,9 @@ const Index = () => {
               <Icon name="TrendingUp" className="mr-2" />
               Апгрейд
             </TabsTrigger>
-            <TabsTrigger value="payment" className="data-[state=active]:bg-space-purple">
-              <Icon name="CreditCard" className="mr-2" />
-              Пополнение
+            <TabsTrigger value="withdraw" className="data-[state=active]:bg-space-purple">
+              <Icon name="Send" className="mr-2" />
+              Вывод
             </TabsTrigger>
           </TabsList>
 
@@ -339,13 +347,12 @@ const Index = () => {
             />
           </TabsContent>
 
-          {/* Payment Tab */}
-          <TabsContent value="payment">
-            <div className="text-center py-12">
-              <div className="text-6xl mb-4">💳</div>
-              <p className="text-gray-400 text-lg mb-2">Пополнение баланса временно недоступно</p>
-              <p className="text-gray-500 text-sm">Функция находится в разработке</p>
-            </div>
+          {/* Withdraw Tab */}
+          <TabsContent value="withdraw">
+            <SkinWithdrawal 
+              inventory={userInventory}
+              onWithdraw={handleWithdraw}
+            />
           </TabsContent>
         </Tabs>
       </main>
