@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 
 // Import компонентов CS2
@@ -105,6 +109,7 @@ const Index = () => {
   ];
 
   const [selectedCase, setSelectedCase] = useState<CaseData>(cases[0]);
+  const [showTopUpDialog, setShowTopUpDialog] = useState(false);
 
   // Функция генерации прокрутки скинов
   const generateRollingItems = (caseItems: CaseItem[], wonItem: CaseItem) => {
@@ -258,6 +263,30 @@ const Index = () => {
     playCS2Sound('case_unlock', 0.6);
   };
 
+  // Функция пополнения баланса
+  const handleTopUp = (amount: number) => {
+    setUserBalance(prev => prev + amount);
+    playCS2Sound('case_unlock', 0.5);
+    setShowTopUpDialog(false);
+  };
+
+  // Функция продажи скина
+  const handleSellItem = (item: InventoryItem) => {
+    // Убираем скин из инвентаря и добавляем 85% от его стоимости к балансу
+    const sellPrice = Math.round(item.value * 0.85);
+    setUserInventory(prev => prev.filter(invItem => invItem.id !== item.id));
+    setUserBalance(prev => prev + sellPrice);
+    playCS2Sound('item_drop', 0.5);
+  };
+
+  // Функция вывода скина в Steam
+  const handleWithdrawToSteam = (item: InventoryItem) => {
+    // Перенаправляем на вкладку вывода с выбранным скином
+    // В реальном приложении здесь будет более сложная логика
+    const withdrawTab = document.querySelector('[value="withdraw"]') as HTMLElement;
+    withdrawTab?.click();
+  };
+
   return (
     <div className="min-h-screen bg-space-dark text-white relative overflow-hidden" style={{fontFamily: 'Rajdhani, sans-serif'}}>
       {/* Cosmic Background */}
@@ -290,6 +319,14 @@ const Index = () => {
               <Icon name="Wallet" className="text-space-gold" />
               <span className="text-space-gold font-bold text-lg">{userBalance.toLocaleString()}₽</span>
             </div>
+            
+            <Button 
+              onClick={() => setShowTopUpDialog(true)}
+              className="bg-gradient-to-r from-space-purple to-space-pink hover:opacity-80"
+            >
+              <Icon name="Plus" className="mr-2 w-4 h-4" />
+              Пополнить
+            </Button>
             
             <Avatar className="border-2 border-space-purple">
               <AvatarImage src="https://github.com/shadcn.png" alt="User" />
@@ -334,7 +371,11 @@ const Index = () => {
 
           {/* Inventory Tab */}
           <TabsContent value="inventory">
-            <UserInventory inventory={userInventory} />
+            <UserInventory 
+              inventory={userInventory} 
+              onSellItem={handleSellItem}
+              onWithdrawItem={handleWithdrawToSteam}
+            />
           </TabsContent>
 
           {/* Upgrade Tab */}
@@ -370,6 +411,67 @@ const Index = () => {
           }}
         />
       )}
+
+      {/* Top Up Dialog */}
+      <Dialog open={showTopUpDialog} onOpenChange={setShowTopUpDialog}>
+        <DialogContent className="bg-space-deep border-space-purple/30 text-white max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <Icon name="Wallet" className="text-space-gold" />
+              <span>Пополнить баланс</span>
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-2">Текущий баланс</div>
+              <div className="text-3xl font-bold text-space-gold mb-6">{userBalance.toLocaleString()}₽</div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              {[1000, 5000, 10000, 25000, 50000, 100000].map((amount) => (
+                <Button
+                  key={amount}
+                  onClick={() => handleTopUp(amount)}
+                  className="bg-space-purple/20 hover:bg-space-purple/40 border border-space-purple/50 text-white p-4 h-auto flex flex-col"
+                >
+                  <div className="text-lg font-bold">+{amount.toLocaleString()}₽</div>
+                  <div className="text-xs text-gray-400">
+                    {amount >= 50000 ? '🚀 Лучшая цена!' : amount >= 10000 ? '⭐ Популярно' : '💰 Базовый'}
+                  </div>
+                </Button>
+              ))}
+            </div>
+
+            <div className="bg-space-dark/50 p-4 rounded-lg border border-space-cyan/30">
+              <div className="flex items-center space-x-2 mb-2">
+                <Icon name="Shield" className="text-space-cyan w-4 h-4" />
+                <span className="text-sm text-space-cyan font-semibold">Безопасность</span>
+              </div>
+              <p className="text-xs text-gray-400">
+                Все транзакции защищены SSL шифрованием. Средства поступают моментально.
+              </p>
+            </div>
+
+            <div className="flex space-x-3">
+              <Button
+                onClick={() => setShowTopUpDialog(false)}
+                variant="outline"
+                className="flex-1 border-space-purple/30 hover:bg-space-purple/20"
+              >
+                Отмена
+              </Button>
+              <Button
+                onClick={() => setShowTopUpDialog(false)}
+                className="flex-1 bg-gradient-to-r from-space-purple to-space-pink hover:opacity-80"
+              >
+                <Icon name="ExternalLink" className="mr-2 w-4 h-4" />
+                Другая сумма
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

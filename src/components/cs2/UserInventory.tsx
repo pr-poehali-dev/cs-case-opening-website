@@ -13,6 +13,8 @@ interface InventoryItem {
 
 interface UserInventoryProps {
   inventory: InventoryItem[];
+  onSellItem?: (item: InventoryItem) => void;
+  onWithdrawItem?: (item: InventoryItem) => void;
 }
 
 const getRarityColor = (rarity: string) => {
@@ -35,7 +37,7 @@ const getRarityBorder = (rarity: string) => {
   }
 };
 
-export default function UserInventory({ inventory }: UserInventoryProps) {
+export default function UserInventory({ inventory, onSellItem, onWithdrawItem }: UserInventoryProps) {
   const totalValue = inventory.reduce((sum, item) => sum + item.value, 0);
   const itemsByRarity = inventory.reduce((acc, item) => {
     acc[item.rarity] = (acc[item.rarity] || 0) + 1;
@@ -99,7 +101,7 @@ export default function UserInventory({ inventory }: UserInventoryProps) {
                     </div>
                     <div className="p-3">
                       <h4 className="text-white font-semibold text-sm mb-2 truncate">{item.name}</h4>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mb-2">
                         <Badge className={`${
                           item.rarity === 'ancient' ? 'bg-red-500' :
                           item.rarity === 'legendary' ? 'bg-space-purple' :
@@ -112,6 +114,36 @@ export default function UserInventory({ inventory }: UserInventoryProps) {
                            item.rarity === 'uncommon' ? 'Необычный' : 'Обычный'}
                         </Badge>
                         <div className="text-space-gold font-bold text-sm">{item.value.toLocaleString()}₽</div>
+                      </div>
+                      
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        {onSellItem && (
+                          <Button 
+                            size="sm" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onSellItem(item);
+                            }}
+                            className="flex-1 bg-space-green hover:bg-space-green/80 text-xs"
+                          >
+                            <Icon name="DollarSign" className="w-3 h-3 mr-1" />
+                            Продать
+                          </Button>
+                        )}
+                        {onWithdrawItem && (
+                          <Button 
+                            size="sm" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onWithdrawItem(item);
+                            }}
+                            className="flex-1 bg-space-purple hover:bg-space-purple/80 text-xs"
+                          >
+                            <Icon name="Send" className="w-3 h-3 mr-1" />
+                            Вывести
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
