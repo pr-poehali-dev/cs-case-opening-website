@@ -15,6 +15,8 @@ interface CaseRollingAnimationProps {
   rollingItems: CaseItem[];
   openedItem: CaseItem | null;
   onClose: () => void;
+  onSellItem?: (item: CaseItem) => void;
+  onOpenAgain?: () => void;
 }
 
 const getRarityColor = (rarity: string) => {
@@ -41,7 +43,9 @@ export default function CaseRollingAnimation({
   isRolling, 
   rollingItems, 
   openedItem, 
-  onClose 
+  onClose,
+  onSellItem,
+  onOpenAgain
 }: CaseRollingAnimationProps) {
   return (
     <div className="fixed inset-0 bg-space-dark/95 backdrop-blur-md flex items-center justify-center z-50">
@@ -150,13 +154,37 @@ export default function CaseRollingAnimation({
               </div>
             </div>
 
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4 justify-center flex-wrap">
               <button 
                 onClick={onClose}
-                className="px-8 py-3 bg-gradient-to-r from-space-purple to-space-cyan text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-500 text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
               >
-                Отлично! 🚀
+                ← Назад
               </button>
+              
+              {onSellItem && (
+                <button 
+                  onClick={() => {
+                    onSellItem(openedItem);
+                    onClose();
+                  }}
+                  className="px-6 py-3 bg-gradient-to-r from-space-green to-green-500 text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  💰 Продать ({openedItem.value.toLocaleString()}₽)
+                </button>
+              )}
+              
+              {onOpenAgain && (
+                <button 
+                  onClick={() => {
+                    onClose();
+                    setTimeout(() => onOpenAgain(), 300);
+                  }}
+                  className="px-6 py-3 bg-gradient-to-r from-space-purple to-space-pink text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  🎰 Крутить еще раз
+                </button>
+              )}
             </div>
           </>
         )}

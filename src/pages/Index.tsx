@@ -278,6 +278,15 @@ const Index = () => {
     playCS2Sound('item_drop', 0.5);
   };
 
+  // Функция продажи выпавшего скина
+  const handleSellOpenedItem = (item: CaseItem) => {
+    // Добавляем деньги к балансу (скин уже добавлен в инвентарь)
+    setUserBalance(prev => prev + item.value);
+    // Удаляем скин из инвентаря (он был только что добавлен)
+    setUserInventory(prev => prev.filter(invItem => invItem.name !== item.name || invItem.id !== Date.now()));
+    playCS2Sound('case_unlock', 0.6);
+  };
+
   // Функция вывода скина в Steam
   const handleWithdrawToSteam = (item: InventoryItem) => {
     // Перенаправляем на вкладку вывода с выбранным скином
@@ -408,6 +417,8 @@ const Index = () => {
             setOpenedItem(null);
             setRollingItems([]);
           }}
+          onSellItem={handleSellOpenedItem}
+          onOpenAgain={handleOpenCase}
         />
       )}
 
