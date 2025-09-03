@@ -29,25 +29,25 @@ const TRADING_PLATFORMS = {
   STEAM_MARKET: {
     name: 'Steam Community Market',
     baseUrl: 'https://steamcommunity.com/market',
-    apiKey: process.env.STEAM_API_KEY || '',
+    apiKey: import.meta.env.VITE_STEAM_API_KEY || '',
     priority: 1
   },
   SKINPORT: {
     name: 'Skinport',
     baseUrl: 'https://api.skinport.com',
-    apiKey: process.env.SKINPORT_API_KEY || '',
+    apiKey: import.meta.env.VITE_SKINPORT_API_KEY || '',
     priority: 2
   },
   BITSKINS: {
     name: 'BitSkins',
     baseUrl: 'https://api.bitskins.com',
-    apiKey: process.env.BITSKINS_API_KEY || '',
+    apiKey: import.meta.env.VITE_BITSKINS_API_KEY || '',
     priority: 3
   },
   CSMONEY: {
     name: 'CS.MONEY',
     baseUrl: 'https://api.cs.money',
-    apiKey: process.env.CSMONEY_API_KEY || '',
+    apiKey: import.meta.env.VITE_CSMONEY_API_KEY || '',
     priority: 4
   }
 };
