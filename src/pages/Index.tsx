@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import PaymentMethods from '@/components/cs2/PaymentMethods';
 
 // Import компонентов CS2
 import { playCS2Sound } from '@/components/cs2/CS2SoundManager';
@@ -110,6 +111,9 @@ const Index = () => {
 
   const [selectedCase, setSelectedCase] = useState<CaseData>(cases[0]);
   const [showTopUpDialog, setShowTopUpDialog] = useState(false);
+  const [topUpAmount, setTopUpAmount] = useState(0);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [paymentStep, setPaymentStep] = useState<'amount' | 'method' | 'processing' | 'success'>('amount');
 
   // Функция генерации прокрутки скинов
   const generateRollingItems = (caseItems: CaseItem[], wonItem: CaseItem) => {
@@ -263,11 +267,50 @@ const Index = () => {
     playCS2Sound('case_unlock', 0.6);
   };
 
-  // Функция пополнения баланса
+  // Функция пополнения баланса (быстрые суммы)
   const handleTopUp = (amount: number) => {
-    setUserBalance(prev => prev + amount);
-    playCS2Sound('case_unlock', 0.5);
+    setTopUpAmount(amount);
+    setPaymentStep('method');
+  };
+
+  // Функция обработки платежа
+  const handlePayment = async (method: any, amount: number) => {
+    setIsProcessingPayment(true);
+    setPaymentStep('processing');
+    playCS2Sound('case_open', 0.4);
+
+    try {
+      // Симуляция обработки платежа
+      await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 3000));
+      
+      // 95% успешных платежей
+      if (Math.random() > 0.05) {
+        setUserBalance(prev => prev + amount);
+        setPaymentStep('success');
+        playCS2Sound('case_unlock', 0.6);
+        
+        setTimeout(() => {
+          setShowTopUpDialog(false);
+          setPaymentStep('amount');
+          setTopUpAmount(0);
+        }, 2000);
+      } else {
+        throw new Error('Платеж отклонен банком');
+      }
+    } catch (error) {
+      playCS2Sound('roll_tick', 0.4);
+      setPaymentStep('amount');
+      // В реальном приложении здесь будет показ ошибки
+    } finally {
+      setIsProcessingPayment(false);
+    }
+  };
+
+  const resetTopUpDialog = () => {
     setShowTopUpDialog(false);
+    setPaymentStep('amount');
+    setTopUpAmount(0);
+    setIsProcessingPayment(false);
   };
 
   // Функция продажи скина
@@ -423,62 +466,113 @@ const Index = () => {
       )}
 
       {/* Top Up Dialog */}
-      <Dialog open={showTopUpDialog} onOpenChange={setShowTopUpDialog}>
-        <DialogContent className="bg-space-deep border-space-purple/30 text-white max-w-md">
+      <Dialog open={showTopUpDialog} onOpenChange={resetTopUpDialog}>
+        <DialogContent className="bg-space-deep border-space-purple/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-2">
               <Icon name="Wallet" className="text-space-gold" />
               <span>Пополнить баланс</span>
+              {paymentStep !== 'amount' && (
+                <Button
+                  onClick={() => setPaymentStep('amount')}
+                  variant="ghost"
+                  size="sm"
+                  className="ml-auto text-gray-400 hover:text-white"
+                >
+                  <Icon name="ArrowLeft" className="w-4 h-4" />
+                </Button>
+              )}
             </DialogTitle>
           </DialogHeader>
           
           <div className="space-y-6">
+            {/* Current Balance */}
             <div className="text-center">
               <div className="text-sm text-gray-400 mb-2">Текущий баланс</div>
-              <div className="text-3xl font-bold text-space-gold mb-6">{userBalance.toLocaleString()}₽</div>
+              <div className="text-3xl font-bold text-space-gold mb-4">{userBalance.toLocaleString()}₽</div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              {[1000, 5000, 10000, 25000, 50000, 100000].map((amount) => (
-                <Button
-                  key={amount}
-                  onClick={() => handleTopUp(amount)}
-                  className="bg-space-purple/20 hover:bg-space-purple/40 border border-space-purple/50 text-white p-4 h-auto flex flex-col"
-                >
-                  <div className="text-lg font-bold">+{amount.toLocaleString()}₽</div>
-                  <div className="text-xs text-gray-400">
-                    {amount >= 50000 ? '🚀 Лучшая цена!' : amount >= 10000 ? '⭐ Популярно' : '💰 Базовый'}
+            {paymentStep === 'amount' && (
+              <>
+                {/* Quick Amount Selection */}
+                <div className="space-y-4">
+                  <h4 className="text-space-cyan font-semibold">Быстрый выбор суммы</h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[1000, 5000, 10000, 25000, 50000, 100000].map((amount) => (
+                      <Button
+                        key={amount}
+                        onClick={() => handleTopUp(amount)}
+                        className="bg-space-purple/20 hover:bg-space-purple/40 border border-space-purple/50 text-white p-4 h-auto flex flex-col"
+                      >
+                        <div className="text-lg font-bold">+{amount.toLocaleString()}₽</div>
+                        <div className="text-xs text-gray-400">
+                          {amount >= 50000 ? '🚀 Выгодно' : amount >= 10000 ? '⭐ Популярно' : '💰 Базовый'}
+                        </div>
+                      </Button>
+                    ))}
                   </div>
+                </div>
+
+                <Button
+                  onClick={() => setPaymentStep('method')}
+                  className="w-full bg-gradient-to-r from-space-purple to-space-pink hover:opacity-80"
+                >
+                  <Icon name="CreditCard" className="mr-2 w-4 h-4" />
+                  Выбрать способ оплаты
                 </Button>
-              ))}
-            </div>
+              </>
+            )}
 
-            <div className="bg-space-dark/50 p-4 rounded-lg border border-space-cyan/30">
-              <div className="flex items-center space-x-2 mb-2">
-                <Icon name="Shield" className="text-space-cyan w-4 h-4" />
-                <span className="text-sm text-space-cyan font-semibold">Безопасность</span>
+            {paymentStep === 'method' && (
+              <PaymentMethods
+                selectedAmount={topUpAmount}
+                onSelectMethod={handlePayment}
+                onCustomAmount={setTopUpAmount}
+              />
+            )}
+
+            {paymentStep === 'processing' && (
+              <div className="text-center py-8">
+                <div className="animate-spin w-16 h-16 mx-auto mb-4">
+                  <Icon name="Loader" className="w-16 h-16 text-space-purple" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">Обрабатываем платеж</h3>
+                <p className="text-gray-400">Не закрывайте это окно...</p>
+                <div className="bg-space-dark/50 p-4 rounded-lg mt-4">
+                  <p className="text-sm text-space-cyan">
+                    Сумма к зачислению: <span className="font-bold text-space-gold">{topUpAmount.toLocaleString()}₽</span>
+                  </p>
+                </div>
               </div>
-              <p className="text-xs text-gray-400">
-                Все транзакции защищены SSL шифрованием. Средства поступают моментально.
-              </p>
-            </div>
+            )}
 
-            <div className="flex space-x-3">
-              <Button
-                onClick={() => setShowTopUpDialog(false)}
-                variant="outline"
-                className="flex-1 border-space-purple/30 hover:bg-space-purple/20"
-              >
-                Отмена
-              </Button>
-              <Button
-                onClick={() => setShowTopUpDialog(false)}
-                className="flex-1 bg-gradient-to-r from-space-purple to-space-pink hover:opacity-80"
-              >
-                <Icon name="ExternalLink" className="mr-2 w-4 h-4" />
-                Другая сумма
-              </Button>
-            </div>
+            {paymentStep === 'success' && (
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">✅</div>
+                <h3 className="text-3xl font-bold text-space-green mb-2">Платеж успешен!</h3>
+                <p className="text-gray-400 mb-4">Средства зачислены на ваш баланс</p>
+                <div className="bg-space-green/10 border border-space-green/30 p-4 rounded-lg">
+                  <p className="text-space-green font-bold">
+                    +{topUpAmount.toLocaleString()}₽ зачислено
+                  </p>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Новый баланс: {userBalance.toLocaleString()}₽
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {paymentStep === 'amount' && (
+              <div className="flex space-x-3">
+                <Button
+                  onClick={resetTopUpDialog}
+                  variant="outline"
+                  className="flex-1 border-space-purple/30 hover:bg-space-purple/20"
+                >
+                  Отмена
+                </Button>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
