@@ -272,10 +272,9 @@ const Index = () => {
 
   // Функция продажи скина
   const handleSellItem = (item: InventoryItem) => {
-    // Убираем скин из инвентаря и добавляем 85% от его стоимости к балансу
-    const sellPrice = Math.round(item.value * 0.85);
+    // Убираем скин из инвентаря и добавляем 100% от его стоимости к балансу
     setUserInventory(prev => prev.filter(invItem => invItem.id !== item.id));
-    setUserBalance(prev => prev + sellPrice);
+    setUserBalance(prev => prev + item.value);
     playCS2Sound('item_drop', 0.5);
   };
 
