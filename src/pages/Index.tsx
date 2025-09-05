@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import Header from '@/components/cs2/Header';
 import BackgroundEffects from '@/components/cs2/BackgroundEffects';
 import CaseOpeningLogic from '@/components/cs2/CaseOpeningLogic';
 import InventoryLogic from '@/components/cs2/InventoryLogic';
 import MultiplierSkinUpgrade from '@/components/cs2/MultiplierSkinUpgrade';
+import CaseBattle from '@/components/cs2/CaseBattle';
 
 interface CaseItem {
   id?: number;
@@ -136,7 +137,7 @@ const Index = () => {
 
       <main className="relative z-10 max-w-7xl mx-auto p-6">
         <Tabs defaultValue="cases" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-space-deep/50 border-space-purple/30">
+          <TabsList className="grid w-full grid-cols-5 bg-space-deep/50 border-space-purple/30">
             <TabsTrigger value="cases" className="data-[state=active]:bg-space-purple">
               <Icon name="Package" className="mr-2" />
               Кейсы
@@ -144,6 +145,10 @@ const Index = () => {
             <TabsTrigger value="inventory" className="data-[state=active]:bg-space-purple">
               <Icon name="Backpack" className="mr-2" />
               Инвентарь
+            </TabsTrigger>
+            <TabsTrigger value="battle" className="data-[state=active]:bg-space-purple">
+              <Icon name="Swords" className="mr-2" />
+              Батл
             </TabsTrigger>
             <TabsTrigger value="upgrade" className="data-[state=active]:bg-space-purple">
               <Icon name="TrendingUp" className="mr-2" />
@@ -155,27 +160,50 @@ const Index = () => {
             </TabsTrigger>
           </TabsList>
 
-          <CaseOpeningLogic 
-            cases={cases}
-            userBalance={userBalance}
-            userInventory={userInventory}
-            onBalanceChange={setUserBalance}
-            onInventoryChange={setUserInventory}
-          />
+          <TabsContent value="cases">
+            <CaseOpeningLogic 
+              cases={cases}
+              userBalance={userBalance}
+              userInventory={userInventory}
+              onBalanceChange={setUserBalance}
+              onInventoryChange={setUserInventory}
+            />
+          </TabsContent>
 
-          <InventoryLogic 
-            userInventory={userInventory}
-            userBalance={userBalance}
-            onInventoryChange={setUserInventory}
-            onBalanceChange={setUserBalance}
-          />
+          <TabsContent value="inventory">
+            <InventoryLogic 
+              userInventory={userInventory}
+              userBalance={userBalance}
+              onInventoryChange={setUserInventory}
+              onBalanceChange={setUserBalance}
+            />
+          </TabsContent>
 
-          <MultiplierSkinUpgrade 
-            inventory={userInventory}
-            balance={userBalance}
-            onBalanceChange={setUserBalance}
-            onInventoryChange={setUserInventory}
-          />
+          <TabsContent value="battle">
+            <CaseBattle 
+              inventory={userInventory}
+              balance={userBalance}
+              onBalanceChange={setUserBalance}
+              onInventoryChange={setUserInventory}
+            />
+          </TabsContent>
+
+          <TabsContent value="upgrade">
+            <MultiplierSkinUpgrade 
+              inventory={userInventory}
+              balance={userBalance}
+              onBalanceChange={setUserBalance}
+              onInventoryChange={setUserInventory}
+            />
+          </TabsContent>
+
+          <TabsContent value="withdraw">
+            <div className="text-center py-20">
+              <Icon name="Construction" className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-xl font-semibold mb-2">В разработке</h3>
+              <p className="text-muted-foreground">Функция вывода скоро будет доступна</p>
+            </div>
+          </TabsContent>
         </Tabs>
       </main>
     </div>
