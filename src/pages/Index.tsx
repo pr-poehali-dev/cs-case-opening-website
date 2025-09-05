@@ -1,20 +1,11 @@
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
-import PaymentMethods from '@/components/cs2/PaymentMethods';
-
-// Import компонентов CS2
-import { playCS2Sound } from '@/components/cs2/CS2SoundManager';
-import CaseRollingAnimation from '@/components/cs2/CaseRollingAnimation';
-import UserInventory from '@/components/cs2/UserInventory';
-import CaseSelector from '@/components/cs2/CaseSelector';
-import SkinUpgrade from '@/components/cs2/SkinUpgrade';
-import SkinWithdrawal from '@/components/cs2/SkinWithdrawal';
+import Header from '@/components/cs2/Header';
+import BackgroundEffects from '@/components/cs2/BackgroundEffects';
+import CaseOpeningLogic from '@/components/cs2/CaseOpeningLogic';
+import InventoryLogic from '@/components/cs2/InventoryLogic';
+import EnhancedSkinUpgrade from '@/components/cs2/EnhancedSkinUpgrade';
 
 interface CaseItem {
   id?: number;
@@ -44,10 +35,6 @@ interface InventoryItem {
 }
 
 const Index = () => {
-  const [isOpening, setIsOpening] = useState(false);
-  const [openedItem, setOpenedItem] = useState<CaseItem | null>(null);
-  const [isRolling, setIsRolling] = useState(false);
-  const [rollingItems, setRollingItems] = useState<CaseItem[]>([]);
   const [userBalance, setUserBalance] = useState(500000);
   const [userInventory, setUserInventory] = useState<InventoryItem[]>([
     { id: 1, name: 'AK-47 | Nebula Storm', rarity: 'rare', value: 6700, image: '/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg' },
@@ -109,130 +96,9 @@ const Index = () => {
     }
   ];
 
-  const [selectedCase, setSelectedCase] = useState<CaseData>(cases[0]);
-  const [showTopUpDialog, setShowTopUpDialog] = useState(false);
-  const [topUpAmount, setTopUpAmount] = useState(0);
-  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-  const [paymentStep, setPaymentStep] = useState<'amount' | 'method' | 'processing' | 'success'>('amount');
-
-  // Функция генерации прокрутки скинов
-  const generateRollingItems = (caseItems: CaseItem[], wonItem: CaseItem) => {
-    const items = [];
-    
-    for (let i = 0; i < 50; i++) {
-      if (i === 35) {
-        items.push({ ...wonItem, isWinner: true });
-      } else {
-        const randomItem = caseItems[Math.floor(Math.random() * caseItems.length)];
-        items.push({ ...randomItem, id: i });
-      }
-    }
-    
-    return items;
-  };
-
-  // Функция выбора выигрышного предмета
-  const selectWinningItem = (caseItems: CaseItem[]) => {
-    const rand = Math.random() * 100;
-    let cumulativeChance = 0;
-    
-    for (const item of caseItems) {
-      cumulativeChance += item.chance;
-      if (rand <= cumulativeChance) {
-        return item;
-      }
-    }
-    
-    return caseItems[0];
-  };
-
-  // Функция открытия кейса
-  const handleOpenCase = () => {
-    if (userBalance < selectedCase.price) return;
-    
-    setUserBalance(prev => prev - selectedCase.price);
-    setIsOpening(true);
-    setIsRolling(true);
-    setOpenedItem(null);
-    
-    playCS2Sound('case_open', 0.5);
-    
-    const wonItem = selectWinningItem(selectedCase.items);
-    const rollingItemsList = generateRollingItems(selectedCase.items, wonItem);
-    setRollingItems(rollingItemsList);
-    
-    // Система тиков при прокрутке
-    const playRollingSounds = () => {
-      const startX = 560;
-      const endX = -4312;
-      const duration = 11760;
-      const totalDistance = startX - endX;
-      
-      const skinWidth = 128;
-      const skinMargin = 16;
-      const skinStep = skinWidth + skinMargin;
-      const centerLine = 400;
-      
-      rollingItemsList.forEach((skin, index) => {
-        const initialLeft = startX + (index * skinStep);
-        const initialRight = initialLeft + skinWidth;
-        const finalLeft = initialLeft + (endX - startX);
-        const finalRight = finalLeft + skinWidth;
-        
-        const willCross = initialLeft > centerLine && finalRight < centerLine;
-        
-        if (willCross) {
-          const distanceToLine = initialLeft - centerLine;
-          const timeToTick = (distanceToLine / totalDistance) * duration;
-          const tickTime = Math.max(200, Math.min(timeToTick, duration - 200));
-          
-          setTimeout(() => {
-            playCS2Sound('roll_tick', 0.2);
-          }, tickTime);
-        }
-      });
-      
-      setTimeout(() => {
-        playCS2Sound('roll_tick', 0.1);
-      }, 100);
-    };
-    
-    playRollingSounds();
-    
-    setTimeout(() => {
-      setIsRolling(false);
-      const actualWonItem = rollingItemsList.find(item => item.isWinner) || wonItem;
-      setOpenedItem(actualWonItem);
-      
-      // Добавить выигранный предмет в инвентарь
-      const newInventoryItem: InventoryItem = {
-        ...actualWonItem,
-        id: Date.now()
-      };
-      setUserInventory(prev => [newInventoryItem, ...prev]);
-      
-      // Звуки выпадения
-      const dropVolume = actualWonItem.rarity === 'ancient' ? 0.8 : 
-                        actualWonItem.rarity === 'legendary' ? 0.7 :
-                        actualWonItem.rarity === 'rare' ? 0.6 : 0.5;
-      playCS2Sound('item_drop', dropVolume);
-      
-      if (actualWonItem.rarity === 'ancient') {
-        setTimeout(() => playCS2Sound('case_unlock', 0.4), 300);
-        setTimeout(() => playCS2Sound('item_drop', 0.3), 600);
-      } else if (actualWonItem.rarity === 'legendary') {
-        setTimeout(() => playCS2Sound('case_unlock', 0.3), 400);
-      }
-      
-    }, 11760);
-  };
-
-  // Функция обработки апгрейда
   const handleUpgrade = (item: InventoryItem, targetRarity: string, cost: number) => {
-    // Удаляем оригинальный предмет из инвентаря
     setUserInventory(prev => prev.filter(invItem => invItem.id !== item.id));
     
-    // Создаем улучшенный предмет
     const rarityMultipliers = {
       uncommon: 1.5,
       rare: 3.0,
@@ -256,138 +122,18 @@ const Index = () => {
       name: item.name.replace(/\s+\(.*?\)$/, '') + ` (${rarityNames[targetRarity as keyof typeof rarityNames]})`
     };
     
-    // Добавляем улучшенный предмет в инвентарь
     setUserInventory(prev => [upgradedItem, ...prev]);
-  };
-
-  // Функция обработки вывода скинов
-  const handleWithdraw = (item: InventoryItem) => {
-    // Удаляем скин из инвентаря (он был успешно выведен)
-    setUserInventory(prev => prev.filter(invItem => invItem.id !== item.id));
-    playCS2Sound('case_unlock', 0.6);
-  };
-
-  // Функция пополнения баланса (быстрые суммы)
-  const handleTopUp = (amount: number) => {
-    setTopUpAmount(amount);
-    setPaymentStep('method');
-  };
-
-  // Функция обработки платежа
-  const handlePayment = async (method: any, amount: number) => {
-    setIsProcessingPayment(true);
-    setPaymentStep('processing');
-    playCS2Sound('case_open', 0.4);
-
-    try {
-      // Симуляция обработки платежа
-      await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 3000));
-      
-      // 95% успешных платежей
-      if (Math.random() > 0.05) {
-        setUserBalance(prev => prev + amount);
-        setPaymentStep('success');
-        playCS2Sound('case_unlock', 0.6);
-        
-        setTimeout(() => {
-          setShowTopUpDialog(false);
-          setPaymentStep('amount');
-          setTopUpAmount(0);
-        }, 2000);
-      } else {
-        throw new Error('Платеж отклонен банком');
-      }
-    } catch (error) {
-      playCS2Sound('roll_tick', 0.4);
-      setPaymentStep('amount');
-      // В реальном приложении здесь будет показ ошибки
-    } finally {
-      setIsProcessingPayment(false);
-    }
-  };
-
-  const resetTopUpDialog = () => {
-    setShowTopUpDialog(false);
-    setPaymentStep('amount');
-    setTopUpAmount(0);
-    setIsProcessingPayment(false);
-  };
-
-  // Функция продажи скина
-  const handleSellItem = (item: InventoryItem) => {
-    // Убираем скин из инвентаря и добавляем 100% от его стоимости к балансу
-    setUserInventory(prev => prev.filter(invItem => invItem.id !== item.id));
-    setUserBalance(prev => prev + item.value);
-    playCS2Sound('item_drop', 0.5);
-  };
-
-  // Функция продажи выпавшего скина
-  const handleSellOpenedItem = (item: CaseItem) => {
-    // Добавляем деньги к балансу (скин уже добавлен в инвентарь)
-    setUserBalance(prev => prev + item.value);
-    // Удаляем скин из инвентаря (он был только что добавлен)
-    setUserInventory(prev => prev.filter(invItem => invItem.name !== item.name || invItem.id !== Date.now()));
-    playCS2Sound('case_unlock', 0.6);
-  };
-
-  // Функция вывода скина в Steam
-  const handleWithdrawToSteam = (item: InventoryItem) => {
-    // Перенаправляем на вкладку вывода с выбранным скином
-    // В реальном приложении здесь будет более сложная логика
-    const withdrawTab = document.querySelector('[value="withdraw"]') as HTMLElement;
-    withdrawTab?.click();
   };
 
   return (
     <div className="min-h-screen bg-space-dark text-white relative overflow-hidden" style={{fontFamily: 'Rajdhani, sans-serif'}}>
-      {/* Cosmic Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-space-dark via-space-deep to-space-dark">
-          <div className="absolute top-0 left-0 w-1/2 h-1/2 opacity-30 animate-stellar-pulse">
-            <img src="/img/05957a50-b9b1-421d-a4f1-25563743c300.jpg" alt="Cosmic" className="w-full h-full object-cover blur-md" />
-          </div>
-          <div className="absolute top-0 right-0 w-1/3 h-1/3 opacity-20 animate-orbit" style={{animationDuration: '30s'}}>
-            <img src="/img/d60c84a4-aa05-46db-b734-003c8041b343.jpg" alt="Nebula" className="w-full h-full object-cover blur-sm rounded-full" />
-          </div>
-          <div className="absolute bottom-0 left-1/4 w-1/3 h-1/3 opacity-15 animate-stellar-pulse" style={{animationDelay: '1s'}}>
-            <img src="/img/9d5b89a8-d29e-45cf-90af-03a9137d0d3e.jpg" alt="Galaxy" className="w-full h-full object-cover blur-sm" />
-          </div>
-        </div>
-      </div>
+      <BackgroundEffects />
       
-      {/* Header */}
-      <header className="relative z-10 bg-space-dark/80 backdrop-blur-sm border-b border-space-purple/30 p-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="text-2xl font-bold bg-gradient-to-r from-space-purple to-space-cyan bg-clip-text text-transparent">
-              🚀 COSMIC CASES
-            </div>
-            <div className="text-sm text-space-cyan">Межгалактические кейсы CS2</div>
-          </div>
-          
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-2">
-              <Icon name="Wallet" className="text-space-gold" />
-              <span className="text-space-gold font-bold text-lg">{userBalance.toLocaleString()}₽</span>
-            </div>
-            
-            <Button 
-              onClick={() => setShowTopUpDialog(true)}
-              className="bg-gradient-to-r from-space-purple to-space-pink hover:opacity-80"
-            >
-              <Icon name="Plus" className="mr-2 w-4 h-4" />
-              Пополнить
-            </Button>
-            
-            <Avatar className="border-2 border-space-purple">
-              <AvatarImage src="https://github.com/shadcn.png" alt="User" />
-              <AvatarFallback className="bg-space-purple text-white">У</AvatarFallback>
-            </Avatar>
-          </div>
-        </div>
-      </header>
+      <Header 
+        userBalance={userBalance}
+        onBalanceChange={setUserBalance}
+      />
 
-      {/* Main Content */}
       <main className="relative z-10 max-w-7xl mx-auto p-6">
         <Tabs defaultValue="cases" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-space-deep/50 border-space-purple/30">
@@ -409,173 +155,30 @@ const Index = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Cases Tab */}
-          <TabsContent value="cases" className="space-y-6">
-            <CaseSelector 
-              cases={cases}
-              selectedCase={selectedCase}
-              onCaseSelect={setSelectedCase}
-              onOpenCase={handleOpenCase}
-              balance={userBalance}
-            />
-          </TabsContent>
+          <CaseOpeningLogic 
+            cases={cases}
+            userBalance={userBalance}
+            userInventory={userInventory}
+            onBalanceChange={setUserBalance}
+            onInventoryChange={setUserInventory}
+          />
 
-          {/* Inventory Tab */}
-          <TabsContent value="inventory">
-            <UserInventory 
-              inventory={userInventory} 
-              onSellItem={handleSellItem}
-              onWithdrawItem={handleWithdrawToSteam}
-            />
-          </TabsContent>
+          <InventoryLogic 
+            userInventory={userInventory}
+            userBalance={userBalance}
+            onInventoryChange={setUserInventory}
+            onBalanceChange={setUserBalance}
+          />
 
-          {/* Upgrade Tab */}
-          <TabsContent value="upgrade">
-            <SkinUpgrade 
-              inventory={userInventory}
-              balance={userBalance}
-              onUpgrade={handleUpgrade}
-              onBalanceChange={setUserBalance}
-            />
-          </TabsContent>
-
-          {/* Withdraw Tab */}
-          <TabsContent value="withdraw">
-            <SkinWithdrawal 
-              inventory={userInventory}
-              onWithdraw={handleWithdraw}
-            />
-          </TabsContent>
+          <EnhancedSkinUpgrade 
+            inventory={userInventory}
+            balance={userBalance}
+            onUpgrade={handleUpgrade}
+            onBalanceChange={setUserBalance}
+            onInventoryChange={setUserInventory}
+          />
         </Tabs>
       </main>
-
-      {/* Opening Animation */}
-      {isOpening && (
-        <CaseRollingAnimation
-          isRolling={isRolling}
-          rollingItems={rollingItems}
-          openedItem={openedItem}
-          onClose={() => {
-            setIsOpening(false);
-            setOpenedItem(null);
-            setRollingItems([]);
-          }}
-          onSellItem={handleSellOpenedItem}
-          onOpenAgain={handleOpenCase}
-        />
-      )}
-
-      {/* Top Up Dialog */}
-      <Dialog open={showTopUpDialog} onOpenChange={resetTopUpDialog}>
-        <DialogContent className="bg-space-deep border-space-purple/30 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center space-x-2">
-              <Icon name="Wallet" className="text-space-gold" />
-              <span>Пополнить баланс</span>
-              {paymentStep !== 'amount' && (
-                <Button
-                  onClick={() => setPaymentStep('amount')}
-                  variant="ghost"
-                  size="sm"
-                  className="ml-auto text-gray-400 hover:text-white"
-                >
-                  <Icon name="ArrowLeft" className="w-4 h-4" />
-                </Button>
-              )}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-6">
-            {/* Current Balance */}
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-2">Текущий баланс</div>
-              <div className="text-3xl font-bold text-space-gold mb-4">{userBalance.toLocaleString()}₽</div>
-            </div>
-
-            {paymentStep === 'amount' && (
-              <>
-                {/* Quick Amount Selection */}
-                <div className="space-y-4">
-                  <h4 className="text-space-cyan font-semibold">Быстрый выбор суммы</h4>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[1000, 5000, 10000, 25000, 50000, 100000].map((amount) => (
-                      <Button
-                        key={amount}
-                        onClick={() => handleTopUp(amount)}
-                        className="bg-space-purple/20 hover:bg-space-purple/40 border border-space-purple/50 text-white p-4 h-auto flex flex-col"
-                      >
-                        <div className="text-lg font-bold">+{amount.toLocaleString()}₽</div>
-                        <div className="text-xs text-gray-400">
-                          {amount >= 50000 ? '🚀 Выгодно' : amount >= 10000 ? '⭐ Популярно' : '💰 Базовый'}
-                        </div>
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                <Button
-                  onClick={() => setPaymentStep('method')}
-                  className="w-full bg-gradient-to-r from-space-purple to-space-pink hover:opacity-80"
-                >
-                  <Icon name="CreditCard" className="mr-2 w-4 h-4" />
-                  Выбрать способ оплаты
-                </Button>
-              </>
-            )}
-
-            {paymentStep === 'method' && (
-              <PaymentMethods
-                selectedAmount={topUpAmount}
-                onSelectMethod={handlePayment}
-                onCustomAmount={setTopUpAmount}
-              />
-            )}
-
-            {paymentStep === 'processing' && (
-              <div className="text-center py-8">
-                <div className="animate-spin w-16 h-16 mx-auto mb-4">
-                  <Icon name="Loader" className="w-16 h-16 text-space-purple" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Обрабатываем платеж</h3>
-                <p className="text-gray-400">Не закрывайте это окно...</p>
-                <div className="bg-space-dark/50 p-4 rounded-lg mt-4">
-                  <p className="text-sm text-space-cyan">
-                    Сумма к зачислению: <span className="font-bold text-space-gold">{topUpAmount.toLocaleString()}₽</span>
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {paymentStep === 'success' && (
-              <div className="text-center py-8">
-                <div className="text-6xl mb-4">✅</div>
-                <h3 className="text-3xl font-bold text-space-green mb-2">Платеж успешен!</h3>
-                <p className="text-gray-400 mb-4">Средства зачислены на ваш баланс</p>
-                <div className="bg-space-green/10 border border-space-green/30 p-4 rounded-lg">
-                  <p className="text-space-green font-bold">
-                    +{topUpAmount.toLocaleString()}₽ зачислено
-                  </p>
-                  <p className="text-sm text-gray-400 mt-1">
-                    Новый баланс: {userBalance.toLocaleString()}₽
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {paymentStep === 'amount' && (
-              <div className="flex space-x-3">
-                <Button
-                  onClick={resetTopUpDialog}
-                  variant="outline"
-                  className="flex-1 border-space-purple/30 hover:bg-space-purple/20"
-                >
-                  Отмена
-                </Button>
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
