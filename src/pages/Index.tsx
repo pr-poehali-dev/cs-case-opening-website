@@ -5,7 +5,7 @@ import Header from '@/components/cs2/Header';
 import BackgroundEffects from '@/components/cs2/BackgroundEffects';
 import CaseOpeningLogic from '@/components/cs2/CaseOpeningLogic';
 import InventoryLogic from '@/components/cs2/InventoryLogic';
-import EnhancedSkinUpgrade from '@/components/cs2/EnhancedSkinUpgrade';
+import MultiplierSkinUpgrade from '@/components/cs2/MultiplierSkinUpgrade';
 
 interface CaseItem {
   id?: number;
@@ -170,10 +170,9 @@ const Index = () => {
             onBalanceChange={setUserBalance}
           />
 
-          <EnhancedSkinUpgrade 
+          <MultiplierSkinUpgrade 
             inventory={userInventory}
             balance={userBalance}
-            onUpgrade={handleUpgrade}
             onBalanceChange={setUserBalance}
             onInventoryChange={setUserInventory}
           />
