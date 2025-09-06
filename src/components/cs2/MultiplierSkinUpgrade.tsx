@@ -27,18 +27,35 @@ const MULTIPLIERS = [
 ];
 
 const AVAILABLE_SKINS: CaseItem[] = [
-  { id: 1001, name: 'AK-47 | Redline', image: '/api/placeholder/150/150', rarity: 'rare', value: 1200 },
-  { id: 1002, name: 'M4A4 | Asiimov', image: '/api/placeholder/150/150', rarity: 'rare', value: 1800 },
-  { id: 1003, name: 'AWP | BOOM', image: '/api/placeholder/150/150', rarity: 'rare', value: 2200 },
-  { id: 1004, name: 'AK-47 | Vulcan', image: '/api/placeholder/150/150', rarity: 'legendary', value: 3500 },
-  { id: 1005, name: 'AWP | Lightning Strike', image: '/api/placeholder/150/150', rarity: 'legendary', value: 4200 },
-  { id: 1006, name: 'M4A4 | Howl', image: '/api/placeholder/150/150', rarity: 'legendary', value: 5800 },
-  { id: 1007, name: 'AK-47 | Fire Serpent', image: '/api/placeholder/150/150', rarity: 'ancient', value: 12000 },
-  { id: 1008, name: 'AWP | Medusa', image: '/api/placeholder/150/150', rarity: 'ancient', value: 15000 },
-  { id: 1009, name: 'Karambit | Fade', image: '/api/placeholder/150/150', rarity: 'ancient', value: 18000 },
-  { id: 1010, name: 'AWP | Dragon Lore', image: '/api/placeholder/150/150', rarity: 'ancient', value: 25000 },
-  { id: 1011, name: 'M4A4 | Howl FN', image: '/api/placeholder/150/150', rarity: 'ancient', value: 35000 },
-  { id: 1012, name: 'Karambit | Ruby', image: '/api/placeholder/150/150', rarity: 'ancient', value: 45000 }
+  // Бюджетные скины из Budget Case
+  { id: 1001, name: 'P250 | Sand Dune', image: '/img/236b445b-e695-4fe7-b87e-901eb42931cc.jpg', rarity: 'common', value: 50 },
+  { id: 1002, name: 'Glock-18 | Sand Dune', image: '/img/2331b718-3961-4507-a01a-516fd5f4dd17.jpg', rarity: 'common', value: 450 },
+  { id: 1003, name: 'MP9 | Sand Dashed', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou6r8FABz7P7YKAJF4N27mL-HnvD8J_WDxT8AuMEg3b2VrNvxigXj-kVsYDz6I4WQIwE8MAnT_AW9w-3xxcjr7i_Bt2k', rarity: 'common', value: 280 },
+  { id: 1004, name: 'UMP-45 | Mudder', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo7e1f1Jf0Ob3YjoXuY-0mL-Zkvb4DL7VqWNU6dNoxO2Z8Ij0m1Hj_UU-YWqgctScJgRsZ1DR81LsxObxxcjrh7iB6ww', rarity: 'uncommon', value: 820 },
+  { id: 1005, name: 'Galil AR | Sandstorm', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alDLFIhGJU4MBpmOTI8LP6jgTl-hI5YWv6JoKWcQ9sY1zR8gTtlbrxxcjrUGFNOp8', rarity: 'uncommon', value: 1560 },
+  { id: 1006, name: 'M4A1-S | Boreal Forest', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uOmjb-LmsrwO67VhWpU6dNoxO2Z8Ij0m1Hj_UU-YWqgctScJgRsZ1DR81LsxObxxcjrh7iB6ww', rarity: 'rare', value: 4500 },
+  { id: 1007, name: 'AK-47 | Safari Mesh', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV09m7hoO0mvLwOq7c2D8J6sYg2bmQrI2t2AThrhY5MGynLYKSJwQ9Y1nW8gK4xefxxcjrrsyTrJU', rarity: 'rare', value: 7500 },
+  
+  // Средние скины из Standard Case
+  { id: 1008, name: 'M4A4 | Desert-Strike', image: '/img/a36abddd-10b2-4164-807c-a388a3db3e42.jpg', rarity: 'common', value: 850 },
+  { id: 1009, name: 'AK-47 | Blue Laminate', image: '/img/6d75fe2e-90c6-40ae-b546-bbbd9517fdad.jpg', rarity: 'common', value: 2500 },
+  { id: 1010, name: 'AWP | Worm God', image: '/img/aca5cd59-01d6-45c4-9a28-858907242d7c.jpg', rarity: 'uncommon', value: 4200 },
+  { id: 1011, name: 'M4A1-S | Guardian', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-LmufhjKnFl2xU7cNo2L3ApYj03Qy2rko-YmihJI6SdgI8N1CD_VG9w7q-jcC7tMvIzydlviEjsHjZgVXp1kFj_Fto', rarity: 'uncommon', value: 6500 },
+  { id: 1012, name: 'AK-47 | Redline', image: '/img/d9b4799f-9ddb-4e07-8128-aa9174b80231.jpg', rarity: 'rare', value: 10200 },
+  { id: 1013, name: 'AWP | Graphite', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTZk2pH_Pp9g-7J4bP5iUazrl1rN2HwdtWTcgJvZAyC8lK5yLrng5G76pTAzSFiuyV3snvD30vgwFX3Voc', rarity: 'rare', value: 18500 },
+  { id: 1014, name: 'AK-47 | Vulcan', image: '/img/0f8e56ef-15e3-4d26-83ce-251dd48aa2ab.jpg', rarity: 'legendary', value: 40000 },
+  { id: 1015, name: 'AK-47 | Fire Serpent', image: '/img/a72ff8d4-ef6e-4a7d-9df8-17a65ce9895c.jpg', rarity: 'legendary', value: 172000 },
+  
+  // Премиум скины из Premium Case
+  { id: 1016, name: 'AK-47 | Redline FT', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV08-jhIWZlP_1IbzVqWdY781lxOyZpI-s3QXg-kBrMG71LdWRdlQ4Z13X8gK4wejxxcjrp8hxGyQ', rarity: 'common', value: 10200 },
+  { id: 1017, name: 'M4A4 | Asiimov FT', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LzE893w2gXirUdrMT_wctSSJwE8aV_Z_wS4kuvxxcjrvMuayiAysyF2s2HSgVXp1uqCDKdY', rarity: 'uncommon', value: 28500 },
+  { id: 1018, name: 'AK-47 | Vulcan FT', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0rCXoNuniAK3-0Y5ZmygJoTGJwA3Zg6D-gW6xurxxcjrKKtxmw', rarity: 'uncommon', value: 45000 },
+  { id: 1019, name: 'AWP | Lightning Strike FN', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTck3lu5MB0mOTE8YjyjQ3i-kVqMG3zdYbBdwVtM1DTrAC3w-3xxcjrQyqAHTY', rarity: 'rare', value: 78000 },
+  { id: 1020, name: 'M4A1-S | Knight FN', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2L6So4v33AbkrUpuYT_7JYXHJAU-ZFzTrlO2lebxxcjrt54hOhk', rarity: 'rare', value: 125000 },
+  { id: 1021, name: 'AK-47 | Case Hardened MW', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0r2R84mjjgzirBBoZGv2IYSTdlc5MgrQ8lW9wOrxxcjrjW_L5g', rarity: 'rare', value: 168000 },
+  { id: 1022, name: 'AK-47 | Fire Serpent FT', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV18-jhpWOk-TLPr7Vn35c4ctx0r2R84mgig7mrElqZG3wI9LBdVI-Y16C-Va4xr_rhJLvtcubm3c17yF0tHfUl0fmhUkaarcI0KHYFQ3QKw', rarity: 'legendary', value: 172000 },
+  { id: 1023, name: 'M4A4 | Howl FT', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LzE893w2gXirUdrMT_wctSSJwE8aV_Z_wS4kuvxxcjrvMuayiAysyF2s2HSgVXp1uqCDKdY', rarity: 'legendary', value: 385000 },
+  { id: 1024, name: 'AWP | Dragon Lore FT', image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTQgXtu5Mx2gv3--Y3nKV_F-ENvY2yldobHdFI6ZQqD-lS-wr2-hJS-tZuYzSdjuidw4C7cygv33088X8Wh0Q', rarity: 'ancient', value: 980000 }
 ];
 
 export default function MultiplierSkinUpgrade({ inventory, balance, onBalanceChange, onInventoryChange }: MultiplierSkinUpgradeProps) {
