@@ -94,6 +94,42 @@ const Index = () => {
         { name: 'M4A4 | Howl FT', rarity: 'legendary', chance: 2.0, value: 385000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LzE893w2gXirUdrMT_wctSSJwE8aV_Z_wS4kuvxxcjrvMuayiAysyF2s2HSgVXp1uqCDKdY' },
         { name: 'AWP | Dragon Lore FT', rarity: 'ancient', chance: 0.5, value: 980000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTQgXtu5Mx2gv3--Y3nKV_F-ENvY2yldobHdFI6ZQqD-lS-wr2-hJS-tZuYzSdjuidw4C7cygv33088X8Wh0Q' }
       ]
+    },
+    {
+      id: 4,
+      name: 'Diamond Case',
+      price: 10000,
+      image: '/img/0f8e56ef-15e3-4d26-83ce-251dd48aa2ab.jpg',
+      rarity: 'legendary',
+      items: [
+        { name: 'AK-47 | Vulcan FN', rarity: 'common', chance: 20.0, value: 95000, image: '/img/0f8e56ef-15e3-4d26-83ce-251dd48aa2ab.jpg' },
+        { name: 'M4A4 | Asiimov FT', rarity: 'common', chance: 18.0, value: 82000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LzE893w2gXirUdrMT_wctSSJwE8aV_Z_wS4kuvxxcjrvMuayiAysyF2s2HSgVXp1uqCDKdY' },
+        { name: 'AWP | Lightning Strike FN', rarity: 'uncommon', chance: 16.0, value: 115000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTck3lu5MB0mOTE8YjyjQ3i-kVqMG3zdYbBdwVtM1DTrAC3w-3xxcjrQyqAHTY' },
+        { name: 'M4A1-S | Knight FN', rarity: 'uncommon', chance: 14.0, value: 168000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2L6So4v33AbkrUpuYT_7JYXHJAU-ZFzTrlO2lebxxcjrt54hOhk' },
+        { name: 'AK-47 | Fire Serpent MW', rarity: 'rare', chance: 12.0, value: 285000, image: '/img/a72ff8d4-ef6e-4a7d-9df8-17a65ce9895c.jpg' },
+        { name: 'M4A4 | Howl FT', rarity: 'rare', chance: 8.0, value: 425000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LzE893w2gXirUdrMT_wctSSJwE8aV_Z_wS4kuvxxcjrvMuayiAysyF2s2HSgVXp1uqCDKdY' },
+        { name: 'AWP | Dragon Lore FT', rarity: 'legendary', chance: 6.0, value: 1050000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTQgXtu5Mx2gv3--Y3nKV_F-ENvY2yldobHdFI6ZQqD-lS-wr2-hJS-tZuYzSdjuidw4C7cygv33088X8Wh0Q' },
+        { name: 'Karambit | Doppler FN', rarity: 'legendary', chance: 4.0, value: 1250000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DAQ1JmMR1osbaqPQJz7ODYfi9W9eOmhJKbluXLP7LWnn8fvpIi2LzFrNmsiQbkqRdvZGDyJNSScgA3Y1GE-wC8yejxxcjrPRIuRFo' },
+        { name: 'AWP | Dragon Lore FN', rarity: 'ancient', chance: 2.0, value: 2800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTQgXtu5Mx2gv3--Y3nKV_F-ENvY2yldobHdFI6ZQqD-lS-wr2-hJS-tZuYzSdjuidw4C7cygv330884aMZ0Q' }
+      ]
+    },
+    {
+      id: 5,
+      name: 'Elite Case',
+      price: 50000,
+      image: '/img/a72ff8d4-ef6e-4a7d-9df8-17a65ce9895c.jpg',
+      rarity: 'ancient',
+      items: [
+        { name: 'AK-47 | Fire Serpent MW', rarity: 'common', chance: 22.0, value: 320000, image: '/img/a72ff8d4-ef6e-4a7d-9df8-17a65ce9895c.jpg' },
+        { name: 'M4A4 | Howl MW', rarity: 'common', chance: 18.0, value: 650000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LyW99nxjFfj_kA5ZmHwIofDdVNqNFzY8wS7le-9m9bi65qFx8Mb' },
+        { name: 'AWP | Dragon Lore FT', rarity: 'uncommon', chance: 16.0, value: 1150000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTQgXtu5Mx2gv3--Y3nKV_F-ENvY2yldobHdFI6ZQqD-lS-wr2-hJS-tZuYzSdjuidw4C7cygv33088X8Wh0Q' },
+        { name: 'Karambit | Doppler FN', rarity: 'uncommon', chance: 14.0, value: 1400000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DAQ1JmMR1osbaqPQJz7ODYfi9W9eOmhJKbluXLP7LWnn8fvpIi2LzFrNmsiQbkqRdvZGDyJNSScgA3Y1GE-wC8yejxxcjrPRIuRFo' },
+        { name: 'AWP | Gungnir FT', rarity: 'rare', chance: 12.0, value: 2200000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q5aO2bTLIb_ummJW4NE_2r3H89Sj2FXnrktrNWGnLYGRdwQ3YwmC-Qe-yL-71sC0uZydn3E2vykqsCuPzxW1hU0fasZOhfbOVxzAUe7-1Bc' },
+        { name: 'AWP | Dragon Lore MW', rarity: 'rare', chance: 8.0, value: 2750000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTQgXtu5Mx2gv3--Y3nKV_F-ENvY2yldobHdFI6ZQqD-lS-wr2-hJS-tZuYzSc2vyd2sn3ZyQv33086IuWBRA' },
+        { name: 'AWP | Dragon Lore FN', rarity: 'legendary', chance: 5.0, value: 3200000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17P7NdTRH-t2-q4SClvD7PYTQgXtu5Mx2gv3--Y3nKV_F-ENvY2yldobHdFI6ZQqD-lS-wr2-hJS-tZuYzSdjuidw4C7cygv330884aMZ0Q' },
+        { name: 'Karambit | Crimson Web FN', rarity: 'legendary', chance: 3.5, value: 4800000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DAQ1JmMR1osbaqPQJz7ODYfi9W9eOmgIGZnuTgDLfYkWNF18l4jeHVyoHwjVWx-0Q_MGH0LdXGJwNrYgqGq1C-366x0p63sBT0' },
+        { name: 'M4A4 | Howl FN', rarity: 'ancient', chance: 1.5, value: 6500000, image: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO-jb-DmufnjKnFl2xU7cNo2LyWrNv00FfkqBBrZmnxIdPEcg9oZlyE-1G6wujxxcjr6TYqeSI' }
+      ]
     }
   ];
 
