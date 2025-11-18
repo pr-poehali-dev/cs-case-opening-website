@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -25,7 +26,7 @@ interface CaseSelectorProps {
   cases: CaseData[];
   selectedCase: CaseData;
   onCaseSelect: (caseData: CaseData) => void;
-  onOpenCase: () => void;
+  onOpenCase: (count: number) => void;
   balance: number;
 }
 
@@ -56,6 +57,17 @@ export default function CaseSelector({
   onOpenCase, 
   balance 
 }: CaseSelectorProps) {
+  const [openCount, setOpenCount] = React.useState(1);
+  const maxOpens = Math.min(10, Math.floor(balance / selectedCase.price));
+
+  const handleIncrement = () => {
+    if (openCount < maxOpens) setOpenCount(openCount + 1);
+  };
+
+  const handleDecrement = () => {
+    if (openCount > 1) setOpenCount(openCount - 1);
+  };
+
   return (
     <div className="space-y-6">
       {/* Available Cases */}
@@ -101,17 +113,14 @@ export default function CaseSelector({
                   </div>
 
                   <Button 
-                    className={`w-full ${
-                      selectedCase.id === caseData.id 
-                        ? 'bg-gradient-to-r from-space-purple to-space-cyan' 
-                        : 'bg-space-purple'
-                    }`}
+                    className="w-full bg-gradient-to-r from-space-purple to-space-cyan hover:opacity-90"
                     onClick={(e) => {
                       e.stopPropagation();
                       onCaseSelect(caseData);
+                      onOpenCase(1);
                     }}
                   >
-                    {selectedCase.id === caseData.id ? 'Выбрано ✓' : 'Выбрать'}
+                    Открыть кейс
                   </Button>
                 </CardContent>
               </Card>
