@@ -52,6 +52,7 @@ const CaseOpeningLogic = ({
   const [isRolling, setIsRolling] = useState(false);
   const [rollingItems, setRollingItems] = useState<CaseItem[]>([]);
   const [selectedCase, setSelectedCase] = useState<CaseData>(cases[0]);
+  const [showPreview, setShowPreview] = useState(false);
 
   const generateRollingItems = (caseItems: CaseItem[], wonItem: CaseItem) => {
     const items = [];
@@ -172,10 +173,64 @@ const CaseOpeningLogic = ({
           cases={cases}
           selectedCase={selectedCase}
           onCaseSelect={setSelectedCase}
-          onOpenCase={handleOpenCase}
+          onOpenCase={() => setShowPreview(true)}
           balance={userBalance}
         />
       </TabsContent>
+
+      {showPreview && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <div className="bg-space-dark border-2 border-space-purple rounded-lg max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-space-dark border-b border-space-purple/30 p-4 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-space-purple">{selectedCase.name}</h2>
+              <button onClick={() => setShowPreview(false)} className="text-gray-400 hover:text-white">
+                <Icon name="X" size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+                {selectedCase.items.map((item, idx) => (
+                  <div key={idx} className={`bg-space-deep/50 rounded-lg border-2 p-3 ${
+                    item.rarity === 'ancient' ? 'border-red-500' :
+                    item.rarity === 'legendary' ? 'border-space-purple' :
+                    item.rarity === 'rare' ? 'border-space-cyan' :
+                    item.rarity === 'uncommon' ? 'border-blue-400' : 'border-gray-400'
+                  }`}>
+                    <div className="aspect-square bg-gradient-to-br from-space-purple/20 to-space-cyan/20 rounded-lg mb-2 overflow-hidden relative">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <div className="absolute top-1 right-1 bg-space-gold text-black px-2 py-0.5 rounded text-xs font-bold">
+                        {item.chance}%
+                      </div>
+                    </div>
+                    <h4 className="text-white text-sm font-semibold mb-1 truncate">{item.name}</h4>
+                    <p className="text-space-gold text-xs">{item.value}₽</p>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex gap-4 justify-center">
+                <button 
+                  onClick={() => setShowPreview(false)}
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                >
+                  Назад
+                </button>
+                <button 
+                  onClick={() => {
+                    setShowPreview(false);
+                    handleOpenCase();
+                  }}
+                  disabled={userBalance < selectedCase.price}
+                  className="px-8 py-3 bg-gradient-to-r from-space-purple to-space-cyan hover:shadow-lg hover:shadow-space-purple/50 text-white rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Открыть за {selectedCase.price}₽
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {isOpening && (
         <CaseRollingAnimation
