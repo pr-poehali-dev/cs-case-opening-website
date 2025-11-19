@@ -17,6 +17,7 @@ interface CaseRollingAnimationProps {
   onClose: () => void;
   onSellItem?: (item: CaseItem) => void;
   onOpenAgain?: () => void;
+  hideButtons?: boolean;
 }
 
 const getRarityColor = (rarity: string) => {
@@ -45,7 +46,8 @@ export default function CaseRollingAnimation({
   openedItem, 
   onClose,
   onSellItem,
-  onOpenAgain
+  onOpenAgain,
+  hideButtons = false
 }: CaseRollingAnimationProps) {
   return (
     <div className="fixed inset-0 bg-space-dark/95 backdrop-blur-md flex items-center justify-center z-50">
@@ -154,38 +156,40 @@ export default function CaseRollingAnimation({
               </div>
             </div>
 
-            <div className="flex gap-4 justify-center flex-wrap">
-              <button 
-                onClick={onClose}
-                className="px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-500 text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                ← Назад
-              </button>
-              
-              {onSellItem && (
+            {!hideButtons && (
+              <div className="flex gap-4 justify-center flex-wrap">
                 <button 
-                  onClick={() => {
-                    onSellItem(openedItem);
-                    onClose();
-                  }}
-                  className="px-6 py-3 bg-gradient-to-r from-space-green to-green-500 text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  onClick={onClose}
+                  className="px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-500 text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
-                  💰 Продать ({openedItem.value.toLocaleString()}₽)
+                  ← Назад
                 </button>
-              )}
-              
-              {onOpenAgain && (
-                <button 
-                  onClick={() => {
-                    onClose();
-                    setTimeout(() => onOpenAgain(), 300);
-                  }}
-                  className="px-6 py-3 bg-gradient-to-r from-space-purple to-space-pink text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                >
-                  🎰 Крутить еще раз
-                </button>
-              )}
-            </div>
+                
+                {onSellItem && (
+                  <button 
+                    onClick={() => {
+                      onSellItem(openedItem);
+                      onClose();
+                    }}
+                    className="px-6 py-3 bg-gradient-to-r from-space-green to-green-500 text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  >
+                    💰 Продать ({openedItem.value.toLocaleString()}₽)
+                  </button>
+                )}
+                
+                {onOpenAgain && (
+                  <button 
+                    onClick={() => {
+                      onClose();
+                      setTimeout(() => onOpenAgain(), 300);
+                    }}
+                    className="px-6 py-3 bg-gradient-to-r from-space-purple to-space-pink text-white font-bold rounded-lg hover:opacity-80 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  >
+                    🎰 Крутить еще раз
+                  </button>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

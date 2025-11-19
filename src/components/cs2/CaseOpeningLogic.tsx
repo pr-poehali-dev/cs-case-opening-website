@@ -54,6 +54,10 @@ const CaseOpeningLogic = ({
   const [selectedCase, setSelectedCase] = useState<CaseData>(cases[0]);
   const [showPreview, setShowPreview] = useState(false);
   const [openCount, setOpenCount] = useState(1);
+  const [multiOpenResults, setMultiOpenResults] = useState<CaseItem[]>([]);
+  const [currentOpenIndex, setCurrentOpenIndex] = useState(0);
+  const [isMultiOpen, setIsMultiOpen] = useState(false);
+  const [showFinalResults, setShowFinalResults] = useState(false);
 
   const generateRollingItems = (caseItems: CaseItem[], wonItem: CaseItem) => {
     const items = [];
@@ -84,20 +88,13 @@ const CaseOpeningLogic = ({
     return caseItems[0];
   };
 
-  const handleOpenCase = (count: number = 1) => {
-    const totalCost = selectedCase.price * count;
-    if (userBalance < totalCost) return;
-    
-    onBalanceChange(userBalance - totalCost);
-    setIsOpening(true);
-    setIsRolling(true);
-    setOpenedItem(null);
-    
+  const openSingleCase = (onComplete: (item: CaseItem) => void) => {
     playCS2Sound('case_open', 0.5);
     
     const wonItem = selectWinningItem(selectedCase.items);
     const rollingItemsList = generateRollingItems(selectedCase.items, wonItem);
     setRollingItems(rollingItemsList);
+    setIsRolling(true);
     
     const playRollingSounds = () => {
       const startX = 560;
@@ -139,13 +136,6 @@ const CaseOpeningLogic = ({
     setTimeout(() => {
       setIsRolling(false);
       const actualWonItem = rollingItemsList.find(item => item.isWinner) || wonItem;
-      setOpenedItem(actualWonItem);
-      
-      const newInventoryItem: InventoryItem = {
-        ...actualWonItem,
-        id: Date.now()
-      };
-      onInventoryChange([newInventoryItem, ...userInventory]);
       
       const dropVolume = actualWonItem.rarity === 'ancient' ? 0.8 : 
                         actualWonItem.rarity === 'legendary' ? 0.7 :
@@ -159,13 +149,76 @@ const CaseOpeningLogic = ({
         setTimeout(() => playCS2Sound('case_unlock', 0.3), 400);
       }
       
+      onComplete(actualWonItem);
     }, 11760);
+  };
+
+  const handleOpenCase = (count: number = 1) => {
+    const totalCost = selectedCase.price * count;
+    if (userBalance < totalCost) return;
+    
+    onBalanceChange(userBalance - totalCost);
+    setIsOpening(true);
+    setOpenedItem(null);
+    setMultiOpenResults([]);
+    setCurrentOpenIndex(0);
+    
+    if (count === 1) {
+      setIsMultiOpen(false);
+      openSingleCase((wonItem) => {
+        setOpenedItem(wonItem);
+        const newInventoryItem: InventoryItem = {
+          ...wonItem,
+          id: Date.now()
+        };
+        onInventoryChange([newInventoryItem, ...userInventory]);
+      });
+    } else {
+      setIsMultiOpen(true);
+      const results: CaseItem[] = [];
+      
+      const openNext = (index: number) => {
+        if (index >= count) {
+          setShowFinalResults(true);
+          setIsMultiOpen(false);
+          
+          const newItems = results.map((item, idx) => ({
+            ...item,
+            id: Date.now() + idx
+          }));
+          onInventoryChange([...newItems, ...userInventory]);
+          return;
+        }
+        
+        setCurrentOpenIndex(index + 1);
+        openSingleCase((wonItem) => {
+          results.push(wonItem);
+          setMultiOpenResults([...results]);
+          setTimeout(() => openNext(index + 1), 500);
+        });
+      };
+      
+      openNext(0);
+    }
   };
 
   const handleSellOpenedItem = (item: CaseItem) => {
     onBalanceChange(userBalance + item.value);
     onInventoryChange(userInventory.filter(invItem => invItem.name !== item.name || invItem.id !== Date.now()));
     playCS2Sound('case_unlock', 0.6);
+  };
+
+  const handleSellAllItems = () => {
+    const totalValue = multiOpenResults.reduce((sum, item) => sum + item.value, 0);
+    onBalanceChange(userBalance + totalValue);
+    
+    const itemIds = multiOpenResults.map((_, idx) => Date.now() + idx);
+    onInventoryChange(userInventory.filter(invItem => !itemIds.includes(invItem.id)));
+    
+    playCS2Sound('case_unlock', 0.6);
+    setShowFinalResults(false);
+    setIsOpening(false);
+    setMultiOpenResults([]);
   };
 
   return (
@@ -285,19 +338,146 @@ const CaseOpeningLogic = ({
         );
       })()}
 
-      {isOpening && (
-        <CaseRollingAnimation
-          isRolling={isRolling}
-          rollingItems={rollingItems}
-          openedItem={openedItem}
-          onClose={() => {
-            setIsOpening(false);
-            setOpenedItem(null);
-            setRollingItems([]);
-          }}
-          onSellItem={handleSellOpenedItem}
-          onOpenAgain={handleOpenCase}
-        />
+      {isOpening && !showFinalResults && (
+        <div className="fixed inset-0 bg-space-dark/95 backdrop-blur-md z-50">
+          {isMultiOpen && (
+            <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-space-deep/80 border-2 border-space-purple rounded-lg px-6 py-3 z-10">
+              <p className="text-white text-xl font-bold">Открываем кейсы: {currentOpenIndex} / {openCount}</p>
+            </div>
+          )}
+          
+          {isMultiOpen && multiOpenResults.length > 0 && (
+            <div className="absolute top-24 left-8 right-8 z-10">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-6xl mx-auto">
+                {multiOpenResults.map((item, idx) => (
+                  <div key={idx} className={`bg-space-deep/90 rounded-lg border-2 p-2 animate-fade-in ${
+                    item.rarity === 'ancient' ? 'border-red-500' :
+                    item.rarity === 'legendary' ? 'border-space-purple' :
+                    item.rarity === 'rare' ? 'border-space-cyan' :
+                    item.rarity === 'uncommon' ? 'border-blue-400' : 'border-gray-400'
+                  }`}>
+                    <div className="aspect-square bg-gradient-to-br from-space-purple/20 to-space-cyan/20 rounded overflow-hidden mb-1">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    </div>
+                    <p className="text-white text-xs truncate font-semibold">{item.name}</p>
+                    <p className="text-space-gold text-xs">{item.value}₽</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <div className="flex items-center justify-center min-h-screen">
+            <CaseRollingAnimation
+              isRolling={isRolling}
+              rollingItems={rollingItems}
+              openedItem={openedItem}
+              onClose={() => {
+                setIsOpening(false);
+                setOpenedItem(null);
+                setRollingItems([]);
+                setMultiOpenResults([]);
+                setIsMultiOpen(false);
+              }}
+              onSellItem={handleSellOpenedItem}
+              onOpenAgain={handleOpenCase}
+              hideButtons={isMultiOpen}
+            />
+          </div>
+        </div>
+      )}
+
+      {showFinalResults && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-space-dark border-2 border-space-purple rounded-lg max-w-6xl w-full my-8">
+            <div className="sticky top-0 bg-space-dark border-b border-space-purple/30 p-4">
+              <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-space-gold to-space-cyan bg-clip-text text-transparent">
+                🎉 Результаты открытия!
+              </h2>
+              <p className="text-center text-space-cyan mt-2">
+                Открыто кейсов: {multiOpenResults.length}
+              </p>
+            </div>
+            
+            <div className="p-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+                {multiOpenResults.map((item, idx) => (
+                  <div key={idx} className={`bg-space-deep/50 rounded-lg border-2 p-3 animate-fade-in ${
+                    item.rarity === 'ancient' ? 'border-red-500' :
+                    item.rarity === 'legendary' ? 'border-space-purple' :
+                    item.rarity === 'rare' ? 'border-space-cyan' :
+                    item.rarity === 'uncommon' ? 'border-blue-400' : 'border-gray-400'
+                  }`}>
+                    <div className="aspect-square bg-gradient-to-br from-space-purple/20 to-space-cyan/20 rounded-lg mb-2 overflow-hidden relative">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    </div>
+                    <h4 className="text-white text-sm font-semibold mb-1 truncate">{item.name}</h4>
+                    <p className="text-space-gold text-sm font-bold">{item.value.toLocaleString()}₽</p>
+                    <p className={`text-xs mt-1 ${
+                      item.rarity === 'ancient' ? 'text-red-400' :
+                      item.rarity === 'legendary' ? 'text-purple-400' :
+                      item.rarity === 'rare' ? 'text-cyan-400' :
+                      item.rarity === 'uncommon' ? 'text-blue-400' : 'text-gray-400'
+                    }`}>
+                      {item.rarity === 'ancient' ? 'Древний' :
+                       item.rarity === 'legendary' ? 'Легендарный' :
+                       item.rarity === 'rare' ? 'Редкий' :
+                       item.rarity === 'uncommon' ? 'Необычный' : 'Обычный'}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="bg-space-deep/50 border border-space-purple/30 rounded-lg p-6 mb-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-gray-400 text-sm">Общая стоимость:</p>
+                    <p className="text-space-gold text-3xl font-bold">
+                      {multiOpenResults.reduce((sum, item) => sum + item.value, 0).toLocaleString()}₽
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-gray-400 text-sm">Предметов получено:</p>
+                    <p className="text-space-cyan text-3xl font-bold">{multiOpenResults.length}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                <button 
+                  onClick={() => {
+                    setShowFinalResults(false);
+                    setIsOpening(false);
+                    setMultiOpenResults([]);
+                  }}
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-semibold transition-colors"
+                >
+                  Назад
+                </button>
+                <button 
+                  onClick={handleSellAllItems}
+                  className="px-8 py-3 bg-gradient-to-r from-space-green to-green-500 text-white rounded-lg font-bold transition-all hover:opacity-90"
+                >
+                  💰 Продать всё ({multiOpenResults.reduce((sum, item) => sum + item.value, 0).toLocaleString()}₽)
+                </button>
+                <button 
+                  onClick={() => {
+                    setShowFinalResults(false);
+                    setIsOpening(false);
+                    setMultiOpenResults([]);
+                    setTimeout(() => {
+                      setOpenCount(openCount);
+                      setShowPreview(true);
+                    }, 300);
+                  }}
+                  className="px-6 py-3 bg-gradient-to-r from-space-purple to-space-pink text-white rounded-lg font-bold transition-all hover:opacity-90"
+                >
+                  🎰 Открыть ещё
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
