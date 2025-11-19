@@ -115,4 +115,17 @@
   .animate-roll {
     animation: roll 11.76s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
   }
+
+  @keyframes roll-mini {
+    0% {
+      transform: translateX(32px);
+    }
+    100% {
+      transform: translateX(-500px);
+    }
+  }
+
+  .animate-roll-mini {
+    animation: roll-mini 11.76s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  }
 }

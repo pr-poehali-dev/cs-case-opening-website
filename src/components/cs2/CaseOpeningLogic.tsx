@@ -55,9 +55,9 @@ const CaseOpeningLogic = ({
   const [showPreview, setShowPreview] = useState(false);
   const [openCount, setOpenCount] = useState(1);
   const [multiOpenResults, setMultiOpenResults] = useState<CaseItem[]>([]);
-  const [currentOpenIndex, setCurrentOpenIndex] = useState(0);
   const [isMultiOpen, setIsMultiOpen] = useState(false);
   const [showFinalResults, setShowFinalResults] = useState(false);
+  const [multiRollingData, setMultiRollingData] = useState<Array<{items: CaseItem[], wonItem: CaseItem}>>([]);
 
   const generateRollingItems = (caseItems: CaseItem[], wonItem: CaseItem) => {
     const items = [];
@@ -161,7 +161,6 @@ const CaseOpeningLogic = ({
     setIsOpening(true);
     setOpenedItem(null);
     setMultiOpenResults([]);
-    setCurrentOpenIndex(0);
     
     if (count === 1) {
       setIsMultiOpen(false);
@@ -175,30 +174,47 @@ const CaseOpeningLogic = ({
       });
     } else {
       setIsMultiOpen(true);
-      const results: CaseItem[] = [];
+      playCS2Sound('case_open', 0.5);
       
-      const openNext = (index: number) => {
-        if (index >= count) {
+      const allResults: Array<{items: CaseItem[], wonItem: CaseItem}> = [];
+      const wonItems: CaseItem[] = [];
+      
+      for (let i = 0; i < count; i++) {
+        const wonItem = selectWinningItem(selectedCase.items);
+        const rollingItemsList = generateRollingItems(selectedCase.items, wonItem);
+        allResults.push({ items: rollingItemsList, wonItem });
+        wonItems.push(wonItem);
+      }
+      
+      setMultiRollingData(allResults);
+      setMultiOpenResults(wonItems);
+      setIsRolling(true);
+      
+      setTimeout(() => {
+        playCS2Sound('roll_tick', 0.1);
+      }, 100);
+      
+      setTimeout(() => {
+        setIsRolling(false);
+        
+        wonItems.forEach((item) => {
+          const dropVolume = item.rarity === 'ancient' ? 0.8 : 
+                            item.rarity === 'legendary' ? 0.7 :
+                            item.rarity === 'rare' ? 0.6 : 0.5;
+          playCS2Sound('item_drop', dropVolume * 0.5);
+        });
+        
+        setTimeout(() => {
           setShowFinalResults(true);
           setIsMultiOpen(false);
           
-          const newItems = results.map((item, idx) => ({
+          const newItems = wonItems.map((item, idx) => ({
             ...item,
             id: Date.now() + idx
           }));
           onInventoryChange([...newItems, ...userInventory]);
-          return;
-        }
-        
-        setCurrentOpenIndex(index + 1);
-        openSingleCase((wonItem) => {
-          results.push(wonItem);
-          setMultiOpenResults([...results]);
-          setTimeout(() => openNext(index + 1), 500);
-        });
-      };
-      
-      openNext(0);
+        }, 1000);
+      }, 11760);
     }
   };
 
@@ -219,6 +235,7 @@ const CaseOpeningLogic = ({
     setShowFinalResults(false);
     setIsOpening(false);
     setMultiOpenResults([]);
+    setMultiRollingData([]);
   };
 
   return (
@@ -338,51 +355,63 @@ const CaseOpeningLogic = ({
         );
       })()}
 
-      {isOpening && !showFinalResults && (
-        <div className="fixed inset-0 bg-space-dark/95 backdrop-blur-md z-50">
-          {isMultiOpen && (
-            <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-space-deep/80 border-2 border-space-purple rounded-lg px-6 py-3 z-10">
-              <p className="text-white text-xl font-bold">Открываем кейсы: {currentOpenIndex} / {openCount}</p>
+      {isOpening && !showFinalResults && !isMultiOpen && (
+        <CaseRollingAnimation
+          isRolling={isRolling}
+          rollingItems={rollingItems}
+          openedItem={openedItem}
+          onClose={() => {
+            setIsOpening(false);
+            setOpenedItem(null);
+            setRollingItems([]);
+          }}
+          onSellItem={handleSellOpenedItem}
+          onOpenAgain={handleOpenCase}
+        />
+      )}
+
+      {isOpening && isMultiOpen && (
+        <div className="fixed inset-0 bg-space-dark/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-7xl">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold bg-gradient-to-r from-space-purple to-space-cyan bg-clip-text text-transparent mb-4 animate-pulse">
+                Открываем {openCount} кейсов...
+              </h3>
+              <p className="text-space-cyan text-xl">Определяем победителей...</p>
             </div>
-          )}
-          
-          {isMultiOpen && multiOpenResults.length > 0 && (
-            <div className="absolute top-24 left-8 right-8 z-10">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-6xl mx-auto">
-                {multiOpenResults.map((item, idx) => (
-                  <div key={idx} className={`bg-space-deep/90 rounded-lg border-2 p-2 animate-fade-in ${
-                    item.rarity === 'ancient' ? 'border-red-500' :
-                    item.rarity === 'legendary' ? 'border-space-purple' :
-                    item.rarity === 'rare' ? 'border-space-cyan' :
-                    item.rarity === 'uncommon' ? 'border-blue-400' : 'border-gray-400'
-                  }`}>
-                    <div className="aspect-square bg-gradient-to-br from-space-purple/20 to-space-cyan/20 rounded overflow-hidden mb-1">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {multiRollingData.map((data, idx) => (
+                <div key={idx} className="bg-space-deep/50 rounded-lg border-2 border-space-purple p-2">
+                  <div className="relative w-full h-32 bg-space-deep/50 rounded-lg overflow-hidden mb-2">
+                    <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-space-gold z-10"></div>
+                    <div className="flex items-center h-full">
+                      <div className="flex items-center h-full animate-roll-mini">
+                        {data.items.slice(30, 40).map((item, itemIdx) => (
+                          <div 
+                            key={itemIdx} 
+                            className={`flex-shrink-0 w-16 h-16 mx-1 rounded border ${
+                              item.rarity === 'ancient' ? 'border-red-500' :
+                              item.rarity === 'legendary' ? 'border-space-purple' :
+                              item.rarity === 'rare' ? 'border-space-cyan' :
+                              item.rarity === 'uncommon' ? 'border-blue-400' : 'border-gray-400'
+                            } overflow-hidden`}
+                          >
+                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <p className="text-white text-xs truncate font-semibold">{item.name}</p>
-                    <p className="text-space-gold text-xs">{item.value}₽</p>
                   </div>
-                ))}
-              </div>
+                  {!isRolling && (
+                    <div className="text-center animate-fade-in">
+                      <p className="text-white text-xs truncate font-semibold">{data.wonItem.name}</p>
+                      <p className="text-space-gold text-sm font-bold">{data.wonItem.value}₽</p>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
-          )}
-          
-          <div className="flex items-center justify-center min-h-screen">
-            <CaseRollingAnimation
-              isRolling={isRolling}
-              rollingItems={rollingItems}
-              openedItem={openedItem}
-              onClose={() => {
-                setIsOpening(false);
-                setOpenedItem(null);
-                setRollingItems([]);
-                setMultiOpenResults([]);
-                setIsMultiOpen(false);
-              }}
-              onSellItem={handleSellOpenedItem}
-              onOpenAgain={handleOpenCase}
-              hideButtons={isMultiOpen}
-            />
           </div>
         </div>
       )}
